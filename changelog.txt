@@ -1,0 +1,305 @@
+AB 3.60 01/00
+---------------------------------------------------------------------------------------------------
+
+Neue Endpunkte
+- GET /system-status zum Abfragen des Status der Subsysteme der API.
+
+Fehlerkorrekturen
+- Beim Auslesen/Ändern von Verkaufspreisen wurde SalesPrice/CurrencyKey im Format "1003EUR" geliefert/entgegengenommen. Ab sofort wird der Ordnungsbegriff der Währung nur noch im Format "EUR" geliefert/akzeptiert. Somit entspricht der Wert dem Wert aus den Stammdaten der Währung (Currency/Key).
+- Beim /set-completely-continued wurden Serien-/Chargennummern nicht korrekt behandelt.
+- Beim Auslesen von Lieferanten (GET /v1/suppliers) wurde der falsche Adresstyp geliefert (Supplier/Addresses/AddressType).
+
+AB 3.60 00/00
+---------------------------------------------------------------------------------------------------
+
+***************************************************************************************************
+*** WICHTIG * Änderungen am Filter-Parameter                                                    ***
+***************************************************************************************************
+- Es kann nun auch das Schlüsselwort "null" in Verbindung mit den Operatoren "eq" und "ne" verwendet werden, z.B.:
+  ?filter=DefaultStockNumber eq null
+  ?filter=DefaultStockNumber ne null
+
+- Strings können nun in Feldbegrenzern (einfaches Hochkomma) angegeben werden. Enthalten Filter-Werte
+  z.B. ein Minus, Schrägstrich, Komma, Punkt oder Leerzeichen, müssen Feldbegrenzer verwendet werden.
+  Wenn im Suchstring ein Hochkomma enthalten ist, muss dieses verdoppelt werden.
+  Beispiele:
+  ?filter=Description eq 'Dampf- u. Trockenbügelautomat'
+  ?filter=Description eq 'Merry''s Pub'
+
+- !ACHTUNG! Um dies umzusetzen, wird ein neuer Filter-Parser eingesetzt.
+  Dieser ist strenger bei der Prüfung des übermittelten Filter-Strings, das betrifft:
+  -> Der Verkettungsoperator "and" muss in jedem Fall in Kleinbuchstaben übermittelt werden.
+  -> Datum-/Zeitangaben müssen im Format ISO 8601 angegeben werden, d.h. sie müssen den Trenner "T"
+     zwischen Datum und Zeit und einen Offset (+00:00) oder ein "Z" (für UTC) an Ende haben.
+     Die Fraction ist optional.
+     Die Auftragsbearbeitung wertet nur den Datum-/Zeit-String aus, nicht den Offset oder die UTC-Angabe.
+     ?filter=LastModified ge 2023-02-23T09:01:56.335476+00:00
+     ?filter=LastModified ge 2023-02-23T09:01:56.335476Z
+     ?filter=LastModified ge 2023-02-23T09:01:56+00:00
+  -> Reine Datumsangaben (Tagesdatum) können wie gewohnt im internationalen Format übermittelt werden, z.B.
+     ?filter=InspectionDate eq 2023-02-23
+  -> Wird ein ungültiger Filter-String übermittelt, wird der Request mit StatusCode 400 abgewiesen.
+
+***************************************************************************************************
+*** Prüfen Sie den Aufbau Ihrer Filter-Strings vor der Aktualisierung auf die AB 3.60           ***
+***************************************************************************************************
+
+Neue Endpunkte
+- GET /definition/swagger zum Öffnen der SwaggerUI im Browser auf dem laufenden API Server.
+- GET /v1/dms-documents-metadata zur Suche nach Dokumenten im gesamten Dokumentenbereich im DMS.
+
+Änderungen an bestehenden Models
+- ConditionLineItem/AmountAlreadyProcessed -> Neue Property für verarbeitend abgerufenen Betrag (z.B. bei Teilabruf)
+- ConditionLineItem/AmountToProcess -> Neue Property für noch abzurufenden Betrag (z.B. bei Teilabruf)
+- ConditionLineItem/ChargeType -> Neue Property für Zu-/Abschlag
+- InventoryRelocation/CreatedBy -> Property auf read-only geändert
+- InventoryRelocation/CreationDate -> Property auf read-only geändert
+- InventoryRelocation/ChangedBy -> Property auf read-only geändert
+- InventoryRelocation/ChangingDate -> Property auf read-only geändert
+- InventoryTransaction/CreatedBy -> Property auf read-only geändert
+- InventoryTransaction/CreationDate -> Property auf read-only geändert
+- InventoryTransaction/ChangedBy -> Property auf read-only geändert
+- InventoryTransaction/ChangingDate -> Property auf read-only geändert
+- ManufactureDocument/CreatedBy -> Property auf read-only geändert
+- ManufactureDocument/CreationDate -> Property auf read-only geändert
+- ManufactureDocument/ChangedBy -> Property auf read-only geändert
+- ManufactureDocument/ChangingDate -> Property auf read-only geändert
+- Product/CalculationFields -> Neue Property für Artikelrechenfelder
+- Product/QuantityFactorsSales -> Neue Property für Mengenfaktoren Verkauf
+- Product/QuantityFactorsPurchase -> Neue Property für Mengenfaktoren Einkauf
+- ProductLineItem/QuantityAlreadyProcessed -> Property auf read-only geändert
+- ProductLineItem/QuantityToProcess -> Property auf read-only geändert
+- PurchaseDocument/CreatedBy -> Property auf read-only geändert
+- PurchaseDocument/CreationDate -> Property auf read-only geändert
+- PurchaseDocument/ChangedBy -> Property auf read-only geändert
+- PurchaseDocument/ChangingDate -> Property auf read-only geändert
+- SalesDocument/CreatedBy -> Property auf read-only geändert
+- SalesDocument/CreationDate -> Property auf read-only geändert
+- SalesDocument/ChangedBy -> Property auf read-only geändert
+- SalesDocument/ChangingDate -> Property auf read-only geändert
+- SalesPrice/IsTaxIncluded -> Neue Property zur Angabe, ob die Steuer im Preis enthalten ist (Bruttopreis)
+- SerialOrLotLineItem/SerialOrLotId -> Property auf read-only geändert
+- TargetDocumentData/UseCustomersDeliveryAddress -> Neue Property zur Steuerung, dass beim Querabruf die Anlieferungsadresse des Einkaufsbelegs aus der Lieferadresse des Verkaufsbelegs besetzt wird
+- TargetLineItem/Account -> Neue Property für die Kontonummer, die verwendet werden soll, wenn weder aus der Ursprungsposition noch aus der Kontierung eine Kontonummer ermittelt werden kann.
+
+Fehlerkorrekturen
+- Die API-Key-Prüfung führt nicht mehr zum Fehler, wenn an einem Client ein neuerer Wartungsstand der AB installiert ist.
+- Beim Abrufen von Belegen per API wird der Zielbeleg nun mit dem richtigen Benutzer als Erfasser erzeugt.
+- ConditionLineItem/ConditionId wurde beim GET nicht gefüllt
+- DmsKeyword/Value akzeptierte Datumsangaben nicht im Format YYYY-MM-DD
+- InventoryTransaction/LineItems/SerialOrLotNumbers -> Prüfung bei Nutzung einer Chargennummer war lückenhaft
+- ManufactureLineItem/ManufacturingOrderLineItemId wurde beim GET nicht gefüllt
+- /v1/products/price-change/recalc-average-purchase-price und /v1/products/price-change/recalc-from-bom liefern nun die korrekte URL zur Statusabfrage
+
+Angabe des Dateinamens im DMS
+- Beim POST auf 
+    - /v1/company/dms-documents
+    - /v1/customers/{customerId}/dms-documents
+    - /v1/products/{productId}/dms-documents
+    - /v1/suppliers/{supplierId}/dms-documents
+   kann nun per Parameter "filename" angegeben werden, welchen Dateinamen die Datei im DMS haben soll.
+
+Sonstiges
+- POST auf /v1/products/{productId}/get-specific-price liefert nun bei Übergabe einer ungültigen Artikel-ID oder Kunden-/Lieferanten-ID/-Nr StatusCode 400 (BadRequest) zurück
+
+AB 3.50 02/00
+---------------------------------------------------------------------------------------------------
+Neue Endpunkte
+- /v1/resources -> Auslesen, Anlegen, Ändern und Löschen der Fertigungsstammdaten im Bereich "Ressource"
+- /v1/working-steps -> Auslesen, Anlegen, Ändern und Löschen der Fertigungsstammdaten im Bereich "Arbeitsschritt"
+
+Änderungen an bestehenden Models
+- Customer/IsCompanyWithoutVatIdentificationNumber -> Neue Property für Unternehmen, das keine USt-IdNr. hat
+- PdfCreationData/FormatSettings -> Neue Property zur Steuerung der Aufbereitung (Druckvorlage, Layout) der PDF-Datei
+- PdfCreationData/MarkAsPublished -> Neue Property zur Steuerung, ob beim Abrufen einer PDF-Datei der Beleg als "gedruckt" gekennzeichnet werden soll
+- PdfCreationData/Settings -> Neue Property zur Steuerung, ob nur eine PDF-Datei erzeugt werden soll, ob sie archiviert werden soll oder aus dem Archiv abgerufen werden soll
+- PeriodicalSalesDocumentTemplate/BankId -> Neue Property für den technischen Schlüssel der Bank bei Verwendung eines SEPA-Mandats (alternativ zur Property BankKey)
+- PeriodicalSalesDocumentTemplate/BankKey -> Neue Property für den Ordnungsbegriff der Bank bei Verwendung eines SEPA-Mandats
+- PeriodicalSalesDocumentTemplate/Iban -> Neue Property für die IBAN bei Verwendung eines SEPA-Mandats
+- PeriodicalSalesDocumentTemplate/SepaMandateReference -> Neue Property für die SEPA Mandatsreferenz
+- SalesDocument/BankId -> Neue Property für den technischen Schlüssel der Bank bei Verwendung eines SEPA-Mandats (alternativ zur Property BankKey)
+- SalesDocument/BankKey -> Neue Property für den Ordnungsbegriff der Bank bei Verwendung eines SEPA-Mandats
+- SalesDocument/Iban -> Neue Property für die IBAN bei Verwendung eines SEPA-Mandats
+- SalesDocument/SepaMandateReference -> Neue Property für die SEPA Mandatsreferenz
+- SalesDocument/SepaMoveInDate -> Neue Property für das Einzugsdatum bei Verwendung eines SEPA-Mandats
+- SendMailSettings/FormatSettings -> Neue Property zur Steuerung der Aufbereitung (Druckvorlage, Layout) der PDF-Datei für den E-Mail-Anhang
+- Supplier/IsCompanyWithoutVatIdentificationNumber -> Neue Property für Unternehmen, das keine USt-IdNr. hat
+- TargetDocumentData/UserDefinedFields -> Neue Property beim Abruf zum Setzen geänderter Werte in benutzerdefinierte Felder des Zielbelegs
+- TargetLineItem/UserDefinedFields -> Neue Property beim Abruf zum Setzen geänderter Werte in benutzerdefinierte Felder einer Belegposition des Zielbelegs
+
+Fehlerkorrekturen
+- Beim PUT auf /v1/sales-documents/<id> bzw. /v1/purchase-documents/<id> gab es ggf. einen InternalServerError (StatusCode 500), wenn die LineItem-Id nicht im Beleg vorhanden war. Ab sofort wird in diesem Fall StatusCode 400 (BadRequest) geliefert.
+- Beim PUT auf /v1/sales-documents/<id> bzw. /v1/purchase-documents/<id> konnte die Reihenfolge vorhandener LineItems nicht geändert werden.
+- Beim GET auf /v1/pdf/queue/<id> wurde ggf. der Status "Finished" geliefert, obwohl es bei der PDF-Erzeugung zum Fehler kam. 
+
+
+AB 3.50 01/00
+---------------------------------------------------------------------------------------------------
+Änderungen an bestehenden Models
+- SalesDocument/DeliveryCondition -> Neue Property für den Ordnungsbegriff der Lieferbedingung
+- SalesDocument/IncotermLocation -> Neue Property für die Incoterm-Location
+- SalesDocument/IncotermCode -> Neue Property für den Code der Incoterm-Klausel der Lieferbedingung
+- SalesDocument/IncotermVersion -> Neue Property für die Version der Incoterm-Klausel der Lieferbedingung
+- PurchaseDocument/DeliveryCondition -> Neue Property für den Ordnungsbegriff der Lieferbedingung
+- PurchaseDocument/IncotermLocation -> Neue Property für die Incoterm-Location
+- PurchaseDocument/IncotermCode -> Neue Property für den Code der Incoterm-Klausel der Lieferbedingung
+- PurchaseDocument/IncotermVersion -> Neue Property für die Version der Incoterm-Klausel der Lieferbedingung
+- PeriodicalSalesDocumentTemplate/DeliveryCondition -> Neue Property für den Ordnungsbegriff der Lieferbedingung
+- PeriodicalSalesDocumentTemplate/IncotermLocation -> Neue Property für die Incoterm-Location
+- PeriodicalSalesDocumentTemplate/IncotermCode -> Neue Property für den Code der Incoterm-Klausel der Lieferbedingung
+- PeriodicalSalesDocumentTemplate/IncotermVersion -> Neue Property für die Version der Incoterm-Klausel der Lieferbedingung
+- PeriodicalPurchaseDocumentTemplate/DeliveryCondition -> Neue Property für den Ordnungsbegriff der Lieferbedingung
+- PeriodicalPurchaseDocumentTemplate/IncotermLocation -> Neue Property für die Incoterm-Location
+- PeriodicalPurchaseDocumentTemplate/IncotermCode -> Neue Property für den Code der Incoterm-Klausel der Lieferbedingung
+- PeriodicalPurchaseDocumentTemplate/IncotermVersion -> Neue Property für die Version der Incoterm-Klausel der Lieferbedingung
+- Customer/IncotermLocation -> Neue Property für die Incoterm-Location
+- Supplier/IncotermLocation -> Neue Property für die Incoterm-Location
+- DeliveryConditionItem -> Model umbenannt in DeliveryCondition
+- DeliveryCondition/IncotermId -> Neue Property für die ID des Incoterms
+- DeliveryCondition/IncotermCode -> Neue Property für den Code des Incoterms
+- DeliveryCondition/IncotermVersion -> Neue Property für die Version des Incoterms
+- DeliveryCondition/IncotermDescription -> Neue Property für die Bezeichnung des Incoterms
+- DeliveryCondition/IncotermDescriptionEnglish -> Neue Property für die englische Bezeichnung des Incoterms
+
+
+AB 3.50 00/00
+---------------------------------------------------------------------------------------------------
+Neue Endpunkte
+- /v1/company/dms-documents -> Dokumente ins DMS importieren (Bereich Firma)
+- /v1/customers/{customerId}/dms-documents -> Dokumente ins DMS importieren (Bereich Kunde)
+- /v1/products/{productId}/dms-documents -> Dokumente ins DMS importieren (Bereich Artikel)
+- /v1/suppliers/{supplierId}/dms-documents -> Dokumente ins DMS importieren (Bereich Lieferant)
+- /v1/company/dms-documents-metadata -> Metadaten der DMS-Dokumente der Firma auslesen
+- /v1/customers/{customerId}/dms-documents-metadata -> Metadaten der DMS-Dokumente eines Kunden auslesen
+- /v1/products/{productId}/dms-documents-metadata -> Metadaten der DMS-Dokumente eines Artikels auslesen
+- /v1/suppliers/{supplierId}/dms-documents-metadata -> Metadaten der DMS-Dokumente eines Lieferanten auslesen
+- /definition -> Schnittstellenbeschreibung im JSON-Format
+- /definition/yaml -> Schnittstellenbeschreibung im YAML-Format
+- /v1/general-ledger-accounts -> Zugriff auf Sachkonten 
+- /appinfo/changelog -> Informationen zu Änderungen im Webservice (Changelog)
+- /v1/delivery-conditions -> Zugriff auf Lieferbedingungen
+- /v1/inventory/products/{productId}/serialorlotnumbers -> Auslesen der Serien-/Chargennummern eines Artikels im Lagerbestand
+- /v1/inventory/products/{productId}/serialorlotnumbers/{serialOrLotId} -> Auslesen einer Serien-/Chargennummern eines Artikels im Lagerbestand und Ändern (z.B. von benutzerdef. Feldern)
+- /v1/stocktaking/start -> Eröffnen einer Inventur
+- /v1/stocktaking/cancel -> Abbrechen einer Inventur
+- /v1/stocktaking/queue/{queueItemId} -> Statusabfrage zum Eröffnen/Abbrechen einer Inventur
+
+Änderungen an bestehenden Models
+- ManufactureDocument/ManufacturingOrderId -> ist jetzt nullable
+- ProductLineItem/IsAlternateItem -> neue Property für "Alternativposition"
+- ProductLineItem/NetWeight -> neue Property für das Nettogewicht
+- ProductLineItem/DoCalcNetWeightFromBOM -> neue Property zur Angabe, ob das Nettogewicht aus der Stückliste berechnet werden soll
+- BillOfMaterialProductItem/ProductId -> neue Property für die ID des Artikels (technischer Schlüssel)
+- BillOfMaterialProductItem/ProductNumber -> ist jetzt nullable und nicht mehr required, weil alternativ ProductId angegeben werden kann
+- UserDefinedFieldValue/NumericValue -> Typ von number auf string geändert, weil sonst Zahlen >= 28 Stellen nicht übertragen werden konnten
+- SalesDocument/ContractNumber -> Neue Property für die Vertragsnummer
+- SalesDocument/Shipments -> Mehrere Sendungsnummern je Beleg sind nun möglich.
+- PurchaseDocument/Shipments -> Mehrere Sendungsnummern je Beleg sind nun möglich.
+- PeriodicalSalesDocumentTemplate/ContractNumber -> Neue Property für die Vertragsnummer
+- InventoryProduct/LastModified -> Neue Property für das Bestandsänderungsdatum
+- InventorySerialOrLotNumber/DateOfManufacture -> Neue Property für das Herstellungsdatum
+- InventorySerialOrLotNumber/DateOfExpiry -> Neue Property für das Ablaufdatum
+- InventorySerialOrLotNumber/SerialOrLotNumberType -> Neue Property für die Angabe, ob es sich um eine Serien- oder Chargennummer handelt
+- InventorySerialOrLotNumber/Notes -> Neue Property für die Notizen
+- InventorySerialOrLotNumber/LastModified -> Neue Property für das Bestandsänderungsdatum
+- InventoryTransaction und InventoryRelocation -> Aufteilung nicht gemeinsamer Properties auf InventoryTransactionExtendedProperties und InventoryRelocationExtendedProperties
+- InventoryTransactionLineItem -> Aufteilung auf InventoryTransactionLineItem und InventoryTransactionLineItemExtendedProperties
+
+Fehlerkorrekturen
+- Beim GET auf products/{productId}/get-specific-price wurde u. U. nicht der spezifizierte Preis geliefert.
+- Ein Fehler beim Schreiben von Verkaufspreisen für Artikel ohne Preise wurde korrigiert.
+- Wurde beim POST ein leerer Body gesendet, kam es ggf. zu einer System.NullReferenceException.
+- Der Benutzer "ab" kann ab sofort nicht mehr per API gelöscht werden.
+- Nach einer hohen Zahl an API-Zugriffen kam es ggf. zu einer Exception im Webservice-Protokolldialog.
+- Numerische benutzerdefinierte Felder mit Länge >= 28 Stellen werden nun korrekt verarbeitet.
+- Im Dienst-Modus konnten ggf. keine PDF-Dateien erzeugt werden.
+- Gleichzeitige API-Zugriffe erzeugen keine Exception mehr.
+- Korrektur Internal Server Error (Fehler 500) bei Abfrage eines QueueItems.
+- Bei Verwendung von "select" werden nur noch die angeforderten Properties geliefert, nicht mehr alle.
+- Korrektur Internal Server Fehler (Fehler 500) bei Benutzeranlage per API.
+
+Sonstiges
+- Die Schnittstellendefinition wird mit einem neuen Tool erzeugt, dadurch haben sich der Umfang der Informationen sowie die Reihenfolge der Endpunkte/Models geändert.
+- Der StatusCode beim erfolgreichen "Passwort ändern" wurde von 200 auf 202 geändert.
+- POST auf /v1/products/{productId}/get-specific-price ist nun auch ohne Vollzugriff möglich.
+- Die API-Key-Prüfung ist nicht mehr case-sensitiv.
+- Am Benutzer gibt es nun eine Einstellung, dass dieser nur über die API, aber nicht über die Oberfläche auf die Anwendung zugreifen darf.
+- Die Authentifizierung ist zusätzlich zu Basic auch per OAuth möglich.
+- Beim Anlegen von Belegen (z.B. per POST auf /v1/sales-documents) kann per Header-Parameter "X-HS-Do-Insert-IntroductionLineItem" gesteuert werden, ob Positionseinleitungstexte automatisch eingefügt werden sollen.
+- Die Protokollierung der übertragenen Daten in eine Datei wurde hinzugefügt. Sie kann beim Einrichten des Diensts oder beim Start des Webservice über die Oberfläche aktiviert werden.
+- Per Parameter "sort" können nun Belege, Artikel, Kunden und Lieferanten sortiert per GET ausgelesen werden.
+
+
+AB 3.40 02/04
+---------------------------------------------------------------------------------------------------
+Änderungen an bestehenden Models
+- PurchaseDocument und ProductLineItem wurden um die Property CustomerDeliveryDate (Kundenliefertermin in EK-Belegen) erweitert.
+ 
+Fehlerkorrekturen
+- Beim Anlegen von Belegen werden nun abhängige Daten (z.B. Text für EU-Lieferung) korrekt besetzt.
+- Fehler bei der Nutzung benutzerdefinierter Felder vom Typ "Datum" wurde korrigiert.
+
+
+AB 3.40 02/00
+---------------------------------------------------------------------------------------------------
+Neue Endpunkte
+- /is-running -> Per /is-running kann geprüft werden, ob der Webservice läuft, ohne dass die Anfrage protokolliert wird (was bei /appinfo der Fall ist).
+- /v1/products/{​​​​​​​​​​​​productId}​​​​​​​​​​​​/get-specific-price -> Per /v1/products/{​​​​​​​​​​​​productId}​​​​​​​​​​​​/get-specific-price kann für einen Artikel der kunden-/lieferantenspezifische Preis unter Berücksichtigung von Preisliste, Währung und Menge ermittelt werden.
+- /v1/purchase-documents/{​​​​​​​​​​​​purchaseDocumentId}​​​​​​​​​​​​/assign-dms-document -> Per /v1/purchase-documents/{​​​​​​​​​​​​purchaseDocumentId}​​​​​​​​​​​​/assign-dms-document kann einem Einkaufsbeleg ein digitales Belegbild aus dem HS-DMS zugewiesen werden.
+
+Neue Endpunkte für asynchrone Belegneuanlage, -änderung und abrufe
+Wurden bisher sehr große Belege angelegt, geändert oder abgerufen, konnte es zum Timeout bei der Bearbeitung des Requests kommen. Mit den neuen Endpunkten werden nun nur die Aufgaben zur Neuanlage, Änderung oder Abruf angelegt. Über eine Status-URL kann der Status der Aufgabe abgefragt werden.
+- /v1/sales-documents/create
+- /v1/sales-documents/{​​​​​​​​​​​​salesDocumentId}​​​​​​​​​​​​/change
+- /v1/sales-documents/queue/{​​​​​​​​​​​​queueItemId}​​​​​​​​​​​​
+- /v1/sales-documents/process/queue
+- /v1/sales-documents/process/queue/{​​​​​​​​​​​​queueItemId}​​​​​​​​​​​​
+- /v1/purchase-documents/create
+- /v1/purchase-documents/{​​​​​​​​​​​​purchaseDocumentId}​​​​​​​​​​​​/change
+- /v1/purchase-documents/queue/{​​​​​​​​​​​​queueItemId}​​​​​​​​​​​​
+- /v1/purchase-documents/process/queue
+- /v1/purchase-documents/process/queue/{​​​​​​​​​​​​queueItemId}​​​​​​​​​​​​
+
+Setzen der Fremdanwendung-ID per API
+Bei den Endpunkten 
+- /v1/sales-documents/{​​​​​​​​​​​​salesDocumentId}​​​​​​​​​​​​/set-lock-for-third-party-application
+- /v1/purchase-documents/{​​​​​​​​​​​​purchaseDocumentId}​​​​​​​​​​​​/set-lock-for-third-party-application
+- /v1/manufacture-documents/{​​​​​​​​​​​​manufactureDocumentId}​​​​​​​​​​​​/set-lock-for-third-party-application
+kann jetzt optional ein RequestBody übermittelt werden. Im RequestBody kann die ID der Fremdanwendung angegeben werden.
+
+Setzen von "durch Fremdanwendung gesperrt" auch für wiederkehrende Belege
+Auch bei wiederkehrenden Belegen kann nun die Sperre gesetzt und entfernt werden. Dazu können folgende Endpunkte genutzt werden:
+- /v1/periodical-sales-document-templates/{​​​​​​​​​​​​documentTemplateId}​​​​​​​​​​​​/set-lock-for-third-party-application
+- /v1/periodical-sales-document-templates/{​​​​​​​​​​​​documentTemplateId}​​​​​​​​​​​​/clear-lock-for-third-party-application
+- /v1/periodical-purchase-document-templates/{​​​​​​​​​​​​documentTemplateId}​​​​​​​​​​​​/set-lock-for-third-party-application
+- /v1/periodical-purchase-document-templates/{​​​​​​​​​​​​documentTemplateId}​​​​​​​​​​​​/clear-lock-for-third-party-application
+Auch bei diesen Endpunkten kann die ID der Fremdanwendung übermittelt werden.
+
+Abruf aus vollständig abgerufenen Belegen jetzt steuerbar
+Bisher war ein Belegabruf per API immer möglich, auch wenn der Ursprungsbeleg bereits vollständig abgerufen war. Das war beabsichtigt, damit auch Überlieferungen aus einem Fremdsystem möglich sind. 
+Ab der AB 3.40 02/00 muss der Abruf aus vollständig abgerufenen Belegen explizit aktiviert werden. Dazu wird die neue Property AllowProcessOfCompletelyContinuedDocument am ProcessData auf true gesetzt.
+
+Abrufe jetzt auch ohne automatische Belegnummernvergabe
+Durch Angabe eine Belegnummer per Property DocumentNumber am TargetDocumentData kann die Belegnummer des Zielbelegs angegeben werden. Dadurch müssen Zielbelege keine automatische Belegnummernvergabe mehr haben.
+
+Belege per API nun auch mit Betragseingabe
+Wie auch an der Oberfläche kann per API anstelle des Preise nun der Betrag angeben werden. Am ProductLineItemData steht dafür Amount bereit.
+
+Preis, Rabatt und Betrag fixieren
+Bei Verwendung von belegspezifischen Preisen, Rabatten und Beträgen sollen diese bei Bearbeitung oder Belegabruf nicht neu aus den Stammdaten ermittelt werden. Das kann nun durch die neuen Properties am ProductLineItemData gesteuert werden: IsUnitPriceAndRebateFixed, IsAmountFixed und IsPurchasePriceFixed
+
+Prüfungen für Felder ergänzt
+Es wurden Prüfungen auf Feldlängen und zulässige Zeichen ergänzt. Vorher wurden die Daten ggf. kommentarlos abgeschnitten (zu lange Texte) oder übernommen (z.B. Zeilenumbrüche für einzeilige Texte). Das betrifft v.a. die Belege und ihre Adressen.
+
+Änderungen an bestehenden Models
+- MaterialSlipItem wurde um die Property Notes erweitert.
+- Bei Customer und Supplier kann nun die EORI (EoriNumber) ausgelesen werden.
+- SalesDocument und PeriodicalSalesDocumentTemplate wurden um EoriNumber, IdInThirdPartyApplication und IsLockedForDunningOrDirectDebit erweitert.
+- PurchaseDocument und PeriodicalPurchaseDocumentTemplate wurden um EoriNumber, IdInThirdPartyApplication und IsLockedForPaymenterweitert.
+- ConditionLineItem, TextBlockLineItem und TextLineItem wurden um die Property LineNumber erweitert.
+- ProductLineItem wurde erweitert um: IsUnitPriceAndRebateFixed, IsAmountFixed, Amount und IsPurchasePriceFixed. GrossAmount und NetAmount wurden als readOnly ausgezeichnet.
+- Die Beschreibung der Property Items von BillOfMaterial wurde präzisiert.
+- BillOfMaterialItem wurde um die Property Notes erweitert.
+- ProcessData wurde um die Property AllowProcessOfCompletelyContinuedDocument erweitert.
+- TargetDocumentData wurde um die Property DocumentNumber erweitert.
+- ManufactureDocument wurde um IdInThirdPartyApplication erweitert.
