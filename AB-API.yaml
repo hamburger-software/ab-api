@@ -13,7 +13,7 @@ info:
     url: https://www.hamburger-software.de
   termsOfService: https://www.hamburger-software.de
   title: HS API (Auftragsbearbeitung)
-  version: 3.60.0000
+  version: 3.60.0100
 servers:
 - url: https://{hostname}:{port}/ab-api
   variables:
