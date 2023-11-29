@@ -1,3 +1,58 @@
+AB 3.60 02/00
+---------------------------------------------------------------------------------------------------
+
+Neue Endpunkte
+- DELETE /v1/customers
+- DELETE /v1/suppliers
+- POST /v1/customers
+- POST /v1/suppliers
+- PUT /v1/customers
+- PUT /v1/suppliers
+
+Änderungen an bestehenden Models
+- BillOfMaterialProductItem/AssemblyDate -> Neue Property für das Produktionsdatum bzw. Datum der Zerlegung
+- BillOfMaterialProductItem/IsForAssembly -> Neue Property zur Angabe, ob der Artikel produziert/zerlegt werden soll
+- Customer/BankId -> Property wurde hinzugefügt
+- Customer/BankKey -> Property wurde hinzugefügt
+- Customer/DeliveryConditionKey -> Property wurde hinzugefügt
+- Customer/IsReverseCharge -> Neue Property für Steuerschuldnerschaft des Leistungsempfängers
+- Customer/ReferencedSupplierNumber -> Neue Property für Lieferantennummer
+- Customer/TermsOfPaymentKey -> Property wurde hinzugefügt
+- ManufactureDocument/CalculationFieldTotals -> Neue Property für Rechenfeldsummen
+- ManufactureDocument/CostCenter -> Neue Property für Kostenstelle
+- ManufactureDocument/CostUnit -> Neue Property für Kostenträger
+- PeriodicalPurchaseDocumentTemplate/CalculationFieldTotals -> Neue Property für Rechenfeldsummen
+- PeriodicalPurchaseDocumentTemplate/CostCenter -> Neue Property für Kostenstelle
+- PeriodicalPurchaseDocumentTemplate/CostUnit -> Neue Property für Kostenträger
+- PeriodicalSalesDocumentTemplate/CalculationFieldTotals -> Neue Property für Rechenfeldsummen
+- PeriodicalSalesDocumentTemplate/CostCenter -> Neue Property für Kostenstelle
+- PeriodicalSalesDocumentTemplate/CostUnit -> Neue Property für Kostenträger
+- PdfCreationData/DataType -> Neue Ausprägung ManufactureDocument zur PDF-Erzeugung von Fertigungsbelegen
+- ProductLineItem/AssemblyDate -> Neue Property für das Produktionsdatum bzw. Datum der Zerlegung
+- ProductLineItem/CalculationFieldValues -> Neue Property für Rechenfeldwerte
+- ProductLineItem/IsForAssembly -> Neue Property zur Angabe, ob der Artikel produziert/zerlegt werden soll
+- ProductLineItem/ReferencedProductNumber -> Neue Property für Fremdartikelnummer
+- PurchaseDocument/CalculationFieldTotals -> Neue Property für Rechenfeldsummen
+- PurchaseDocument/CostCenter -> Neue Property für Kostenstelle
+- PurchaseDocument/CostUnit -> Neue Property für Kostenträger
+- SalesDocument/CalculationFieldTotals -> Neue Property für Rechenfeldsummen
+- SalesDocument/CostCenter -> Neue Property für Kostenstelle
+- SalesDocument/CostUnit -> Neue Property für Kostenträger
+- Supplier/BankId -> Property wurde hinzugefügt
+- Supplier/BankKey -> Property wurde hinzugefügt
+- Supplier/DeliveryConditionKey -> Property wurde hinzugefügt
+- Supplier/DirectDebitPaymentMethod -> Property wurde entfernt
+- Supplier/DirectDebitProcedure -> Property wurde entfernt
+- Supplier/IsReverseCharge -> Neue Property für Steuerschuldnerschaft des Leistungsempfängers
+- Supplier/PaymentMethod -> Property wurde hinzugefügt
+- Supplier/TermsOfPaymentKey -> Property wurde hinzugefügt
+
+Fehlerkorrekturen
+- Beim Auslesen der Artikelrechenfelder per GET auf /v1/products waren die Werte für Value und QuantityInPriceUnits vertauscht.
+
+Sonstiges
+- Die API-Dokumentation wird ab sofort zusätzlich auf GitHub veröffentlicht unter https://github.com/hamburger-software/ab-api
+
 AB 3.60 01/00
 ---------------------------------------------------------------------------------------------------
 
