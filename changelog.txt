@@ -1,3 +1,14 @@
+AB 3.60 02/05
+---------------------------------------------------------------------------------------------------
+
+Änderungen an bestehenden Models
+- Customer/PriceListType -> Neue Property für den Typ der Preisliste
+- Customer/DateDependentPriceList -> Neue Property für den Ordnungsbegriff der Preislistengruppe
+- Customer/DateDependentPriceListInfo -> Neue Property für weitere Informationen zur Preislistengruppe (z.B. Nummer der gültigen Preisliste)
+
+Neue Models
+- DateDependentPriceListInfo
+
 AB 3.60 02/00
 ---------------------------------------------------------------------------------------------------
 

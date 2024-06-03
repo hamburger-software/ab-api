@@ -14,7 +14,7 @@ info:
     url: https://www.hamburger-software.de
   termsOfService: https://www.hamburger-software.de
   title: HS API (Auftragsbearbeitung)
-  version: 3.60.0200
+  version: 3.60.0205
 servers:
 - url: https://{hostname}:{port}/ab-api
   variables:
@@ -16249,6 +16249,7 @@ components:
         DirectDebitPaymentMethod: OneOff
         ShortDescription: WAHL
         LastModified: 2000-01-23T04:56:07.000+00:00
+        PriceListType: Specific
         Addresses:
         - CountryId: 1
           Zip: Zip
@@ -16297,6 +16298,7 @@ components:
         TermsOfPaymentId: 1
         BookingCodeKey: KST
         SepaMandateReference: SepaMandateReference
+        DateDependentPriceList: "0"
         BankInstitutionName: Postbank Ndl der Deutschen Bank
         PreferredEmailDispatch: All
         DirectDebitProcedure: NoDirectDebit
@@ -16323,6 +16325,8 @@ components:
         IsReverseCharge: false
         Notes: Notes
         IsTaxable: Taxable
+        DateDependentPriceListInfo:
+          CurrentPriceListNumber: 0
         UsePeppol: true
         CreditLimit: 50000
         ElectronicInvoiceFormat: XRechnung
@@ -16596,8 +16600,28 @@ components:
           description: Datum SEPA-Mandat im Format YYYY-MM-DD
           nullable: true
           type: string
+        PriceListType:
+          description: |
+            Gibt an, ob für den Kunden eine datumsabhängige Preisliste (DateDependent)
+            oder spezifische Preisliste (Specific) verwendet werden soll.
+            Bei Änderung der Preisliste oder Preislistengruppe des Kunden (per POST oder PUT) muss
+            PriceListType zwingend gefüllt sein.
+          enum:
+          - DateDependent
+          - Specific
+          example: Specific
+          nullable: true
+          type: string
+        DateDependentPriceList:
+          description: Ordnungsbegriff der Preislistengruppe
+          example: "0"
+          nullable: true
+          type: string
+        DateDependentPriceListInfo:
+          $ref: '#/components/schemas/DateDependentPriceListInfo'
         PriceListNumber:
-          description: Nummer der Preisliste
+          description: |
+            Nummer der spezifischen Preisliste, sofern PriceListType als Specific festgelegt ist.
           example: 1
           nullable: true
           type: integer
@@ -16721,6 +16745,20 @@ components:
           nullable: true
           type: boolean
       title: Customer
+      type: object
+    DateDependentPriceListInfo:
+      description: |
+        Daten einer Preislistengruppe.
+      example:
+        CurrentPriceListNumber: 0
+      properties:
+        CurrentPriceListNumber:
+          description: Nummer der aktuell gültigen Preisliste
+          example: 0
+          nullable: true
+          readOnly: true
+          type: integer
+      title: DateDependentPriceListInfo
       type: object
     Supplier:
       example:
