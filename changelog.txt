@@ -1,3 +1,102 @@
+AB 3.70 00/00
+---------------------------------------------------------------------------------------------------
+
+Neue Endpunkte für Konditionen
+- GET /v1/conditions
+- GET /v1/conditions/{conditionId}
+- POST /v1/conditions
+- PUT /v1/conditions/{conditionId}
+- DELETE /v1/conditions/{conditionId}
+
+Neue Endpunkte für die Definitionen und Merkmale benutzerdefinierter Felder
+- GET /v1/user-defined-field-definitions
+- GET /v1/user-defined-field-attributes
+- GET /v1/user-defined-field-attributes/{attributeId}
+- POST /v1/user-defined-field-attributes
+- PUT /v1/user-defined-field-attributes/{attributeId}
+- DELETE /v1/user-defined-field-attributes/{attributeId}
+
+Neue Endpunkte für Artikel-Kunde-Beziehungen
+- GET /v1/product-customer-relations
+- GET /v1/product-customer-relations/{productCustomerRelationId}
+- POST /v1/product-customer-relations
+- PUT /v1/product-customer-relations/{productCustomerRelationId}
+- DELETE /v1/product-customer-relations/{productCustomerRelationId}
+- GET /v1/product-customer-relations/prices
+- GET /v1/product-customer-relations/prices/{productCustomerRelationId}
+- PUT /v1/product-customer-relations/prices/{productCustomerRelationId}
+
+Neue Endpunkte für Artikel-Lieferant-Beziehungen
+- GET /v1/product-supplier-relations
+- GET /v1/product-supplier-relations/{productSupplierRelationId}
+- POST /v1/product-supplier-relations
+- PUT /v1/product-supplier-relations/{productSupplierRelationId}
+- DELETE /v1/product-supplier-relations/{productSupplierRelationId}
+- GET /v1/product-supplier-relations/prices
+- GET /v1/product-supplier-relations/prices/{productSupplierRelationId}
+- PUT /v1/product-supplier-relations/prices/{productSupplierRelationId}
+
+Neue Endpunkte für Beleg-Kontakte
+- DELETE /v1/sales-documents/{salesDocumentId}/document-contact
+- DELETE /v1/purchase-documents/{purchaseDocumentId}/document-contact
+- DELETE /v1/manufacture-documents/{manufactureDocumentId}/document-contact
+
+Änderungen an bestehenden Models
+- BillOfMaterialItem/Id -> Neue Property für den technischen Schlüssel
+- BillOfMaterialProductItem/QuantityAlreadyProcessedInPriceUnits -> Neue Property für die bereits abgerufene Menge in Preiseinheiten
+- BillOfMaterialProductItem/QuantityAlreadyProcessedInDeliveryUnits -> Neue Property für die bereits abgerufene Menge in Liefereinheiten
+- BillOfMaterialProductItem/QuantityInPriceUnits -> Neue Property für die effektive Menge in Preiseinheiten
+- BillOfMaterialProductItem/QuantityInDeliveryUnits -> Neue Property für die effektive Menge in Liefereinheiten
+- BillOfMaterialProductItem/QuantityPerModuleInPriceUnits -> Neue Property für die Menge je Baugruppe in Preiseinheiten
+- BillOfMaterialProductItem/QuantityPerModuleInDeliveryUnits -> Neue Property für die Menge je Baugruppe in Liefereinheiten
+- BillOfMaterialProductItem/QuantityToProcessInPriceUnits -> Neue Property für die noch abzurufende Menge in Preiseinheiten
+- BillOfMaterialProductItem/QuantityToProcessInDeliveryUnits -> Neue Property für die noch abzurufende Menge in Liefereinheiten
+- BillOfMaterialProductItem/Text -> Neue Property für den Text
+- BillOfMaterialProductItem/UserDefinedFields -> Neue Property für die benutzerdefinierten Felder
+- Customer/UsePeppol -> Property als deprecated markiert, da bei XRechnung ab Version 3.0.0 die Angabe obligatorisch ist und nicht mehr gesteuert werden kann.
+- ManufactureDocument/DrawingNumber -> Neue Property (read-only) für die Zeichnungsnummer des Fertigungsteils
+- ManufactureDocument/DrawingCreationDate -> Neue Property (read-only) für das Anlagedatum der Zeichnung des Fertigungsteils
+- ManufactureDocument/DrawingLastModified -> Neue Property (read-only) für das Änderungsdatum der Zeichnung des Fertigungsteils
+- ManufactureDocument/DrawingModificationStatus -> Neue Property (read-only) für den Änderungszustand der Zeichnung des Fertigungsteils
+- ManufactureDocument/DrawingCreatedBy -> Neue Property (read-only) für Zeichnung angelegt durch des Fertigungsteils
+- ManufactureDocument/DrawingLastModifiedBy -> Neue Property (read-only) für geändert durch des Fertigungsteils
+- ManufactureDocument/DrawingStatus -> Neue Property (read-only) für den Status der Zeichnung des Fertigungsteils
+- ManufactureDocument/ProductId -> Neue Property (read-only) für die ID des Artikels.
+- ManufactureDocument/ReferencedSalesDocumentCustomerId -> Neue Property (read-only) für ID des Kunden bei auftragsbezogener Fertigung
+- ManufactureDocument/ReferencedSalesDocumentCustomerNumber -> Neue Property (read-only) für Nummer des Kunden bei auftragsbezogener Fertigung
+- ManufactureDocument/StockId -> Neue Property (read-only) für die ID des Lagers.
+- ManufactureDocument/Contact -> Neue Property für einen Kontakt
+- ManufactureLineItem/DrawingNumber -> Neue Property (read-only) für die Zeichnungsnummer des Materials
+- ManufactureLineItem/DrawingCreationDate -> Neue Property (read-only) für das Anlagedatum der Zeichnung des Materials
+- ManufactureLineItem/DrawingLastModified -> Neue Property (read-only) für das Änderungsdatum der Zeichnung des Materials
+- ManufactureLineItem/DrawingModificationStatus -> Neue Property (read-only) für den Änderungszustand der Zeichnung des Materials
+- ManufactureLineItem/DrawingCreatedBy -> Neue Property (read-only) für Zeichnung angelegt durch des Materials
+- ManufactureLineItem/DrawingLastModifiedBy -> Neue Property (read-only) für geändert durch des Materials
+- ManufactureLineItem/DrawingStatus -> Neue Property (read-only) für den Status der Zeichnung des Materials
+- ManufactureLineItem/LineNumber -> Neue Property für die Nummer der Position.
+- ManufactureLineItem/ProductId -> Neue Property (read-only) für die ID des Artikels.
+- ManufactureLineItem/QuantityInPriceUnits -> Neue Property für die effektive Menge in Preiseinheiten
+- ManufactureLineItem/QuantityInDeliveryUnits -> Neue Property für die effektive Menge in Liefereinheiten
+- ManufactureLineItem/QuantityPerModuleInPriceUnits -> Neue Property für die Menge je Baugruppe in Preiseinheiten
+- ManufactureLineItem/QuantityPerModuleInDeliveryUnits -> Neue Property für die Menge je Baugruppe in Liefereinheiten
+- ManufactureLineItem/StockId -> Neue Property (read-only) für die ID des Lagers.
+- Product/DrawingNumber -> Neue Property (read-only) für die Zeichnungsnummer
+- Product/DrawingCreationDate -> Neue Property (read-only) für das Anlagedatum der Zeichnung
+- Product/DrawingLastModified -> Neue Property (read-only) für das Änderungsdatum der Zeichnung
+- Product/DrawingModificationStatus -> Neue Property (read-only) für den Änderungszustand der Zeichnung
+- Product/DrawingCreatedBy -> Neue Property (read-only) für Zeichnung angelegt durch
+- Product/DrawingLastModifiedBy -> Neue Property (read-only) für geändert durch
+- Product/DrawingStatus -> Neue Property (read-only) für den Status der Zeichnung
+- ProductLineItem/StockId -> Neue Property (read-only) für die ID des Lagers.
+- PurchaseDocument/Contact -> Neue Property für einen Kontakt
+- SalesDocument/UsePeppol -> Property als deprecated markiert, da bei XRechnung ab Version 3.0.0 die Angabe obligatorisch ist und nicht mehr gesteuert werden kann.
+- SalesDocument/Contact -> Neue Property für einen Kontakt
+- User/EMailOrigin -> Property als deprecated markiert, da sie nicht mehr verwendet wird.
+- UserDefinedFieldValue/DefinitionId -> Neue readOnly Property für die Id der benutzerdefinierten Feld Definition
+
+Sonstiges
+- Die Verbindung des Webservice zum Datenbankserver wurde robuster gestaltet, so dass die API nach einer vorübergehenden Unterbrechnung der Datenbankverbindung weiter Requests verarbeitet.
+
 AB 3.60 02/05
 ---------------------------------------------------------------------------------------------------
 
@@ -73,7 +172,6 @@ Neue Endpunkte
 Fehlerkorrekturen
 - Beim Auslesen/Ändern von Verkaufspreisen wurde SalesPrice/CurrencyKey im Format "1003EUR" geliefert/entgegengenommen. Ab sofort wird der Ordnungsbegriff der Währung nur noch im Format "EUR" geliefert/akzeptiert. Somit entspricht der Wert dem Wert aus den Stammdaten der Währung (Currency/Key).
 - Beim /set-completely-continued wurden Serien-/Chargennummern nicht korrekt behandelt.
-- Beim Auslesen von Lieferanten (GET /v1/suppliers) wurde der falsche Adresstyp geliefert (Supplier/Addresses/AddressType).
 
 AB 3.60 00/00
 ---------------------------------------------------------------------------------------------------
@@ -118,6 +216,10 @@ Neue Endpunkte
 - ConditionLineItem/AmountAlreadyProcessed -> Neue Property für verarbeitend abgerufenen Betrag (z.B. bei Teilabruf)
 - ConditionLineItem/AmountToProcess -> Neue Property für noch abzurufenden Betrag (z.B. bei Teilabruf)
 - ConditionLineItem/ChargeType -> Neue Property für Zu-/Abschlag
+- Customer/BankId -> Property wurde hinzugefügt
+- Customer/BankKey -> Property wurde hinzugefügt
+- Customer/TermsOfPaymentKey -> Property wurde hinzugefügt
+- Customer/DeliveryConditionKey -> Property wurde hinzugefügt
 - InventoryRelocation/CreatedBy -> Property auf read-only geändert
 - InventoryRelocation/CreationDate -> Property auf read-only geändert
 - InventoryRelocation/ChangedBy -> Property auf read-only geändert
@@ -145,6 +247,13 @@ Neue Endpunkte
 - SalesDocument/ChangingDate -> Property auf read-only geändert
 - SalesPrice/IsTaxIncluded -> Neue Property zur Angabe, ob die Steuer im Preis enthalten ist (Bruttopreis)
 - SerialOrLotLineItem/SerialOrLotId -> Property auf read-only geändert
+- Supplier/BankId -> Property wurde hinzugefügt
+- Supplier/BankKey -> Property wurde hinzugefügt
+- Supplier/DirectDebitProcedure -> Property wurde entfernt
+- Supplier/DirectDebitPaymentMethod -> Property wurde entfernt
+- Supplier/PaymentMethod -> Property wurde hinzugefügt
+- Supplier/TermsOfPaymentKey -> Property wurde hinzugefügt
+- Supplier/DeliveryConditionKey -> Property wurde hinzugefügt
 - TargetDocumentData/UseCustomersDeliveryAddress -> Neue Property zur Steuerung, dass beim Querabruf die Anlieferungsadresse des Einkaufsbelegs aus der Lieferadresse des Verkaufsbelegs besetzt wird
 - TargetLineItem/Account -> Neue Property für die Kontonummer, die verwendet werden soll, wenn weder aus der Ursprungsposition noch aus der Kontierung eine Kontonummer ermittelt werden kann.
 
