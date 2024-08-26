@@ -1,3 +1,35 @@
+AB 3.70 01/00
+---------------------------------------------------------------------------------------------------
+
+Änderungen an bestehenden Models
+- ConditionLineItem/ObjectNumber -> Neue Property für die Objektnummer
+- ConditionLineItem/OrderReferenceLineNumber -> Neue Property für die Auftragsreferenz-Positionsnummer
+- Customer/IsDisabled -> Neue Property für Filterung auf inaktive Kunden
+- Customer/Language -> Als veraltet markiert. Zukünftig muss LanguageDescription verwendet werden.
+- Customer/LanguageKey -> Neue Property für den Ordnungsbegriff der Sprache.
+- Customer/LanguageDescription -> -> Neue Property für die Bezeichnung der Sprache.
+- PeriodicalSalesDocumentTemplate/ObjectNumber -> Neue Property für die Objektnummer
+- ProductLineItem/ObjectNumber -> Neue Property für die Objektnummer
+- ProductLineItem/OrderReferenceLineNumber -> Neue Property für die Auftragsreferenz-Positionsnummer
+- PurchaseDocument/PostingDate -> Neue Property für das Buchungsdatum
+- SalesDocument/ObjectNumber -> Neue Property für die Objektnummer
+- SalesDocument/PostingDate -> Neue Property für das Buchungsdatum
+- Supplier/IsDisabled -> Neue Property für Filterung auf inaktive Lieferanten
+- Supplier/Language -> Als veraltet markiert. Zukünftig muss LanguageDescription verwendet werden.
+- Supplier/LanguageKey -> Neue Property für den Ordnungsbegriff der Sprache.
+- Supplier/LanguageDescription -> -> Neue Property für die Bezeichnung der Sprache.
+
+Fehlerkorrekturen
+- Beim POST/PUT von Belegen mit Serien-/Chargennummern in den Bestandteilen von Stücklisten kam es
+  ggf. zum Fehler: "Die Seriennummer kommt durch diese Position mehrfach auf diesem Lager vor." (HsErrorId 6821)
+- Beim POST/PUT von Kunden/Lieferanten gab es einen Fehler beim Setzen der Sprache:
+  "The input data is not correct (InvalidData). Error during save"
+- Die Beschreibung der Properties Customer/Language und Supplier/Language sagte aus, dass es sich
+  um den Ordnungsbegriff der Sprache handelt.
+
+Sonstiges
+- Validierung der benutzerdefinierten Felder an Kunde/Lieferant ergänzt
+
 AB 3.70 00/00
 ---------------------------------------------------------------------------------------------------
 

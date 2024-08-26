@@ -14,7 +14,7 @@ info:
     url: https://www.hamburger-software.de
   termsOfService: https://www.hamburger-software.de
   title: HS API (Auftragsbearbeitung)
-  version: 3.70.0000
+  version: 3.70.0100
 servers:
 - url: "https://{hostname}:{port}/ab-api"
   variables:
@@ -19715,15 +19715,17 @@ components:
           AddressType: BillingAddress
           Name1: Name1
           Name2: Name2
+        LanguageKey: "5"
         TermsOfPayment: 2% Skonto 7 Tage netto 14 Tage
         TermsOfPaymentKey: S02
         VatIdentificationNumber: DE123456789
         CostUnit: "1000"
         TaxIdentificationNumber: 12/123/1234
         IncotermLocation: IncotermLocation
-        InvoiceRecipientId: 7
+        InvoiceRecipientId: 2
+        LanguageDescription: Englisch
         CreatedBy: ab
-        TermsOfPaymentId: 1
+        TermsOfPaymentId: 6
         BookingCodeKey: KST
         SepaMandateReference: SepaMandateReference
         DateDependentPriceList: "0"
@@ -19733,7 +19735,7 @@ components:
         OrderPlacement: Allowed
         Id: 0
         BuyerReference: X12345
-        BankId: 2
+        BankId: 5
         DeliveryCondition: Lieferung frei Haus
         BookingCodeId: 5
         LastModifiedBy: ab
@@ -19742,13 +19744,14 @@ components:
         Description: Helmut von Wahl
         EoriNumber: EoriNumber
         Rating: Good
+        IsDisabled: false
         BankSwiftCode: PBNKDEFFXXX
         InvoiceRecipientNumber: 10000
         CurrencyId: 4
-        DeliveryConditionId: 5
+        DeliveryConditionId: 1
         ElectronicAddressType: VatId
         Number: 10000
-        Language: "1"
+        Language: Englisch
         CostCenter: "100"
         IsReverseCharge: false
         Notes: Notes
@@ -19774,7 +19777,7 @@ components:
           Department: Department
           FaxNumber: FaxNumber
           PhoneNumber: PhoneNumber
-          Id: 9
+          Id: 7
           LastName: LastName
           Notes: Notes
           FormOfAdress: FormOfAdress
@@ -19789,14 +19792,14 @@ components:
           Department: Department
           FaxNumber: FaxNumber
           PhoneNumber: PhoneNumber
-          Id: 9
+          Id: 7
           LastName: LastName
           Notes: Notes
           FormOfAdress: FormOfAdress
         CurrencyIso: EUR
         IsCompanyWithoutVatIdentificationNumber: false
         ReferencedSupplierNumber: L1234
-        LanguageId: 6
+        LanguageId: 4
       properties:
         Id:
           description: Id des Kunden (technischer Schlüssel)
@@ -19819,13 +19822,37 @@ components:
           nullable: true
           type: string
         LanguageId:
-          description: Id der Sprache (technischer Schlüssel)
+          description: |
+            Id der Sprache (technischer Schlüssel).
+            Zum Leeren der Sprache muss für die Property "LanguageKey" ein Leerstring übermittelt werden.
+          example: 4
           nullable: true
           type: integer
-        Language:
-          description: Sprache (Ordnungsbegriff)
-          example: "1"
+        LanguageKey:
+          description: |
+            Ordnungsbegriff der Sprache.
+            Zum Leeren der Sprache muss ein Leerstring übermittelt werden.
+          example: "5"
+          maxLength: 3
           nullable: true
+          type: string
+        LanguageDescription:
+          description: |
+            Bezeichnung der Sprache.
+          example: Englisch
+          maxLength: 30
+          nullable: true
+          readOnly: true
+          type: string
+        Language:
+          deprecated: true
+          description: |
+            Veraltet. Anstelle dieser Property zukünftig die Property LanguageDescription verwenden.
+            Sprache (Bezeichnung).
+          example: Englisch
+          maxLength: 30
+          nullable: true
+          readOnly: true
           type: string
         Notes:
           description: Notizen
@@ -19960,6 +19987,12 @@ components:
           nullable: true
           readOnly: true
           type: string
+        IsDisabled:
+          description: Ist der Kunde deaktiviert?
+          example: false
+          nullable: true
+          readOnly: true
+          type: boolean
         BankAccountHolder:
           description: Bank Kontoinhaber
           example: Helmut von Wahl
@@ -20153,7 +20186,7 @@ components:
           nullable: true
           type: string
         BuyerReference:
-          description: Leitweg-ID/Referenz-ID für ZUGFeRD 2.2 und XRechnung
+          description: Käuferreferenz für ZUGFeRD 2.2 und XRechnung (z.B. Leitweg-ID)
           example: X12345
           nullable: true
           type: string
@@ -20257,6 +20290,7 @@ components:
           AddressType: BillingAddress
           Name1: Name1
           Name2: Name2
+        LanguageKey: "5"
         TermsOfPayment: 3% Skonto 14 Tage netto 30 Tage
         TermsOfPaymentKey: S03
         VatIdentificationNumber: DE987654321
@@ -20264,28 +20298,30 @@ components:
         TaxIdentificationNumber: 99/1234/12345
         IncotermLocation: IncotermLocation
         PayeeNumber: 70002
+        LanguageDescription: Englisch
         CreatedBy: ab
-        TermsOfPaymentId: 1
+        TermsOfPaymentId: 6
         BookingCodeKey: LST
-        PayeeId: 9
+        PayeeId: 7
         BankInstitutionName: Hamburg Commercial Bank
         PreferredEmailDispatch: All
         PaymentMethod: None
         OrderPlacement: Allowed
         Id: 0
-        BankId: 7
+        BankId: 2
         DeliveryCondition: Selbstabholer
-        BookingCodeId: 2
+        BookingCodeId: 5
         LastModifiedBy: ab
         BankKey: "20050000"
         Description: Hutter Medien GmbH
         EoriNumber: EoriNumber
+        IsDisabled: false
         BankSwiftCode: HSHNDEHHXXX
         CurrencyId: 5
-        DeliveryConditionId: 5
+        DeliveryConditionId: 1
         ReferencedCustomerNumber: F54321
         Number: 70002
-        Language: "1"
+        Language: Englisch
         CostCenter: "500"
         IsBankTransferAllowed: true
         IsReverseCharge: false
@@ -20306,7 +20342,7 @@ components:
           Department: Department
           FaxNumber: FaxNumber
           PhoneNumber: PhoneNumber
-          Id: 9
+          Id: 7
           LastName: LastName
           Notes: Notes
           FormOfAdress: FormOfAdress
@@ -20321,7 +20357,7 @@ components:
           Department: Department
           FaxNumber: FaxNumber
           PhoneNumber: PhoneNumber
-          Id: 9
+          Id: 7
           LastName: LastName
           Notes: Notes
           FormOfAdress: FormOfAdress
@@ -20329,7 +20365,7 @@ components:
         IsCompanyWithoutVatIdentificationNumber: false
         ProcurementTime: 3
         Reliability: Good
-        LanguageId: 6
+        LanguageId: 4
       properties:
         Id:
           description: Id des Lieferanten (technischer Schlüssel)
@@ -20352,13 +20388,37 @@ components:
           nullable: true
           type: string
         LanguageId:
-          description: Id der Sprache (technischer Schlüssel)
+          description: |
+            Id der Sprache (technischer Schlüssel).
+            Zum Leeren der Sprache muss für die Property "LanguageKey" ein Leerstring übermittelt werden.
+          example: 4
           nullable: true
           type: integer
-        Language:
-          description: Sprache (Ordnungsbegriff)
-          example: "1"
+        LanguageKey:
+          description: |
+            Ordnungsbegriff der Sprache.
+            Zum Leeren der Sprache muss ein Leerstring übermittelt werden.
+          example: "5"
+          maxLength: 3
           nullable: true
+          type: string
+        LanguageDescription:
+          description: |
+            Bezeichnung der Sprache.
+          example: Englisch
+          maxLength: 30
+          nullable: true
+          readOnly: true
+          type: string
+        Language:
+          deprecated: true
+          description: |
+            Veraltet. Anstelle dieser Property zukünftig die Property LanguageDescription verwenden.
+            Sprache (Bezeichnung).
+          example: Englisch
+          maxLength: 30
+          nullable: true
+          readOnly: true
           type: string
         Notes:
           description: Notizen
@@ -20495,6 +20555,12 @@ components:
           nullable: true
           readOnly: true
           type: string
+        IsDisabled:
+          description: Ist der Lieferant deaktiviert?
+          example: false
+          nullable: true
+          readOnly: true
+          type: boolean
         BankAccountHolder:
           description: Bank Kontoinhaber
           example: Hutter
@@ -20731,6 +20797,8 @@ components:
             - Number: 4
               Amount: 9.132027271330688
               StartValue: 7.260521264802104
+            OrderReferenceLineNumber: OrderReferenceLineNumber
+            ObjectNumber: ObjectNumber
             Percentage: 3.2588565619047607
             Accounting:
               Account: 1.284659006116532
@@ -20778,6 +20846,7 @@ components:
             QuantityToProcess: 6.965117697638846
             QuantityFactor3: 6.683562403749608
             QuantityFactor4: 8.762042012749001
+            OrderReferenceLineNumber: OrderReferenceLineNumber
             IsPurchasePriceFixed: false
             Accounting:
               Account: 1.284659006116532
@@ -21105,6 +21174,7 @@ components:
             GrossAmount: 1904
             QuantityInPriceUnits: 16
             RemainingQuantity: 6.438423552598547
+            ObjectNumber: ObjectNumber
             Amount: 1600
             QuantityAlreadyProcessed: 3.5571952270680973
             QuantityUnitForPriceUnits: Stunden
@@ -21139,6 +21209,8 @@ components:
             - Number: 4
               Amount: 9.132027271330688
               StartValue: 7.260521264802104
+            OrderReferenceLineNumber: OrderReferenceLineNumber
+            ObjectNumber: ObjectNumber
             Percentage: 3.2588565619047607
             Accounting:
               Account: 1.284659006116532
@@ -21186,6 +21258,7 @@ components:
             QuantityToProcess: 6.965117697638846
             QuantityFactor3: 6.683562403749608
             QuantityFactor4: 8.762042012749001
+            OrderReferenceLineNumber: OrderReferenceLineNumber
             IsPurchasePriceFixed: false
             Accounting:
               Account: 1.284659006116532
@@ -21513,6 +21586,7 @@ components:
             GrossAmount: 1904
             QuantityInPriceUnits: 16
             RemainingQuantity: 6.438423552598547
+            ObjectNumber: ObjectNumber
             Amount: 1600
             QuantityAlreadyProcessed: 3.5571952270680973
             QuantityUnitForPriceUnits: Stunden
@@ -21622,6 +21696,7 @@ components:
           RemainingTotalValue: 8.28965939814297
           CountDecimalDigits: 2
           ValueUnitDescription: ValueUnitDescription
+        ObjectNumber: ObjectNumber
         UsePeppol: true
         BusinessTransaction: DomesticSalesWithVat
         ElectronicInvoiceFormat: None
@@ -21648,6 +21723,7 @@ components:
         ChangingDate: 2000-01-23T04:56:07.000+00:00
         CurrencyIso: EUR
         DeliverOnlyIfAllProductsInStock: true
+        PostingDate: PostingDate
         HintText: HintText
         StockNumber: 1
         SepaMoveInDate: SepaMoveInDate
@@ -21752,6 +21828,15 @@ components:
         InspectionDate:
           description: "Kontrolldatum im Format YYYY-MM-DD. \nZum Löschen des Datums\
             \ muss ein Leerstring übermittelt werden.\n"
+          nullable: true
+          type: string
+        PostingDate:
+          description: |
+            Buchungsdatum im Format YYYY-MM-DD.
+            Das Buchungsdatum steht nur in Rechnungen und Gutschriften zur Verfügung. Außerdem sind
+            Verfügbarkeit und Änderbarkeit des Buchungsdatums abhängig von der in der Firma
+            gewählten Datenaustauschart und vom Verarbeitungszustand des Belegs.
+            Zum Löschen des Datums muss ein Leerstring übermittelt werden.
           nullable: true
           type: string
         Rebate:
@@ -21874,6 +21959,11 @@ components:
           type: string
         ContractNumber:
           description: Vertragsnummer
+          nullable: true
+          type: string
+        ObjectNumber:
+          description: |
+            Objektnummer (z.B. Zählernummer, Kfz-Kennzeichen, versicherte Person, Abonnement-Nummer).
           nullable: true
           type: string
         BillingPeriodBegin:
@@ -22024,7 +22114,7 @@ components:
           nullable: true
           type: string
         BuyerReference:
-          description: Leitweg-ID/Referenz-ID für ZUGFeRD 2.2 und XRechnung
+          description: Käuferreferenz für ZUGFeRD 2.2 und XRechnung (z.B. Leitweg-ID)
           nullable: true
           type: string
         UsePeppol:
@@ -23575,6 +23665,8 @@ components:
             - Number: 4
               Amount: 9.132027271330688
               StartValue: 7.260521264802104
+            OrderReferenceLineNumber: OrderReferenceLineNumber
+            ObjectNumber: ObjectNumber
             Percentage: 3.2588565619047607
             Accounting:
               Account: 1.284659006116532
@@ -23622,6 +23714,7 @@ components:
             QuantityToProcess: 6.965117697638846
             QuantityFactor3: 6.683562403749608
             QuantityFactor4: 8.762042012749001
+            OrderReferenceLineNumber: OrderReferenceLineNumber
             IsPurchasePriceFixed: false
             Accounting:
               Account: 1.284659006116532
@@ -23949,6 +24042,7 @@ components:
             GrossAmount: 1904
             QuantityInPriceUnits: 16
             RemainingQuantity: 6.438423552598547
+            ObjectNumber: ObjectNumber
             Amount: 1600
             QuantityAlreadyProcessed: 3.5571952270680973
             QuantityUnitForPriceUnits: Stunden
@@ -23983,6 +24077,8 @@ components:
             - Number: 4
               Amount: 9.132027271330688
               StartValue: 7.260521264802104
+            OrderReferenceLineNumber: OrderReferenceLineNumber
+            ObjectNumber: ObjectNumber
             Percentage: 3.2588565619047607
             Accounting:
               Account: 1.284659006116532
@@ -24030,6 +24126,7 @@ components:
             QuantityToProcess: 6.965117697638846
             QuantityFactor3: 6.683562403749608
             QuantityFactor4: 8.762042012749001
+            OrderReferenceLineNumber: OrderReferenceLineNumber
             IsPurchasePriceFixed: false
             Accounting:
               Account: 1.284659006116532
@@ -24357,6 +24454,7 @@ components:
             GrossAmount: 1904
             QuantityInPriceUnits: 16
             RemainingQuantity: 6.438423552598547
+            ObjectNumber: ObjectNumber
             Amount: 1600
             QuantityAlreadyProcessed: 3.5571952270680973
             QuantityUnitForPriceUnits: Stunden
@@ -24460,6 +24558,7 @@ components:
           FormOfAdress: FormOfAdress
         ChangingDate: 2000-01-23T04:56:07.000+00:00
         CurrencyIso: EUR
+        PostingDate: PostingDate
         HintText: HintText
         StockNumber: 1
         IsTransferredToFinancialAccounting: true
@@ -24567,6 +24666,15 @@ components:
         InspectionDate:
           description: "Kontrolldatum im Format YYYY-MM-DD. \nZum Löschen des Datums\
             \ muss ein Leerstring übermittelt werden.\n"
+          nullable: true
+          type: string
+        PostingDate:
+          description: |
+            Buchungsdatum im Format YYYY-MM-DD.
+            Das Buchungsdatum steht nur in Rechnungen und Gutschriften zur Verfügung. Außerdem sind
+            Verfügbarkeit und Änderbarkeit des Buchungsdatums abhängig von der in der Firma
+            gewählten Datenaustauschart und vom Verarbeitungszustand des Belegs.
+            Zum Löschen des Datums muss ein Leerstring übermittelt werden.
           nullable: true
           type: string
         CustomerDeliveryDate:
@@ -26431,6 +26539,8 @@ components:
             - Number: 4
               Amount: 9.132027271330688
               StartValue: 7.260521264802104
+            OrderReferenceLineNumber: OrderReferenceLineNumber
+            ObjectNumber: ObjectNumber
             Percentage: 3.2588565619047607
             Accounting:
               Account: 1.284659006116532
@@ -26478,6 +26588,7 @@ components:
             QuantityToProcess: 6.965117697638846
             QuantityFactor3: 6.683562403749608
             QuantityFactor4: 8.762042012749001
+            OrderReferenceLineNumber: OrderReferenceLineNumber
             IsPurchasePriceFixed: false
             Accounting:
               Account: 1.284659006116532
@@ -26805,6 +26916,7 @@ components:
             GrossAmount: 1904
             QuantityInPriceUnits: 16
             RemainingQuantity: 6.438423552598547
+            ObjectNumber: ObjectNumber
             Amount: 1600
             QuantityAlreadyProcessed: 3.5571952270680973
             QuantityUnitForPriceUnits: Stunden
@@ -26839,6 +26951,8 @@ components:
             - Number: 4
               Amount: 9.132027271330688
               StartValue: 7.260521264802104
+            OrderReferenceLineNumber: OrderReferenceLineNumber
+            ObjectNumber: ObjectNumber
             Percentage: 3.2588565619047607
             Accounting:
               Account: 1.284659006116532
@@ -26886,6 +27000,7 @@ components:
             QuantityToProcess: 6.965117697638846
             QuantityFactor3: 6.683562403749608
             QuantityFactor4: 8.762042012749001
+            OrderReferenceLineNumber: OrderReferenceLineNumber
             IsPurchasePriceFixed: false
             Accounting:
               Account: 1.284659006116532
@@ -27213,6 +27328,7 @@ components:
             GrossAmount: 1904
             QuantityInPriceUnits: 16
             RemainingQuantity: 6.438423552598547
+            ObjectNumber: ObjectNumber
             Amount: 1600
             QuantityAlreadyProcessed: 3.5571952270680973
             QuantityUnitForPriceUnits: Stunden
@@ -27318,6 +27434,7 @@ components:
           RemainingTotalValue: 8.28965939814297
           CountDecimalDigits: 2
           ValueUnitDescription: ValueUnitDescription
+        ObjectNumber: ObjectNumber
         BusinessTransaction: DomesticSalesWithVat
         BillingPeriodEnd: BillingPeriodEnd
         DocumentType: DocumentType
@@ -27523,6 +27640,11 @@ components:
           type: string
         ContractNumber:
           description: Vertragsnummer
+          nullable: true
+          type: string
+        ObjectNumber:
+          description: |
+            Objektnummer (z.B. Zählernummer, Kfz-Kennzeichen, versicherte Person, Abonnement-Nummer).
           nullable: true
           type: string
         BillingPeriodBegin:
@@ -27772,6 +27894,8 @@ components:
             - Number: 4
               Amount: 9.132027271330688
               StartValue: 7.260521264802104
+            OrderReferenceLineNumber: OrderReferenceLineNumber
+            ObjectNumber: ObjectNumber
             Percentage: 3.2588565619047607
             Accounting:
               Account: 1.284659006116532
@@ -27819,6 +27943,7 @@ components:
             QuantityToProcess: 6.965117697638846
             QuantityFactor3: 6.683562403749608
             QuantityFactor4: 8.762042012749001
+            OrderReferenceLineNumber: OrderReferenceLineNumber
             IsPurchasePriceFixed: false
             Accounting:
               Account: 1.284659006116532
@@ -28146,6 +28271,7 @@ components:
             GrossAmount: 1904
             QuantityInPriceUnits: 16
             RemainingQuantity: 6.438423552598547
+            ObjectNumber: ObjectNumber
             Amount: 1600
             QuantityAlreadyProcessed: 3.5571952270680973
             QuantityUnitForPriceUnits: Stunden
@@ -28180,6 +28306,8 @@ components:
             - Number: 4
               Amount: 9.132027271330688
               StartValue: 7.260521264802104
+            OrderReferenceLineNumber: OrderReferenceLineNumber
+            ObjectNumber: ObjectNumber
             Percentage: 3.2588565619047607
             Accounting:
               Account: 1.284659006116532
@@ -28227,6 +28355,7 @@ components:
             QuantityToProcess: 6.965117697638846
             QuantityFactor3: 6.683562403749608
             QuantityFactor4: 8.762042012749001
+            OrderReferenceLineNumber: OrderReferenceLineNumber
             IsPurchasePriceFixed: false
             Accounting:
               Account: 1.284659006116532
@@ -28554,6 +28683,7 @@ components:
             GrossAmount: 1904
             QuantityInPriceUnits: 16
             RemainingQuantity: 6.438423552598547
+            ObjectNumber: ObjectNumber
             Amount: 1600
             QuantityAlreadyProcessed: 3.5571952270680973
             QuantityUnitForPriceUnits: Stunden
@@ -30762,7 +30892,7 @@ components:
         Department: Department
         FaxNumber: FaxNumber
         PhoneNumber: PhoneNumber
-        Id: 9
+        Id: 7
         LastName: LastName
         Notes: Notes
         FormOfAdress: FormOfAdress
@@ -30846,6 +30976,8 @@ components:
           - Number: 4
             Amount: 9.132027271330688
             StartValue: 7.260521264802104
+          OrderReferenceLineNumber: OrderReferenceLineNumber
+          ObjectNumber: ObjectNumber
           Percentage: 3.2588565619047607
           Accounting:
             Account: 1.284659006116532
@@ -30893,6 +31025,7 @@ components:
           QuantityToProcess: 6.965117697638846
           QuantityFactor3: 6.683562403749608
           QuantityFactor4: 8.762042012749001
+          OrderReferenceLineNumber: OrderReferenceLineNumber
           IsPurchasePriceFixed: false
           Accounting:
             Account: 1.284659006116532
@@ -31220,6 +31353,7 @@ components:
           GrossAmount: 1904
           QuantityInPriceUnits: 16
           RemainingQuantity: 6.438423552598547
+          ObjectNumber: ObjectNumber
           Amount: 1600
           QuantityAlreadyProcessed: 3.5571952270680973
           QuantityUnitForPriceUnits: Stunden
@@ -31295,6 +31429,7 @@ components:
         QuantityToProcess: 6.965117697638846
         QuantityFactor3: 6.683562403749608
         QuantityFactor4: 8.762042012749001
+        OrderReferenceLineNumber: OrderReferenceLineNumber
         IsPurchasePriceFixed: false
         Accounting:
           Account: 1.284659006116532
@@ -31622,6 +31757,7 @@ components:
         GrossAmount: 1904
         QuantityInPriceUnits: 16
         RemainingQuantity: 6.438423552598547
+        ObjectNumber: ObjectNumber
         Amount: 1600
         QuantityAlreadyProcessed: 3.5571952270680973
         QuantityUnitForPriceUnits: Stunden
@@ -31857,6 +31993,18 @@ components:
         Text:
           description: Positionstext
           example: Organisationsberatung
+          nullable: true
+          type: string
+        OrderReferenceLineNumber:
+          description: |
+            Auftragsreferenz-Positionsnummer.
+            Nur für Verkaufsbelege.
+          nullable: true
+          type: string
+        ObjectNumber:
+          description: |
+            Objektnummer (z.B. Zählernummer, Kfz-Kennzeichen, versicherte Person, Abonnement-Nummer).
+            Nur für Verkaufsbelege.
           nullable: true
           type: string
         Accounting:
@@ -32587,6 +32735,8 @@ components:
         - Number: 4
           Amount: 9.132027271330688
           StartValue: 7.260521264802104
+        OrderReferenceLineNumber: OrderReferenceLineNumber
+        ObjectNumber: ObjectNumber
         Percentage: 3.2588565619047607
         Accounting:
           Account: 1.284659006116532
@@ -32712,6 +32862,18 @@ components:
           type: array
         Text:
           description: Positionstext
+          nullable: true
+          type: string
+        OrderReferenceLineNumber:
+          description: |
+            Auftragsreferenz-Positionsnummer.
+            Nur für Verkaufsbelege.
+          nullable: true
+          type: string
+        ObjectNumber:
+          description: |
+            Objektnummer (z.B. Zählernummer, Kfz-Kennzeichen, versicherte Person, Abonnement-Nummer).
+            Nur für Verkaufsbelege.
           nullable: true
           type: string
         UserDefinedFields:
