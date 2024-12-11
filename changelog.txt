@@ -1,3 +1,55 @@
+AB 3.70 02/00
+---------------------------------------------------------------------------------------------------
+
+Änderungen an bestehenden Models
+- Customer/ElectronicInvoiceFormat -> Neue Enum-Ausprägungen für ZUGFeRD 2 EXTENDED, XRechnung UBL
+  und ebInterface hinzugefügt.
+- Customer/PaymentHousebankNumber -> Neue Property für die Nummer der Hausbankverbindung für Überweisungen
+- Customer/CreditTransferHousebankSettings -> Neue Property zur Vorbesetzung einer Hausbankverbindung
+  für Überweisungen in Rechnungen.
+- Customer/CreditTransferHousebankNumber -> Neue Property für die Angabe einer individuellen Hausbankverbindung
+  für Überweisungen in Rechnungen.
+- PurchaseDocument/IsSelfBilling -> Neue Property für Eigenrechnung (Gutschrift gemäß § 14 Abs. 2 UStG)
+- PurchaseDocument/ElectronicAddressType -> Neue Property für die elektronische Adresse der
+  E-Rechnung bei Eigenrechnung (Gutschrift gemäß § 14 Abs. 2 UStG)
+- PurchaseDocument/ElectronicInvoiceFormat -> Neue Property für das Format der E-Rechnung bei
+  Eigenrechnung (Gutschrift gemäß § 14 Abs. 2 UStG)
+- PurchaseDocument/BuyerReference -> Neue Property für die Käuferreferenz bei Eigenrechnung
+  (Gutschrift gemäß § 14 Abs. 2 UStG)
+- SalesDocument/ElectronicAddressType -> Neue Property für die elektronische Adresse der E-Rechnung
+- SalesDocument/ElectronicInvoiceFormat -> Neue Enum-Ausprägungen für ZUGFeRD 2 EXTENDED,
+  XRechnung UBL und ebInterface hinzugefügt.
+- SalesDocument/PaymentMethod -> Neue Property für die Angabe, welche Zahlungsart in einer Rechnung verwendet werden soll.
+- SalesDocument/CreditTransferHousebankNumber -> Neue Property für die Angabe einer Hausbankverbindung
+  für Überweisungen in Rechnungen
+- PeriodicalSalesDocument/PaymentMethod -> Neue Property für die Angabe, welche Zahlungsart im Beleg verwendet werden soll.
+- PeriodicalSalesDocument/CreditTransferHousebankNumber -> Neue Property für die Nummer der Hausbankverbindung für Überweisungen.
+- SourceLineItemData/BillOfMaterialItems -> Neue Property für Angaben zum Abruf von
+  Stücklistenbestandteilen, z.B. zur Angabe der abzurufenden/verbleibenden Serien-/Chargennummern.
+- Supplier/IsSelfBillingAllowed -> Neue Property für Eigenrechnung (Gutschrift gemäß § 14 Abs. 2 UStG)
+- Supplier/ElectronicInvoiceFormat -> Neue Property für das Format der E-Rechnung bei Eigenrechnung
+  (Gutschrift gemäß § 14 Abs. 2 UStG)
+- Supplier/BuyerReference -> Neue Property die Käuferreferenz bei Eigenrechnung (Gutschrift gemäß
+  § 14 Abs. 2 UStG)
+- Supplier/ElectronicAddressType -> Neue Property die elektronische Adresse bei Eigenrechnung
+- TargetLineItem/BillOfMaterialItems -> Neue Property für Angaben zu Stücklistenbestandteilen im
+  Zielbeleg, z.B. zur Abgabe zusätzlicher Serien-/Chargennummern.
+
+Neue Models
+- SourceBillOfMaterialItem -> Für Angaben zum Abruf von Stücklistenbestandteilen, z.B. zur Angabe
+  der abzurufenden/verbleibenden Serien-/Chargennummern.
+- TargetBillOfMaterialItem -> Für Angaben zu Stücklistenbestandteilen im Zielbeleg, z.B. zur Abgabe
+  zusätzlicher Serien-/Chargennummern.
+
+Fehlerkorrekturen
+- Beim GET auf /v1/products wurde für die Property AveragePrice immer null geliefert.
+- ProductCustomerRelation: PriceValidFrom und PriceValidTo konnten nicht gelöscht werden. Dazu wurde
+  "format: date" entfernt. Zum Löschen kann nun ein Leerstring übermittelt werden. Die Angabe eines
+  Datums erfolgt weiterhin im Format "YYYY-MM-DD".
+- ProductSupplierRelation: PriceValidFrom und PriceValidTo konnten nicht gelöscht werden. Dazu wurde
+  "format: date" entfernt. Zum Löschen kann nun ein Leerstring übermittelt werden. Die Angabe eines
+  Datums erfolgt weiterhin im Format "YYYY-MM-DD".
+
 AB 3.70 01/00
 ---------------------------------------------------------------------------------------------------
 
@@ -7,7 +59,7 @@ AB 3.70 01/00
 - Customer/IsDisabled -> Neue Property für Filterung auf inaktive Kunden
 - Customer/Language -> Als veraltet markiert. Zukünftig muss LanguageDescription verwendet werden.
 - Customer/LanguageKey -> Neue Property für den Ordnungsbegriff der Sprache.
-- Customer/LanguageDescription -> -> Neue Property für die Bezeichnung der Sprache.
+- Customer/LanguageDescription -> Neue Property für die Bezeichnung der Sprache.
 - PeriodicalSalesDocumentTemplate/ObjectNumber -> Neue Property für die Objektnummer
 - ProductLineItem/ObjectNumber -> Neue Property für die Objektnummer
 - ProductLineItem/OrderReferenceLineNumber -> Neue Property für die Auftragsreferenz-Positionsnummer
@@ -17,7 +69,7 @@ AB 3.70 01/00
 - Supplier/IsDisabled -> Neue Property für Filterung auf inaktive Lieferanten
 - Supplier/Language -> Als veraltet markiert. Zukünftig muss LanguageDescription verwendet werden.
 - Supplier/LanguageKey -> Neue Property für den Ordnungsbegriff der Sprache.
-- Supplier/LanguageDescription -> -> Neue Property für die Bezeichnung der Sprache.
+- Supplier/LanguageDescription -> Neue Property für die Bezeichnung der Sprache.
 
 Fehlerkorrekturen
 - Beim POST/PUT von Belegen mit Serien-/Chargennummern in den Bestandteilen von Stücklisten kam es
