@@ -1,3 +1,17 @@
+AB 3.70 02/03
+---------------------------------------------------------------------------------------------------
+
+Fehlerkorrekturen
+- ProductCustomerRelationPrices: Korrektur eines Fehlers, wenn einer der übermittelten Preise in Staffel,
+  Menge und Preis mit einem vorhandenen Artikelpreis übereinstimmt.
+
+AB 3.70 02/02
+---------------------------------------------------------------------------------------------------
+
+Fehlerkorrekturen
+- Bei PDF-Erzeugung über /v1/pdf wurde "UseCustomTemplate" nicht berücksichtigt, wenn in der
+  Belegart-Kunde-Beziehung eine Belegdruckkette hinterlegt war.
+
 AB 3.70 02/00
 ---------------------------------------------------------------------------------------------------
 
