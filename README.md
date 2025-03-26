@@ -23,3 +23,8 @@ Sinnvoll ist die Verwendung eines eigenen Namespaces. Dieser kann über eine Con
 
 Außerdem sollte der HTTP-User-Agent gesetzt werden. Das ist über die Kommandozeile möglich: 
 > --http-user-agent MySolution
+
+# Weitere Informationen
+Weitere Informationen für Lösungsersteller sind zu finden in der Hilfe der Auftragsbearbeitung im Kapitel "Anleitung & Wissen / Datenaustausch / API (Webservice) / Anwendungswissen".
+
+Zusätzlich befindet sich im Programmverzeichnis der installierten Auftragsbearbeitung (z.B. C:\Program Files (x86)\Hs\Ab) im Unterverzeichnis "Hilfe_Pdfs" die Datei "ab_api_webservice.pdf" mit allen Informationen zur Einrichtung des Webservice.
