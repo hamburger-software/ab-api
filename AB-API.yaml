@@ -7,7 +7,7 @@ info:
     Anwendungsschnittstelle (Webservice) zur HS Auftragsbearbeitung.<br>
     Copyright HS - Hamburger Software GmbH &amp; Co. KG, 2024 <br>
     <br>
-    <a href="/ab-api/appinfo/changelog">Changelog anzeigen</a><br>
+    <a href="/ab-api/changelog.txt">Changelog anzeigen</a><br>
     <a href="https://github.com/hamburger-software/ab-api">Download bei GitHub</a>
   license:
     name: HS - Hamburger Software GmbH & Co. KG
