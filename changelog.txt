@@ -1,3 +1,98 @@
+AB 3.70 03/00
+---------------------------------------------------------------------------------------------------
+
+***************************************************************************************************
+*** Wichtiger Hinweis für Verwender der HS API                                                  ***
+***************************************************************************************************
+Bei der Erstellung einer E-Rechnung haben seit Programmstand AB 3.70 02/00 Positioneinleitungstexte,
+Abruftexte sowie Textpositionen (Textbaustein, Freier Text) eindeutige Positionsnummern erhalten
+und wurden als eigenständige Positionen in die E-Rechnung eingesteuert.
+
+Verhaltensänderung bei Anlage und Abruf von Belegen
+- Positionseinleitungstexte und Abruftexte erhalten KEINE Positionsnummer mehr. Sie werden in der
+  E-Rechnung als Text auf Belegkopfebene (BT-22) eingesteuert.
+- Textpositionen (Textbaustein, Freier Text) werden in der E-Rechnung nur noch als eigenständige
+  Positionen geführt, wenn die neue Option "Eigenständige Textposition" gesetzt ist. Wird hingegen
+  die neue Option "Text wird einer Artikelposition zugeordnet" gesetzt, wird der Text als Notiz
+  an der Artikelposition (BT-127) in die E-Rechnung eingesteuert. In der API stehen die neuen
+  Properties "RefersToProductLineItem" und "ReferringTo" an den Models "TextLineItem" und
+  "TextBlockLineItem" zur Verfügung.
+- Bei der Migration wird für die Textpositionen vorhandener Belege die Einstellung "Eigenständige
+  Position" gesetzt, um das bisherige Verhalten bei Erzeugung einer E-Rechnung beizubehalten.
+
+Prüfen Sie ggf., ob Ihre Zusatzlösungen bei der Beleganlage oder dem Belegabruf weiterhin das
+gewünschte Verhalten zeigen.
+***************************************************************************************************
+
+Neue Endpunkte
+- /v1/dms-documents-metadata/{dmsDocumentKey} -> Neuer Endpunkt zum Auslesen der Metadaten eines
+  DMS-Dokuments anhand seines Schlüssels
+- /v1/sales-documents/{salesDocumentId}/prepayments -> Neuer Endpunkt zum Hinzufügen einer Anzahlung
+  zu einem Verkaufsbeleg
+
+Änderungen an bestehenden Models
+- ConditionLineItem/OrderReference -> Neue Property für die Auftragsreferenz/Bestellnummer
+- ConditionLineItem/OrderDate-> Neue Property für das Auftragsdatum/Bestelldatum
+- DmsDocumentAssignmentData/MovementAction -> Neue Property für Aktionen im DMS, die während der
+  Zuordnung eines Lieferantenbelegs ausgeführt werden.
+- PeriodicalPurchaseDocumentTemplate/ExchangeRate -> Neue Property für den Umrechnungskurs
+- PeriodicalPurchaseDocumentTemplate/OwnVatIdentificationNumber -> Neue Property für die eigene USt-IdNr.
+- PeriodicalPurchaseDocumentTemplate/TotalGrossAmount -> Property auf readOnly umgestellt
+- PeriodicalPurchaseDocumentTemplate/TotalNetAmount -> Property auf readOnly umgestellt
+- PeriodicalSalesDocumentTemplate/ExchangeRate -> Neue Property für den Umrechnungskurs
+- PeriodicalSalesDocumentTemplate/OwnVatIdentificationNumber -> Neue Property für die eigene USt-IdNr.
+- PeriodicalSalesDocumentTemplate/TotalGrossAmount -> Property auf readOnly umgestellt
+- PeriodicalSalesDocumentTemplate/TotalNetAmount -> Property auf readOnly umgestellt
+- ProductLineItem/OrderReference -> Neue Property für die Auftragsreferenz/Bestellnummer
+- ProductLineItem/OrderDate-> Neue Property für das Auftragsdatum/Bestelldatum
+- PurchaseDocument/ExchangeRate -> Neue Property für den Umrechnungskurs
+- PurchaseDocument/OwnVatIdentificationNumber -> Neue Property für die eigene USt-IdNr.
+- PurchaseDocument/TotalGrossAmount -> Property auf readOnly umgestellt
+- PurchaseDocument/TotalNetAmount -> Property auf readOnly umgestellt
+- SalesDocument/ExchangeRate -> Neue Property für den Umrechnungskurs
+- SalesDocument/GrossAmountMinusInterimInvoices -> Property auf readOnly umgestellt
+- SalesDocument/GrossAmountMinusPrepaymentsAndInterimInvoices -> Neue Property für den Restbetrag
+  des Belegs (abzüglich Anzahlungen und zugeordneter Abschlagsrechnungen, inkl. USt.)
+- SalesDocument/NetAmountMinusInterimInvoices -> Property auf readOnly umgestellt
+- SalesDocument/NetAmountMinusPrepaymentsAndInterimInvoices -> Neue Property für den Restbetrag
+  des Belegs (abzüglich Anzahlungen und zugeordneter Abschlagsrechnungen, exkl. USt.)
+- SalesDocument/OwnVatIdentificationNumber -> Neue Property für die eigene USt-IdNr.
+- SalesDocument/Prepayments -> Neue Property für die Anzahlungen des Belegs
+- SalesDocument/TotalGrossAmount -> Property auf readOnly umgestellt
+- SalesDocument/TotalNetAmount -> Property auf readOnly umgestellt
+- TextBlockLineItem/RefersToProductLineItem -> Neue Property zur Angabe, ob die Textbausteinposition
+  einer Artikelposition zugeordnet ist.
+- TextBlockLineItem/ReferringTo -> Neue Property zur Angabe des Key der Artikelposition, der die
+  Textbausteinposition zugeordnet ist.
+- TextLineItem/RefersToProductLineItem -> Neue Property zur Angabe, ob die Textposition einer
+  Artikelposition zugeordnet ist.
+- TextLineItem/ReferringTo -> Neue Property zur Angabe des Key der Artikelposition, der die
+  Textposition zugeordnet ist.
+
+Fehlerkorrekturen
+- Beim Lesen/Erfassen/Löschen von Belegen per API werden die belegartspezifischen Rechte des
+  Benutzers nun berücksichtigt.
+- Beim Abrufen von Belegen per API (z.B. POST auf /v1/sales-documents/process) werden die
+  belegartspezifischen Rechte des Benutzers nun berücksichtigt.
+- Beim Anlegen von Belegen mit individuellen Adressen ohne Land wird nun eine sprechende
+  Fehlermeldung statt einer Datenbankfehlermeldung zurückgegeben.
+- Für die Übergabe von Artikel-Kunde-Lieferant-Preisen per API (/v1/product-customer-relations/prices
+  und /v1/product-supplier-relations/prices) wurde ein Fehler bei der Behandlung von Preisen in
+  Fremdwährung behoben.
+  Es kann nun kein Ordnungsbegriff für die Währung mehr übergeben werden, da diese aus den Angaben
+  im Kunden-/Lieferanten ermittelt wird.
+- Beim Importieren einer Datei ins DMS via API wird diese nun mit korrektem Mime-Type im DMS abgelegt.
+
+Sonstiges
+- Wird beim Import eines Dokuments ins DMS via API kein abweichender Dateiname angegeben,
+  wird nun anstelle des originalen Dateinamens der Dateiname aus der Definition der Dokumentenart
+  Import verwendet (inkl. ersetzter Platzhalter).
+- Beim GET auf /v1/dms-documents-metadata kann der Filter "DocumentKey eq '<DocumentKey>'"
+  verwendet werden, um gezielt die Metadaten eines bestimmten Dokuments abzurufen.
+- AbRestApiPlugIn-Assemblies müssen zukünftig in einem Unterverzeichnis des neuen Programmdaten-
+  Unterverzeichnisses "ApiPlugins" (%PROGRAMDATA%\Hs\Ab\ApiPlugins) liegen.
+  Der Name eines Plugins muss mit "AbRestApiPlugIn" beginnen und die Dateiendung ".dll" haben.
+
 AB 3.70 02/04
 ---------------------------------------------------------------------------------------------------
 
