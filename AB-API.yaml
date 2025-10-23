@@ -5,7 +5,7 @@ info:
     name: HS Entwicklung Auftragsbearbeitung
   description: |
     Anwendungsschnittstelle (Webservice) zur HS Auftragsbearbeitung.<br>
-    Copyright HS - Hamburger Software GmbH &amp; Co. KG, 2024 <br>
+    Copyright HS - Hamburger Software GmbH &amp; Co. KG, 2025 <br>
     <br>
     <a href="/ab-api/changelog.txt">Changelog anzeigen</a><br>
     <a href="https://github.com/hamburger-software/ab-api">Download bei GitHub</a>
@@ -14,7 +14,7 @@ info:
     url: https://www.hamburger-software.de
   termsOfService: https://www.hamburger-software.de
   title: HS API (Auftragsbearbeitung)
-  version: 3.70.0300
+  version: 3.80.0000
 servers:
 - url: "https://{hostname}:{port}/ab-api"
   variables:
@@ -159,7 +159,7 @@ paths:
       summary: Allgemeine Informationen abrufen
       tags:
       - AppInfo
-  /appinfo/changelog:
+  /changelog.txt:
     get:
       description: |
         Endpunkt zum Abrufen des Changelogs zur API-Schnittstelle als Text-Datei.
@@ -2187,8 +2187,11 @@ paths:
   /v1/products:
     get:
       description: |
-        Artikel abrufen.
-        Liefert eine Liste von Artikeln.
+        Artikel abrufen.<br>
+        Liefert eine Liste von Artikeln.<br>
+        Für den Parameter **userDefinedFieldFilter** stehen folgende Bereiche zur Verfügung:
+        * Product
+        * BillOfMaterial
       parameters:
       - description: |
           Filter für die Ergebnismenge<br>
@@ -2355,6 +2358,57 @@ paths:
           nullable: true
           type: array
         style: form
+      - description: |
+          Spezieller Filter-Parameter für das Einschränken auf Werte von benutzerdefinierten Feldern.<br>
+          Die Syntax für die Filter orientiert sich an der Filter-Syntax von OData.<br>
+          Es kann nur anhand des Bereichs und der Nummer des benutzerdefinierten Felds gefiltert werden.<br>
+          Der Bezeichner für den Bereich muss UserDefinedFieldDefinition/Area entsprechen. Die Nummer ist 1-basiert.<br>
+          Folgende Vergleichsoperatoren stehen zur Verfügung: eq (gleich), ne (ungleich), lt (kleiner als), gt (größer als), le (kleiner gleich), ge (größer gleich)<br>
+          Beispiel: ...userDefinedFieldFilter=SalesDocument/Field1 eq 'SADLER'...<br>
+          Mehrere Filter können durch "and" getrennt werden. <br>
+          Beispiel: ...userDefinedFieldFilter=SalesDocument/Field1 eq 'SADLER' and Customer/Field1 eq 'DE'...<br>
+          Es ist möglich, auf NULL oder NOT NULL zu prüfen. Dafür steht das Schlüsselwort "null" für die Operatoren "eq" und "ne" bereit.<br>
+          Beispiel: ...userDefinedFieldFilter=SalesDocument/Field1 eq null...<br>
+          Beispiel: ...userDefinedFieldFilter=SalesDocument/Field1 ne null...<br>
+          Strings müssen in einfache Hochkommata eingeschlossen werden, wenn sie ein Minus, Schrägstrich, Komma Punkt oder Leerzeichen enthalten.<br>
+          Wenn im Suchstring ein Hochkomma enthalten ist, muss dieses verdoppelt werden.<br>
+          Beispiel: ...userDefinedFieldFilter=SalesDocument/Field1 eq 'Bsp. mit Leerzeichen'...<br>
+          Beispiel: ...userDefinedFieldFilter=SalesDocument/Field1 eq 'Bsp. mit ''Quote'''...<br>
+          Datumsangaben (Tagesdatum) müssen im internationalen Format YYYY-MM-DD angegeben werden.<br>
+          Beispiel: ...userDefinedFieldFilter=SalesDocument/Field3 eq 2025-04-08...<br>
+          Wird ein ungültiger Filter-String übermittelt, wird der Request mit StatusCode 400 abgewiesen.<br>
+        examples:
+          filterSimple:
+            summary: Einfacher Filter im Format <PropertyName> <Vergleichsoperator>
+              <Wert>
+            value: SalesDocument/Field1 eq 'SADLER'
+          filterWithAnd:
+            summary: |
+              Filter mit 2 Bedingungen, die durch "and" verknüpft sind.
+            value: SalesDocument/Field1 eq 'SADLER' and Customer/Field1 eq 'DE'
+          filterNull:
+            summary: Filter zur Prüfung auf NULL.
+            value: SalesDocument/Field1 eq null
+          filterNotNull:
+            summary: Filter zur Prüfung auf NOT NULL.
+            value: SalesDocument/Field1 ne null
+          filterString:
+            summary: |
+              Filter für einen String, bei dem der Wert in Hochkommata eingeschlossen ist.
+            value: SalesDocument/Field1 eq 'Bsp. mit Leerzeichen'
+          filterStringWithQuote:
+            summary: |
+              Filter für einen String, bei dem der Wert ein Hochkomma enthält.
+            value: SalesDocument/Field1 eq 'Bsp. mit ''Quote'''
+          filterDate:
+            summary: Filter auf ein Tagesdatum.
+            value: SalesDocument/Field3 ge 2025-04-08
+        in: query
+        name: userDefinedFieldFilter
+        required: false
+        schema:
+          nullable: true
+          type: string
       responses:
         "200":
           content:
@@ -7798,7 +7852,9 @@ paths:
       - Stammdaten
   /v1/customers:
     get:
-      description: "Kundenliste auslesen \nLiefert eine Liste von Kunden.\n"
+      description: "Kundenliste auslesen<br> \nLiefert eine Liste von Kunden.<br>\n\
+        Für den Parameter **userDefinedFieldFilter** steht der Bereich \"Customer\"\
+        \ zur Verfügung.\n"
       parameters:
       - description: |
           Filter für die Ergebnismenge<br>
@@ -7965,6 +8021,57 @@ paths:
           nullable: true
           type: array
         style: form
+      - description: |
+          Spezieller Filter-Parameter für das Einschränken auf Werte von benutzerdefinierten Feldern.<br>
+          Die Syntax für die Filter orientiert sich an der Filter-Syntax von OData.<br>
+          Es kann nur anhand des Bereichs und der Nummer des benutzerdefinierten Felds gefiltert werden.<br>
+          Der Bezeichner für den Bereich muss UserDefinedFieldDefinition/Area entsprechen. Die Nummer ist 1-basiert.<br>
+          Folgende Vergleichsoperatoren stehen zur Verfügung: eq (gleich), ne (ungleich), lt (kleiner als), gt (größer als), le (kleiner gleich), ge (größer gleich)<br>
+          Beispiel: ...userDefinedFieldFilter=SalesDocument/Field1 eq 'SADLER'...<br>
+          Mehrere Filter können durch "and" getrennt werden. <br>
+          Beispiel: ...userDefinedFieldFilter=SalesDocument/Field1 eq 'SADLER' and Customer/Field1 eq 'DE'...<br>
+          Es ist möglich, auf NULL oder NOT NULL zu prüfen. Dafür steht das Schlüsselwort "null" für die Operatoren "eq" und "ne" bereit.<br>
+          Beispiel: ...userDefinedFieldFilter=SalesDocument/Field1 eq null...<br>
+          Beispiel: ...userDefinedFieldFilter=SalesDocument/Field1 ne null...<br>
+          Strings müssen in einfache Hochkommata eingeschlossen werden, wenn sie ein Minus, Schrägstrich, Komma Punkt oder Leerzeichen enthalten.<br>
+          Wenn im Suchstring ein Hochkomma enthalten ist, muss dieses verdoppelt werden.<br>
+          Beispiel: ...userDefinedFieldFilter=SalesDocument/Field1 eq 'Bsp. mit Leerzeichen'...<br>
+          Beispiel: ...userDefinedFieldFilter=SalesDocument/Field1 eq 'Bsp. mit ''Quote'''...<br>
+          Datumsangaben (Tagesdatum) müssen im internationalen Format YYYY-MM-DD angegeben werden.<br>
+          Beispiel: ...userDefinedFieldFilter=SalesDocument/Field3 eq 2025-04-08...<br>
+          Wird ein ungültiger Filter-String übermittelt, wird der Request mit StatusCode 400 abgewiesen.<br>
+        examples:
+          filterSimple:
+            summary: Einfacher Filter im Format <PropertyName> <Vergleichsoperator>
+              <Wert>
+            value: SalesDocument/Field1 eq 'SADLER'
+          filterWithAnd:
+            summary: |
+              Filter mit 2 Bedingungen, die durch "and" verknüpft sind.
+            value: SalesDocument/Field1 eq 'SADLER' and Customer/Field1 eq 'DE'
+          filterNull:
+            summary: Filter zur Prüfung auf NULL.
+            value: SalesDocument/Field1 eq null
+          filterNotNull:
+            summary: Filter zur Prüfung auf NOT NULL.
+            value: SalesDocument/Field1 ne null
+          filterString:
+            summary: |
+              Filter für einen String, bei dem der Wert in Hochkommata eingeschlossen ist.
+            value: SalesDocument/Field1 eq 'Bsp. mit Leerzeichen'
+          filterStringWithQuote:
+            summary: |
+              Filter für einen String, bei dem der Wert ein Hochkomma enthält.
+            value: SalesDocument/Field1 eq 'Bsp. mit ''Quote'''
+          filterDate:
+            summary: Filter auf ein Tagesdatum.
+            value: SalesDocument/Field3 ge 2025-04-08
+        in: query
+        name: userDefinedFieldFilter
+        required: false
+        schema:
+          nullable: true
+          type: string
       responses:
         "200":
           content:
@@ -8543,7 +8650,9 @@ paths:
       - DMS
   /v1/suppliers:
     get:
-      description: "Lierferantenliste auslesen \nLiefert eine Liste von Lieferanten.\n"
+      description: "Lierferantenliste auslesen<br> \nLiefert eine Liste von Lieferanten.<br>\n\
+        Für den Parameter **userDefinedFieldFilter** steht der Bereich \"Supplier\"\
+        \ zur Verfügung.\n"
       parameters:
       - description: |
           Filter für die Ergebnismenge<br>
@@ -8710,6 +8819,57 @@ paths:
           nullable: true
           type: array
         style: form
+      - description: |
+          Spezieller Filter-Parameter für das Einschränken auf Werte von benutzerdefinierten Feldern.<br>
+          Die Syntax für die Filter orientiert sich an der Filter-Syntax von OData.<br>
+          Es kann nur anhand des Bereichs und der Nummer des benutzerdefinierten Felds gefiltert werden.<br>
+          Der Bezeichner für den Bereich muss UserDefinedFieldDefinition/Area entsprechen. Die Nummer ist 1-basiert.<br>
+          Folgende Vergleichsoperatoren stehen zur Verfügung: eq (gleich), ne (ungleich), lt (kleiner als), gt (größer als), le (kleiner gleich), ge (größer gleich)<br>
+          Beispiel: ...userDefinedFieldFilter=SalesDocument/Field1 eq 'SADLER'...<br>
+          Mehrere Filter können durch "and" getrennt werden. <br>
+          Beispiel: ...userDefinedFieldFilter=SalesDocument/Field1 eq 'SADLER' and Customer/Field1 eq 'DE'...<br>
+          Es ist möglich, auf NULL oder NOT NULL zu prüfen. Dafür steht das Schlüsselwort "null" für die Operatoren "eq" und "ne" bereit.<br>
+          Beispiel: ...userDefinedFieldFilter=SalesDocument/Field1 eq null...<br>
+          Beispiel: ...userDefinedFieldFilter=SalesDocument/Field1 ne null...<br>
+          Strings müssen in einfache Hochkommata eingeschlossen werden, wenn sie ein Minus, Schrägstrich, Komma Punkt oder Leerzeichen enthalten.<br>
+          Wenn im Suchstring ein Hochkomma enthalten ist, muss dieses verdoppelt werden.<br>
+          Beispiel: ...userDefinedFieldFilter=SalesDocument/Field1 eq 'Bsp. mit Leerzeichen'...<br>
+          Beispiel: ...userDefinedFieldFilter=SalesDocument/Field1 eq 'Bsp. mit ''Quote'''...<br>
+          Datumsangaben (Tagesdatum) müssen im internationalen Format YYYY-MM-DD angegeben werden.<br>
+          Beispiel: ...userDefinedFieldFilter=SalesDocument/Field3 eq 2025-04-08...<br>
+          Wird ein ungültiger Filter-String übermittelt, wird der Request mit StatusCode 400 abgewiesen.<br>
+        examples:
+          filterSimple:
+            summary: Einfacher Filter im Format <PropertyName> <Vergleichsoperator>
+              <Wert>
+            value: SalesDocument/Field1 eq 'SADLER'
+          filterWithAnd:
+            summary: |
+              Filter mit 2 Bedingungen, die durch "and" verknüpft sind.
+            value: SalesDocument/Field1 eq 'SADLER' and Customer/Field1 eq 'DE'
+          filterNull:
+            summary: Filter zur Prüfung auf NULL.
+            value: SalesDocument/Field1 eq null
+          filterNotNull:
+            summary: Filter zur Prüfung auf NOT NULL.
+            value: SalesDocument/Field1 ne null
+          filterString:
+            summary: |
+              Filter für einen String, bei dem der Wert in Hochkommata eingeschlossen ist.
+            value: SalesDocument/Field1 eq 'Bsp. mit Leerzeichen'
+          filterStringWithQuote:
+            summary: |
+              Filter für einen String, bei dem der Wert ein Hochkomma enthält.
+            value: SalesDocument/Field1 eq 'Bsp. mit ''Quote'''
+          filterDate:
+            summary: Filter auf ein Tagesdatum.
+            value: SalesDocument/Field3 ge 2025-04-08
+        in: query
+        name: userDefinedFieldFilter
+        required: false
+        schema:
+          nullable: true
+          type: string
       responses:
         "200":
           content:
@@ -9222,12 +9382,14 @@ paths:
       - Verkaufsbelege
   /v1/sales-documents:
     get:
-      description: "Verkaufsbelege auslesen. \nLiefert eine Liste von Verkaufsbelegen.\n\
+      description: "Verkaufsbelege auslesen.<br> \nLiefert eine Liste von Verkaufsbelegen.<br>\n\
         Zur Steigerung der Performance werden die Datensätze standardmäßig in 100er-Blö\
         cke paginiert. Der Request-Header liefert dann die Location für den nächsten\
         \ Block. Wenn die Performance es zulässt, können auch größere Blöcke abgerufen\
         \ werden. Dazu kann z.B. **top=1000** angegeben werden.\nBei **expand=all**\
-        \ werden standardmäßig nur 20 Datensätze pro Block geliefert.\n"
+        \ werden standardmäßig nur 20 Datensätze pro Block geliefert.<br>\nFür den\
+        \ Parameter **userDefinedFieldFilter** stehen folgende Bereiche zur Verfü\
+        gung:\n* SalesDocument\n* Customer\n"
       parameters:
       - description: |
           Filter für die Ergebnismenge<br>
@@ -9394,6 +9556,57 @@ paths:
           nullable: true
           type: array
         style: form
+      - description: |
+          Spezieller Filter-Parameter für das Einschränken auf Werte von benutzerdefinierten Feldern.<br>
+          Die Syntax für die Filter orientiert sich an der Filter-Syntax von OData.<br>
+          Es kann nur anhand des Bereichs und der Nummer des benutzerdefinierten Felds gefiltert werden.<br>
+          Der Bezeichner für den Bereich muss UserDefinedFieldDefinition/Area entsprechen. Die Nummer ist 1-basiert.<br>
+          Folgende Vergleichsoperatoren stehen zur Verfügung: eq (gleich), ne (ungleich), lt (kleiner als), gt (größer als), le (kleiner gleich), ge (größer gleich)<br>
+          Beispiel: ...userDefinedFieldFilter=SalesDocument/Field1 eq 'SADLER'...<br>
+          Mehrere Filter können durch "and" getrennt werden. <br>
+          Beispiel: ...userDefinedFieldFilter=SalesDocument/Field1 eq 'SADLER' and Customer/Field1 eq 'DE'...<br>
+          Es ist möglich, auf NULL oder NOT NULL zu prüfen. Dafür steht das Schlüsselwort "null" für die Operatoren "eq" und "ne" bereit.<br>
+          Beispiel: ...userDefinedFieldFilter=SalesDocument/Field1 eq null...<br>
+          Beispiel: ...userDefinedFieldFilter=SalesDocument/Field1 ne null...<br>
+          Strings müssen in einfache Hochkommata eingeschlossen werden, wenn sie ein Minus, Schrägstrich, Komma Punkt oder Leerzeichen enthalten.<br>
+          Wenn im Suchstring ein Hochkomma enthalten ist, muss dieses verdoppelt werden.<br>
+          Beispiel: ...userDefinedFieldFilter=SalesDocument/Field1 eq 'Bsp. mit Leerzeichen'...<br>
+          Beispiel: ...userDefinedFieldFilter=SalesDocument/Field1 eq 'Bsp. mit ''Quote'''...<br>
+          Datumsangaben (Tagesdatum) müssen im internationalen Format YYYY-MM-DD angegeben werden.<br>
+          Beispiel: ...userDefinedFieldFilter=SalesDocument/Field3 eq 2025-04-08...<br>
+          Wird ein ungültiger Filter-String übermittelt, wird der Request mit StatusCode 400 abgewiesen.<br>
+        examples:
+          filterSimple:
+            summary: Einfacher Filter im Format <PropertyName> <Vergleichsoperator>
+              <Wert>
+            value: SalesDocument/Field1 eq 'SADLER'
+          filterWithAnd:
+            summary: |
+              Filter mit 2 Bedingungen, die durch "and" verknüpft sind.
+            value: SalesDocument/Field1 eq 'SADLER' and Customer/Field1 eq 'DE'
+          filterNull:
+            summary: Filter zur Prüfung auf NULL.
+            value: SalesDocument/Field1 eq null
+          filterNotNull:
+            summary: Filter zur Prüfung auf NOT NULL.
+            value: SalesDocument/Field1 ne null
+          filterString:
+            summary: |
+              Filter für einen String, bei dem der Wert in Hochkommata eingeschlossen ist.
+            value: SalesDocument/Field1 eq 'Bsp. mit Leerzeichen'
+          filterStringWithQuote:
+            summary: |
+              Filter für einen String, bei dem der Wert ein Hochkomma enthält.
+            value: SalesDocument/Field1 eq 'Bsp. mit ''Quote'''
+          filterDate:
+            summary: Filter auf ein Tagesdatum.
+            value: SalesDocument/Field3 ge 2025-04-08
+        in: query
+        name: userDefinedFieldFilter
+        required: false
+        schema:
+          nullable: true
+          type: string
       responses:
         "200":
           content:
@@ -10363,12 +10576,14 @@ paths:
       - Einkaufsbelege
   /v1/purchase-documents:
     get:
-      description: "Einkaufsbelege auslesen. \nLiefert eine Liste von Einkaufsbelegen.\n\
+      description: "Einkaufsbelege auslesen.<br> \nLiefert eine Liste von Einkaufsbelegen.<br>\n\
         Zur Steigerung der Performance werden die Datensätze standardmäßig in 100er-Blö\
         cke paginiert. Der Request-Header liefert dann die Location für den nächsten\
         \ Block. Wenn die Performance es zulässt, können auch größere Blöcke abgerufen\
         \ werden. Dazu kann z.B. **top=1000** angegeben werden.\nBei **expand=all**\
-        \ werden standardmäßig nur 20 Datensätze pro Block geliefert.\n"
+        \ werden standardmäßig nur 20 Datensätze pro Block geliefert.<br>\nFür den\
+        \ Parameter **userDefinedFieldFilter** stehen folgende Bereiche zur Verfü\
+        gung:\n* PurchaseDocument\n* Supplier\n"
       parameters:
       - description: |
           Filter für die Ergebnismenge<br>
@@ -10535,6 +10750,57 @@ paths:
           nullable: true
           type: array
         style: form
+      - description: |
+          Spezieller Filter-Parameter für das Einschränken auf Werte von benutzerdefinierten Feldern.<br>
+          Die Syntax für die Filter orientiert sich an der Filter-Syntax von OData.<br>
+          Es kann nur anhand des Bereichs und der Nummer des benutzerdefinierten Felds gefiltert werden.<br>
+          Der Bezeichner für den Bereich muss UserDefinedFieldDefinition/Area entsprechen. Die Nummer ist 1-basiert.<br>
+          Folgende Vergleichsoperatoren stehen zur Verfügung: eq (gleich), ne (ungleich), lt (kleiner als), gt (größer als), le (kleiner gleich), ge (größer gleich)<br>
+          Beispiel: ...userDefinedFieldFilter=SalesDocument/Field1 eq 'SADLER'...<br>
+          Mehrere Filter können durch "and" getrennt werden. <br>
+          Beispiel: ...userDefinedFieldFilter=SalesDocument/Field1 eq 'SADLER' and Customer/Field1 eq 'DE'...<br>
+          Es ist möglich, auf NULL oder NOT NULL zu prüfen. Dafür steht das Schlüsselwort "null" für die Operatoren "eq" und "ne" bereit.<br>
+          Beispiel: ...userDefinedFieldFilter=SalesDocument/Field1 eq null...<br>
+          Beispiel: ...userDefinedFieldFilter=SalesDocument/Field1 ne null...<br>
+          Strings müssen in einfache Hochkommata eingeschlossen werden, wenn sie ein Minus, Schrägstrich, Komma Punkt oder Leerzeichen enthalten.<br>
+          Wenn im Suchstring ein Hochkomma enthalten ist, muss dieses verdoppelt werden.<br>
+          Beispiel: ...userDefinedFieldFilter=SalesDocument/Field1 eq 'Bsp. mit Leerzeichen'...<br>
+          Beispiel: ...userDefinedFieldFilter=SalesDocument/Field1 eq 'Bsp. mit ''Quote'''...<br>
+          Datumsangaben (Tagesdatum) müssen im internationalen Format YYYY-MM-DD angegeben werden.<br>
+          Beispiel: ...userDefinedFieldFilter=SalesDocument/Field3 eq 2025-04-08...<br>
+          Wird ein ungültiger Filter-String übermittelt, wird der Request mit StatusCode 400 abgewiesen.<br>
+        examples:
+          filterSimple:
+            summary: Einfacher Filter im Format <PropertyName> <Vergleichsoperator>
+              <Wert>
+            value: SalesDocument/Field1 eq 'SADLER'
+          filterWithAnd:
+            summary: |
+              Filter mit 2 Bedingungen, die durch "and" verknüpft sind.
+            value: SalesDocument/Field1 eq 'SADLER' and Customer/Field1 eq 'DE'
+          filterNull:
+            summary: Filter zur Prüfung auf NULL.
+            value: SalesDocument/Field1 eq null
+          filterNotNull:
+            summary: Filter zur Prüfung auf NOT NULL.
+            value: SalesDocument/Field1 ne null
+          filterString:
+            summary: |
+              Filter für einen String, bei dem der Wert in Hochkommata eingeschlossen ist.
+            value: SalesDocument/Field1 eq 'Bsp. mit Leerzeichen'
+          filterStringWithQuote:
+            summary: |
+              Filter für einen String, bei dem der Wert ein Hochkomma enthält.
+            value: SalesDocument/Field1 eq 'Bsp. mit ''Quote'''
+          filterDate:
+            summary: Filter auf ein Tagesdatum.
+            value: SalesDocument/Field3 ge 2025-04-08
+        in: query
+        name: userDefinedFieldFilter
+        required: false
+        schema:
+          nullable: true
+          type: string
       responses:
         "200":
           content:
@@ -11299,12 +11565,14 @@ paths:
       - Einkaufsbelege
   /v1/manufacture-documents:
     get:
-      description: "Fertigungsbelege auslesen. \nLiefert eine Liste von Fertigungsbelegen.\n\
+      description: "Fertigungsbelege auslesen.<br> \nLiefert eine Liste von Fertigungsbelegen.<br>\n\
         Zur Steigerung der Performance werden die Datensätze standardmäßig in 100er-Blö\
         cke paginiert. Der Request-Header liefert dann die Location für den nächsten\
         \ Block. Wenn die Performance es zulässt, können auch größere Blöcke abgerufen\
         \ werden. Dazu kann z.B. **top=1000** angegeben werden.\nBei **expand=all**\
-        \ werden standardmäßig nur 20 Datensätze pro Block geliefert.\n"
+        \ werden standardmäßig nur 20 Datensätze pro Block geliefert.<br>\nFür den\
+        \ Parameter **userDefinedFieldFilter** stehen folgende Bereiche zur Verfü\
+        gung:\n* SalesDocument\n* Supplier\n* Product\n"
       parameters:
       - description: |
           Filter für die Ergebnismenge<br>
@@ -11471,6 +11739,57 @@ paths:
           nullable: true
           type: array
         style: form
+      - description: |
+          Spezieller Filter-Parameter für das Einschränken auf Werte von benutzerdefinierten Feldern.<br>
+          Die Syntax für die Filter orientiert sich an der Filter-Syntax von OData.<br>
+          Es kann nur anhand des Bereichs und der Nummer des benutzerdefinierten Felds gefiltert werden.<br>
+          Der Bezeichner für den Bereich muss UserDefinedFieldDefinition/Area entsprechen. Die Nummer ist 1-basiert.<br>
+          Folgende Vergleichsoperatoren stehen zur Verfügung: eq (gleich), ne (ungleich), lt (kleiner als), gt (größer als), le (kleiner gleich), ge (größer gleich)<br>
+          Beispiel: ...userDefinedFieldFilter=SalesDocument/Field1 eq 'SADLER'...<br>
+          Mehrere Filter können durch "and" getrennt werden. <br>
+          Beispiel: ...userDefinedFieldFilter=SalesDocument/Field1 eq 'SADLER' and Customer/Field1 eq 'DE'...<br>
+          Es ist möglich, auf NULL oder NOT NULL zu prüfen. Dafür steht das Schlüsselwort "null" für die Operatoren "eq" und "ne" bereit.<br>
+          Beispiel: ...userDefinedFieldFilter=SalesDocument/Field1 eq null...<br>
+          Beispiel: ...userDefinedFieldFilter=SalesDocument/Field1 ne null...<br>
+          Strings müssen in einfache Hochkommata eingeschlossen werden, wenn sie ein Minus, Schrägstrich, Komma Punkt oder Leerzeichen enthalten.<br>
+          Wenn im Suchstring ein Hochkomma enthalten ist, muss dieses verdoppelt werden.<br>
+          Beispiel: ...userDefinedFieldFilter=SalesDocument/Field1 eq 'Bsp. mit Leerzeichen'...<br>
+          Beispiel: ...userDefinedFieldFilter=SalesDocument/Field1 eq 'Bsp. mit ''Quote'''...<br>
+          Datumsangaben (Tagesdatum) müssen im internationalen Format YYYY-MM-DD angegeben werden.<br>
+          Beispiel: ...userDefinedFieldFilter=SalesDocument/Field3 eq 2025-04-08...<br>
+          Wird ein ungültiger Filter-String übermittelt, wird der Request mit StatusCode 400 abgewiesen.<br>
+        examples:
+          filterSimple:
+            summary: Einfacher Filter im Format <PropertyName> <Vergleichsoperator>
+              <Wert>
+            value: SalesDocument/Field1 eq 'SADLER'
+          filterWithAnd:
+            summary: |
+              Filter mit 2 Bedingungen, die durch "and" verknüpft sind.
+            value: SalesDocument/Field1 eq 'SADLER' and Customer/Field1 eq 'DE'
+          filterNull:
+            summary: Filter zur Prüfung auf NULL.
+            value: SalesDocument/Field1 eq null
+          filterNotNull:
+            summary: Filter zur Prüfung auf NOT NULL.
+            value: SalesDocument/Field1 ne null
+          filterString:
+            summary: |
+              Filter für einen String, bei dem der Wert in Hochkommata eingeschlossen ist.
+            value: SalesDocument/Field1 eq 'Bsp. mit Leerzeichen'
+          filterStringWithQuote:
+            summary: |
+              Filter für einen String, bei dem der Wert ein Hochkomma enthält.
+            value: SalesDocument/Field1 eq 'Bsp. mit ''Quote'''
+          filterDate:
+            summary: Filter auf ein Tagesdatum.
+            value: SalesDocument/Field3 ge 2025-04-08
+        in: query
+        name: userDefinedFieldFilter
+        required: false
+        schema:
+          nullable: true
+          type: string
       responses:
         "200":
           content:
@@ -12094,7 +12413,9 @@ paths:
       - Fertigungsbelege
   /v1/periodical-sales-document-templates:
     get:
-      description: Liefert eine Liste von wiederkehrenden Verkaufsbelegen.
+      description: "Liefert eine Liste von wiederkehrenden Verkaufsbelegen.<br> \n\
+        Für den Parameter **userDefinedFieldFilter** stehen folgende Bereiche zur\
+        \ Verfügung:\n* SalesDocument\n* Customer\n"
       parameters:
       - description: |
           Filter für die Ergebnismenge<br>
@@ -12261,6 +12582,57 @@ paths:
           nullable: true
           type: array
         style: form
+      - description: |
+          Spezieller Filter-Parameter für das Einschränken auf Werte von benutzerdefinierten Feldern.<br>
+          Die Syntax für die Filter orientiert sich an der Filter-Syntax von OData.<br>
+          Es kann nur anhand des Bereichs und der Nummer des benutzerdefinierten Felds gefiltert werden.<br>
+          Der Bezeichner für den Bereich muss UserDefinedFieldDefinition/Area entsprechen. Die Nummer ist 1-basiert.<br>
+          Folgende Vergleichsoperatoren stehen zur Verfügung: eq (gleich), ne (ungleich), lt (kleiner als), gt (größer als), le (kleiner gleich), ge (größer gleich)<br>
+          Beispiel: ...userDefinedFieldFilter=SalesDocument/Field1 eq 'SADLER'...<br>
+          Mehrere Filter können durch "and" getrennt werden. <br>
+          Beispiel: ...userDefinedFieldFilter=SalesDocument/Field1 eq 'SADLER' and Customer/Field1 eq 'DE'...<br>
+          Es ist möglich, auf NULL oder NOT NULL zu prüfen. Dafür steht das Schlüsselwort "null" für die Operatoren "eq" und "ne" bereit.<br>
+          Beispiel: ...userDefinedFieldFilter=SalesDocument/Field1 eq null...<br>
+          Beispiel: ...userDefinedFieldFilter=SalesDocument/Field1 ne null...<br>
+          Strings müssen in einfache Hochkommata eingeschlossen werden, wenn sie ein Minus, Schrägstrich, Komma Punkt oder Leerzeichen enthalten.<br>
+          Wenn im Suchstring ein Hochkomma enthalten ist, muss dieses verdoppelt werden.<br>
+          Beispiel: ...userDefinedFieldFilter=SalesDocument/Field1 eq 'Bsp. mit Leerzeichen'...<br>
+          Beispiel: ...userDefinedFieldFilter=SalesDocument/Field1 eq 'Bsp. mit ''Quote'''...<br>
+          Datumsangaben (Tagesdatum) müssen im internationalen Format YYYY-MM-DD angegeben werden.<br>
+          Beispiel: ...userDefinedFieldFilter=SalesDocument/Field3 eq 2025-04-08...<br>
+          Wird ein ungültiger Filter-String übermittelt, wird der Request mit StatusCode 400 abgewiesen.<br>
+        examples:
+          filterSimple:
+            summary: Einfacher Filter im Format <PropertyName> <Vergleichsoperator>
+              <Wert>
+            value: SalesDocument/Field1 eq 'SADLER'
+          filterWithAnd:
+            summary: |
+              Filter mit 2 Bedingungen, die durch "and" verknüpft sind.
+            value: SalesDocument/Field1 eq 'SADLER' and Customer/Field1 eq 'DE'
+          filterNull:
+            summary: Filter zur Prüfung auf NULL.
+            value: SalesDocument/Field1 eq null
+          filterNotNull:
+            summary: Filter zur Prüfung auf NOT NULL.
+            value: SalesDocument/Field1 ne null
+          filterString:
+            summary: |
+              Filter für einen String, bei dem der Wert in Hochkommata eingeschlossen ist.
+            value: SalesDocument/Field1 eq 'Bsp. mit Leerzeichen'
+          filterStringWithQuote:
+            summary: |
+              Filter für einen String, bei dem der Wert ein Hochkomma enthält.
+            value: SalesDocument/Field1 eq 'Bsp. mit ''Quote'''
+          filterDate:
+            summary: Filter auf ein Tagesdatum.
+            value: SalesDocument/Field3 ge 2025-04-08
+        in: query
+        name: userDefinedFieldFilter
+        required: false
+        schema:
+          nullable: true
+          type: string
       responses:
         "200":
           content:
@@ -12574,9 +12946,56 @@ paths:
         setzen.
       tags:
       - Verkaufsbelege
+  /v1/periodical-sales-document-templates/{documentTemplateId}/document-contact:
+    delete:
+      description: Kontaktperson zu einem wiederkehrenden Verkaufsbeleg löschen.
+      operationId: deletePeriodicalSalesDocumentTemplatesContact
+      parameters:
+      - description: "Id einer Belegvorlage, z.B. eines wiederkehrenden Belegs (technischer\
+          \ Schlüssel)"
+        in: path
+        name: documentTemplateId
+        required: true
+        schema:
+          type: integer
+      responses:
+        "204":
+          description: Erfolgreiches Löschen der Ressource.
+        "400":
+          description: |
+            Es liegt ein fehlerhafter Clientaufruf vor. Eine mögliche Ursache kann
+            sein, dass ein fehlerhafter Wert übergeben wurde. Weitere Informationen
+            sind in der Response-Nachricht als HttpError enthalten.
+        "401":
+          description: |
+            Die Authentifizierungs-Information fehlt oder ist ungültig. Weitere
+            Informationen sind in der Response-Nachricht als HttpError enthalten.
+          headers:
+            WWW_Authenticate:
+              schema:
+                type: string
+        "403":
+          description: Es fehlt die Berechtigung zum Zugriff auf die Ressource.
+        "404":
+          description: |
+            Die angeforderte Ressource ist dauerhaft oder temporär nicht verfügbar.
+            Eine mögliche Ursache kann sein, dass die URI fehlerhaft ist.
+        "423":
+          description: Die Ressource ist aufgrund einer exklusiven Verarbeitung temporär
+            gesperrt.
+      security:
+      - BasicAuth: []
+        ApiKeyAuth: []
+      - OAuth2: []
+        ApiKeyAuth: []
+      summary: Kontaktperson zu einem wiederkehrenden Verkaufsbeleg löschen.
+      tags:
+      - Verkaufsbelege
   /v1/periodical-purchase-document-templates:
     get:
-      description: Liefert eine Liste von wiederkehrenden Einkaufsbelegen.
+      description: "Liefert eine Liste von wiederkehrenden Einkaufsbelegen.<br> \n\
+        Für den Parameter **userDefinedFieldFilter** stehen folgende Bereiche zur\
+        \ Verfügung:\n* PurchaseDocument\n* Supplier\n"
       parameters:
       - description: |
           Filter für die Ergebnismenge<br>
@@ -12743,6 +13162,57 @@ paths:
           nullable: true
           type: array
         style: form
+      - description: |
+          Spezieller Filter-Parameter für das Einschränken auf Werte von benutzerdefinierten Feldern.<br>
+          Die Syntax für die Filter orientiert sich an der Filter-Syntax von OData.<br>
+          Es kann nur anhand des Bereichs und der Nummer des benutzerdefinierten Felds gefiltert werden.<br>
+          Der Bezeichner für den Bereich muss UserDefinedFieldDefinition/Area entsprechen. Die Nummer ist 1-basiert.<br>
+          Folgende Vergleichsoperatoren stehen zur Verfügung: eq (gleich), ne (ungleich), lt (kleiner als), gt (größer als), le (kleiner gleich), ge (größer gleich)<br>
+          Beispiel: ...userDefinedFieldFilter=SalesDocument/Field1 eq 'SADLER'...<br>
+          Mehrere Filter können durch "and" getrennt werden. <br>
+          Beispiel: ...userDefinedFieldFilter=SalesDocument/Field1 eq 'SADLER' and Customer/Field1 eq 'DE'...<br>
+          Es ist möglich, auf NULL oder NOT NULL zu prüfen. Dafür steht das Schlüsselwort "null" für die Operatoren "eq" und "ne" bereit.<br>
+          Beispiel: ...userDefinedFieldFilter=SalesDocument/Field1 eq null...<br>
+          Beispiel: ...userDefinedFieldFilter=SalesDocument/Field1 ne null...<br>
+          Strings müssen in einfache Hochkommata eingeschlossen werden, wenn sie ein Minus, Schrägstrich, Komma Punkt oder Leerzeichen enthalten.<br>
+          Wenn im Suchstring ein Hochkomma enthalten ist, muss dieses verdoppelt werden.<br>
+          Beispiel: ...userDefinedFieldFilter=SalesDocument/Field1 eq 'Bsp. mit Leerzeichen'...<br>
+          Beispiel: ...userDefinedFieldFilter=SalesDocument/Field1 eq 'Bsp. mit ''Quote'''...<br>
+          Datumsangaben (Tagesdatum) müssen im internationalen Format YYYY-MM-DD angegeben werden.<br>
+          Beispiel: ...userDefinedFieldFilter=SalesDocument/Field3 eq 2025-04-08...<br>
+          Wird ein ungültiger Filter-String übermittelt, wird der Request mit StatusCode 400 abgewiesen.<br>
+        examples:
+          filterSimple:
+            summary: Einfacher Filter im Format <PropertyName> <Vergleichsoperator>
+              <Wert>
+            value: SalesDocument/Field1 eq 'SADLER'
+          filterWithAnd:
+            summary: |
+              Filter mit 2 Bedingungen, die durch "and" verknüpft sind.
+            value: SalesDocument/Field1 eq 'SADLER' and Customer/Field1 eq 'DE'
+          filterNull:
+            summary: Filter zur Prüfung auf NULL.
+            value: SalesDocument/Field1 eq null
+          filterNotNull:
+            summary: Filter zur Prüfung auf NOT NULL.
+            value: SalesDocument/Field1 ne null
+          filterString:
+            summary: |
+              Filter für einen String, bei dem der Wert in Hochkommata eingeschlossen ist.
+            value: SalesDocument/Field1 eq 'Bsp. mit Leerzeichen'
+          filterStringWithQuote:
+            summary: |
+              Filter für einen String, bei dem der Wert ein Hochkomma enthält.
+            value: SalesDocument/Field1 eq 'Bsp. mit ''Quote'''
+          filterDate:
+            summary: Filter auf ein Tagesdatum.
+            value: SalesDocument/Field3 ge 2025-04-08
+        in: query
+        name: userDefinedFieldFilter
+        required: false
+        schema:
+          nullable: true
+          type: string
       responses:
         "200":
           content:
@@ -13054,6 +13524,51 @@ paths:
         ApiKeyAuth: []
       summary: Einen wiederkehrenden Einkaufsbeleg auf nicht gesperrt für Fremdanwendung
         setzen.
+      tags:
+      - Einkaufsbelege
+  /v1/periodical-purchase-document-templates/{documentTemplateId}/document-contact:
+    delete:
+      description: Kontaktperson zu einem wiederkehrenden Einkaufsbeleg löschen.
+      operationId: deletePeriodicalPurchaseDocumentTemplatesContact
+      parameters:
+      - description: "Id einer Belegvorlage, z.B. eines wiederkehrenden Belegs (technischer\
+          \ Schlüssel)"
+        in: path
+        name: documentTemplateId
+        required: true
+        schema:
+          type: integer
+      responses:
+        "204":
+          description: Erfolgreiches Löschen der Ressource.
+        "400":
+          description: |
+            Es liegt ein fehlerhafter Clientaufruf vor. Eine mögliche Ursache kann
+            sein, dass ein fehlerhafter Wert übergeben wurde. Weitere Informationen
+            sind in der Response-Nachricht als HttpError enthalten.
+        "401":
+          description: |
+            Die Authentifizierungs-Information fehlt oder ist ungültig. Weitere
+            Informationen sind in der Response-Nachricht als HttpError enthalten.
+          headers:
+            WWW_Authenticate:
+              schema:
+                type: string
+        "403":
+          description: Es fehlt die Berechtigung zum Zugriff auf die Ressource.
+        "404":
+          description: |
+            Die angeforderte Ressource ist dauerhaft oder temporär nicht verfügbar.
+            Eine mögliche Ursache kann sein, dass die URI fehlerhaft ist.
+        "423":
+          description: Die Ressource ist aufgrund einer exklusiven Verarbeitung temporär
+            gesperrt.
+      security:
+      - BasicAuth: []
+        ApiKeyAuth: []
+      - OAuth2: []
+        ApiKeyAuth: []
+      summary: Kontaktperson zu einem wiederkehrenden Einkaufsbeleg löschen.
       tags:
       - Einkaufsbelege
   /v1/inventory-transactions:
@@ -15888,6 +16403,58 @@ components:
       required: true
       schema:
         type: integer
+    UserDefinedFieldFilterParam:
+      description: |
+        Spezieller Filter-Parameter für das Einschränken auf Werte von benutzerdefinierten Feldern.<br>
+        Die Syntax für die Filter orientiert sich an der Filter-Syntax von OData.<br>
+        Es kann nur anhand des Bereichs und der Nummer des benutzerdefinierten Felds gefiltert werden.<br>
+        Der Bezeichner für den Bereich muss UserDefinedFieldDefinition/Area entsprechen. Die Nummer ist 1-basiert.<br>
+        Folgende Vergleichsoperatoren stehen zur Verfügung: eq (gleich), ne (ungleich), lt (kleiner als), gt (größer als), le (kleiner gleich), ge (größer gleich)<br>
+        Beispiel: ...userDefinedFieldFilter=SalesDocument/Field1 eq 'SADLER'...<br>
+        Mehrere Filter können durch "and" getrennt werden. <br>
+        Beispiel: ...userDefinedFieldFilter=SalesDocument/Field1 eq 'SADLER' and Customer/Field1 eq 'DE'...<br>
+        Es ist möglich, auf NULL oder NOT NULL zu prüfen. Dafür steht das Schlüsselwort "null" für die Operatoren "eq" und "ne" bereit.<br>
+        Beispiel: ...userDefinedFieldFilter=SalesDocument/Field1 eq null...<br>
+        Beispiel: ...userDefinedFieldFilter=SalesDocument/Field1 ne null...<br>
+        Strings müssen in einfache Hochkommata eingeschlossen werden, wenn sie ein Minus, Schrägstrich, Komma Punkt oder Leerzeichen enthalten.<br>
+        Wenn im Suchstring ein Hochkomma enthalten ist, muss dieses verdoppelt werden.<br>
+        Beispiel: ...userDefinedFieldFilter=SalesDocument/Field1 eq 'Bsp. mit Leerzeichen'...<br>
+        Beispiel: ...userDefinedFieldFilter=SalesDocument/Field1 eq 'Bsp. mit ''Quote'''...<br>
+        Datumsangaben (Tagesdatum) müssen im internationalen Format YYYY-MM-DD angegeben werden.<br>
+        Beispiel: ...userDefinedFieldFilter=SalesDocument/Field3 eq 2025-04-08...<br>
+        Wird ein ungültiger Filter-String übermittelt, wird der Request mit StatusCode 400 abgewiesen.<br>
+      examples:
+        filterSimple:
+          summary: Einfacher Filter im Format <PropertyName> <Vergleichsoperator>
+            <Wert>
+          value: SalesDocument/Field1 eq 'SADLER'
+        filterWithAnd:
+          summary: |
+            Filter mit 2 Bedingungen, die durch "and" verknüpft sind.
+          value: SalesDocument/Field1 eq 'SADLER' and Customer/Field1 eq 'DE'
+        filterNull:
+          summary: Filter zur Prüfung auf NULL.
+          value: SalesDocument/Field1 eq null
+        filterNotNull:
+          summary: Filter zur Prüfung auf NOT NULL.
+          value: SalesDocument/Field1 ne null
+        filterString:
+          summary: |
+            Filter für einen String, bei dem der Wert in Hochkommata eingeschlossen ist.
+          value: SalesDocument/Field1 eq 'Bsp. mit Leerzeichen'
+        filterStringWithQuote:
+          summary: |
+            Filter für einen String, bei dem der Wert ein Hochkomma enthält.
+          value: SalesDocument/Field1 eq 'Bsp. mit ''Quote'''
+        filterDate:
+          summary: Filter auf ein Tagesdatum.
+          value: SalesDocument/Field3 ge 2025-04-08
+      in: query
+      name: userDefinedFieldFilter
+      required: false
+      schema:
+        nullable: true
+        type: string
     QueueItemIdParam:
       description: Id eines Elements einer Warteschlange
       in: path
@@ -17236,6 +17803,7 @@ components:
         NetWeight: 7.061401241503109
         ProductTypeId: 6
         HasMaterialSlip: true
+        CountryOfOriginIso: CountryOfOriginIso
         SerialOrLotNumberUsage: None
         PriceUnit: PriceUnit
         ForeignLanguageTexts:
@@ -17504,8 +18072,17 @@ components:
           nullable: true
           type: string
         IntrastatCountryOfOriginIso:
-          description: Intrastat Ursprungsland (ISO-Code)
+          deprecated: true
+          description: |
+            Intrastat Ursprungsland (ISO-Code)
+            Veraltet! Stattdessen sollte CountryOfOriginIso verwendet werden.
           nullable: true
+          readOnly: true
+          type: string
+        CountryOfOriginIso:
+          description: Herkunftsland (ISO-Code)
+          nullable: true
+          readOnly: true
           type: string
         IntrastatItemQuantity:
           description: Intrastat Menge in der besonderen Maßeinheit (Beispiel 1 St
@@ -19538,6 +20115,12 @@ components:
           example: Surcharge
           nullable: true
           type: string
+        ReasonCode:
+          description: Internationaler Begründungscode (Reason Code) gemäß UNTDID
+            7161/5189 der Kondition
+          example: FC
+          nullable: true
+          type: string
         ConditionType:
           description: |
             Art der Kondition (Betrags-, Prozent-, Nettogewicht- oder
@@ -19654,7 +20237,15 @@ components:
           nullable: true
           type: boolean
         UseForAllocation:
-          description: Handelt es sich um eine Umlagekondition?
+          description: |
+            Handelt es sich um eine Umlagekondition?
+            Nur möglich, wenn sich die Kondition nicht auf den gesamten Beleg bezieht.
+          nullable: true
+          type: boolean
+        IsAssignedToDocument:
+          description: |
+            Bezieht sich die Kondition auf den gesamten Beleg?
+            Nur möglich, wenn es sich nicht um eine Umlagekondition handelt.
           nullable: true
           type: boolean
         IsTaxIncluded:
@@ -19764,9 +20355,9 @@ components:
     CalculationFieldConditionValue:
       description: Enthält die Daten einer Staffel einer Rechenfeldkondition
       example:
-        Number: 9
-        Amount: 9.702963800023566
-        StartValue: 0.8774076871421566
+        Number: 7
+        Amount: 4.86315908102884
+        StartValue: 5.507386964179881
       properties:
         Number:
           deprecated: true
@@ -19789,6 +20380,7 @@ components:
     Customer:
       example:
         CreationDate: 2000-01-23T04:56:07.000+00:00
+        CountryIso: DE
         Iban: DE50200100200055555001
         BankCountry: D
         PriceListNumber: 1
@@ -19855,9 +20447,11 @@ components:
         CostUnit: "1000"
         TaxIdentificationNumber: 12/123/1234
         IncotermLocation: IncotermLocation
+        CountryId: 46
         InvoiceRecipientId: 2
         LanguageDescription: Englisch
         CreatedBy: ab
+        CountryKey: D
         TermsOfPaymentId: 6
         BookingCodeKey: KST
         SepaMandateReference: SepaMandateReference
@@ -19892,7 +20486,7 @@ components:
         DateDependentPriceListInfo:
           CurrentPriceListNumber: 0
         UsePeppol: true
-        CreditTransferHousebankNumber: 9
+        CreditTransferHousebankNumber: 7
         CreditLimit: 50000
         ElectronicInvoiceFormat: XRechnung
         CreditTransferHousebankSettings: None
@@ -19901,36 +20495,38 @@ components:
         BankAccountHolder: Helmut von Wahl
         DeliveryConditionKey: F
         ContactPersons:
-        - DateOfBirth: DateOfBirth
-          FirstName: FirstName
+        - DateOfBirth: 1967-10-29
+          FirstName: Erika
           Title: Title
           Gender: Female
-          EMail: EMail
-          Salutation: Salutation
-          MobilePhoneNumber: MobilePhoneNumber
-          Role: Role
-          Department: Department
-          FaxNumber: FaxNumber
-          PhoneNumber: PhoneNumber
-          Id: 7
-          LastName: LastName
-          Notes: Notes
-          FormOfAdress: FormOfAdress
-        - DateOfBirth: DateOfBirth
-          FirstName: FirstName
+          EMail: e.musterfrau@example.com
+          Salutation: Frau
+          MobilePhoneNumber: +49172 9925904
+          IdInThirdPartyApplication: FB3EE3DE-0EE6-4F3F-980C-50218467B1C1
+          Role: Sekretariat
+          Department: Verkauf
+          FaxNumber: 040/66969007
+          PhoneNumber: 040/66969007
+          Id: 1
+          LastName: Musterfrau
+          Notes: Nur Mo-Mi erreichbar
+          FormOfAdress: Sehr geehrte Frau
+        - DateOfBirth: 1967-10-29
+          FirstName: Erika
           Title: Title
           Gender: Female
-          EMail: EMail
-          Salutation: Salutation
-          MobilePhoneNumber: MobilePhoneNumber
-          Role: Role
-          Department: Department
-          FaxNumber: FaxNumber
-          PhoneNumber: PhoneNumber
-          Id: 7
-          LastName: LastName
-          Notes: Notes
-          FormOfAdress: FormOfAdress
+          EMail: e.musterfrau@example.com
+          Salutation: Frau
+          MobilePhoneNumber: +49172 9925904
+          IdInThirdPartyApplication: FB3EE3DE-0EE6-4F3F-980C-50218467B1C1
+          Role: Sekretariat
+          Department: Verkauf
+          FaxNumber: 040/66969007
+          PhoneNumber: 040/66969007
+          Id: 1
+          LastName: Musterfrau
+          Notes: Nur Mo-Mi erreichbar
+          FormOfAdress: Sehr geehrte Frau
         CurrencyIso: EUR
         IsCompanyWithoutVatIdentificationNumber: false
         ReferencedSupplierNumber: L1234
@@ -19955,6 +20551,26 @@ components:
           description: Kurzbezeichnung
           example: WAHL
           nullable: true
+          type: string
+        CountryId:
+          description: |
+            Id des Landes (technischer Schlüssel).
+            Zum Leeren des Landes, muss für die Property "CountryKey" ein Leerstring übermittelt werden.
+          example: 46
+          nullable: true
+          type: integer
+        CountryKey:
+          description: |
+            Ordnungsbegriff des Landes.
+            Zum Leeren des Landes muss ein Leerstring übermittelt werden.
+          example: D
+          maxLength: 3
+          nullable: true
+          type: string
+        CountryIso:
+          description: ISO-Ländercode des Landes (ISO 3166-2).
+          example: DE
+          readOnly: true
           type: string
         LanguageId:
           description: |
@@ -20298,7 +20914,23 @@ components:
           nullable: true
           type: array
         ContactPersons:
-          description: Daten der Ansprechpartner
+          description: |
+            Daten der Ansprechpartner
+
+            Hinweise zur Verwaltung der Ansprechpartner:
+
+            - Um einen neuen Ansprechpartner anzulegen, muss die Id **nicht** angegeben werden.
+              Zusätzlich müssen alle bestehenden Ansprechpartner ebenfalls mit **mindestens** der Id angegeben werden,
+              damit diese nicht gelöscht werden.
+
+            - Um einen bestehenden Ansprechpartner zu bearbeiten, muss die Id des Ansprechpartners,
+              der bearbeitet werden soll, sowie die zu ändernden Properties angegeben werden.
+              Zusätzlich müssen alle anderen bestehenden Ansprechpartner ebenfalls mit **mindestens** der Id angegeben werden,
+              damit diese nicht gelöscht werden.
+
+            - Um einen Ansprechpartner zu löschen, darf dieser **nicht** in der Liste der Ansprechpartner enthalten sein.
+              Zusätzlich müssen alle verbleibenden Ansprechpartner ebenfalls mit **mindestens** der Id angegeben werden,
+              damit diese nicht gelöscht werden.
           items:
             $ref: '#/components/schemas/ContactPersonData'
           nullable: true
@@ -20392,6 +21024,7 @@ components:
     Supplier:
       example:
         CreationDate: 2000-01-23T04:56:07.000+00:00
+        CountryIso: DE
         Iban: DE87200500005563912242
         BankCountry: D
         UserDefinedFields:
@@ -20456,8 +21089,10 @@ components:
         TaxIdentificationNumber: 99/1234/12345
         IncotermLocation: IncotermLocation
         PayeeNumber: 70002
+        CountryId: 46
         LanguageDescription: Englisch
         CreatedBy: ab
+        CountryKey: D
         TermsOfPaymentId: 6
         BookingCodeKey: LST
         PayeeId: 7
@@ -20493,36 +21128,38 @@ components:
         BankAccountHolder: Hutter
         DeliveryConditionKey: A
         ContactPersons:
-        - DateOfBirth: DateOfBirth
-          FirstName: FirstName
+        - DateOfBirth: 1967-10-29
+          FirstName: Erika
           Title: Title
           Gender: Female
-          EMail: EMail
-          Salutation: Salutation
-          MobilePhoneNumber: MobilePhoneNumber
-          Role: Role
-          Department: Department
-          FaxNumber: FaxNumber
-          PhoneNumber: PhoneNumber
-          Id: 7
-          LastName: LastName
-          Notes: Notes
-          FormOfAdress: FormOfAdress
-        - DateOfBirth: DateOfBirth
-          FirstName: FirstName
+          EMail: e.musterfrau@example.com
+          Salutation: Frau
+          MobilePhoneNumber: +49172 9925904
+          IdInThirdPartyApplication: FB3EE3DE-0EE6-4F3F-980C-50218467B1C1
+          Role: Sekretariat
+          Department: Verkauf
+          FaxNumber: 040/66969007
+          PhoneNumber: 040/66969007
+          Id: 1
+          LastName: Musterfrau
+          Notes: Nur Mo-Mi erreichbar
+          FormOfAdress: Sehr geehrte Frau
+        - DateOfBirth: 1967-10-29
+          FirstName: Erika
           Title: Title
           Gender: Female
-          EMail: EMail
-          Salutation: Salutation
-          MobilePhoneNumber: MobilePhoneNumber
-          Role: Role
-          Department: Department
-          FaxNumber: FaxNumber
-          PhoneNumber: PhoneNumber
-          Id: 7
-          LastName: LastName
-          Notes: Notes
-          FormOfAdress: FormOfAdress
+          EMail: e.musterfrau@example.com
+          Salutation: Frau
+          MobilePhoneNumber: +49172 9925904
+          IdInThirdPartyApplication: FB3EE3DE-0EE6-4F3F-980C-50218467B1C1
+          Role: Sekretariat
+          Department: Verkauf
+          FaxNumber: 040/66969007
+          PhoneNumber: 040/66969007
+          Id: 1
+          LastName: Musterfrau
+          Notes: Nur Mo-Mi erreichbar
+          FormOfAdress: Sehr geehrte Frau
         CurrencyIso: EUR
         IsCompanyWithoutVatIdentificationNumber: false
         ProcurementTime: 3
@@ -20548,6 +21185,26 @@ components:
           description: Kurzbezeichnung
           example: HUTTER
           nullable: true
+          type: string
+        CountryId:
+          description: |
+            Id des Landes (technischer Schlüssel).
+            Zum Leeren des Landes, muss für die Property "CountryKey" ein Leerstring übermittelt werden.
+          example: 46
+          nullable: true
+          type: integer
+        CountryKey:
+          description: |
+            Ordnungsbegriff des Landes.
+            Zum Leeren des Landes muss ein Leerstring übermittelt werden.
+          example: D
+          maxLength: 3
+          nullable: true
+          type: string
+        CountryIso:
+          description: ISO-Ländercode des Landes (ISO 3166-2).
+          example: DE
+          readOnly: true
           type: string
         LanguageId:
           description: |
@@ -20853,7 +21510,23 @@ components:
           nullable: true
           type: array
         ContactPersons:
-          description: Daten der Ansprechpartner
+          description: |
+            Daten der Ansprechpartner
+
+            Hinweise zur Verwaltung der Ansprechpartner:
+
+            - Um einen neuen Ansprechpartner anzulegen, muss die Id **nicht** angegeben werden.
+              Zusätzlich müssen alle bestehenden Ansprechpartner ebenfalls mit **mindestens** der Id angegeben werden,
+              damit diese nicht gelöscht werden.
+
+            - Um einen bestehenden Ansprechpartner zu bearbeiten, muss die Id des Ansprechpartners,
+              der bearbeitet werden soll, sowie die zu ändernden Properties angegeben werden.
+              Zusätzlich müssen alle anderen bestehenden Ansprechpartner ebenfalls mit **mindestens** der Id angegeben werden,
+              damit diese nicht gelöscht werden.
+
+            - Um einen Ansprechpartner zu löschen, darf dieser **nicht** in der Liste der Ansprechpartner enthalten sein.
+              Zusätzlich müssen alle verbleibenden Ansprechpartner ebenfalls mit **mindestens** der Id angegeben werden,
+              damit diese nicht gelöscht werden.
           items:
             $ref: '#/components/schemas/ContactPersonData'
           type: array
@@ -21003,25 +21676,25 @@ components:
         - ConditionLineItemData:
             Condition: Condition
             CalculationFieldConditionValues:
-            - Number: 9
-              Amount: 9.702963800023566
-              StartValue: 0.8774076871421566
-            - Number: 9
-              Amount: 9.702963800023566
-              StartValue: 0.8774076871421566
+            - Number: 7
+              Amount: 4.86315908102884
+              StartValue: 5.507386964179881
+            - Number: 7
+              Amount: 4.86315908102884
+              StartValue: 5.507386964179881
             OrderReferenceLineNumber: OrderReferenceLineNumber
             ObjectNumber: ObjectNumber
-            Percentage: 0.2025324113236393
+            Percentage: 4.678947989005849
             Accounting:
               Account: 6.778324963048013
               CostCenter: CostCenter
               DiscountAccount: 6.878052220127876
               Tax: Tax
               CostUnit: CostUnit
-            Amount: 4.258773108174356
-            AmountAlreadyProcessed: 1.041444916118296
+            Amount: 9.132027271330688
+            AmountAlreadyProcessed: 0.8774076871421566
             Text: Text
-            ReferencedAmount: 6.628464275087742
+            ReferencedAmount: 7.260521264802104
             UserDefinedFields:
             - DefinitionId: 1
               Type: Alphanumeric
@@ -21037,21 +21710,23 @@ components:
               DateValue: DateValue
               NumericValue: NumericValue
               Name: Verkaufsgebiet
-            CalculationFieldNumber: 7
+            CalculationFieldNumber: 0
+            ReasonCode: FC
             LineNumber: LineNumber
             OrderDate: OrderDate
-            AmountToProcess: 4.678947989005849
+            AmountToProcess: 9.702963800023566
+            IsAssignedToDocument: true
             CalculationFieldConditionType: Factor
             ReferringTo:
-            - 4
-            - 4
+            - 1
+            - 1
             ChargeType: Surcharge
             OrderReference: OrderReference
-            ConditionId: 3
+            ConditionId: 4
             ConditionType: Amount
           TextLineItemData:
             RefersToProductLineItem: true
-            ReferringTo: 5
+            ReferringTo: 4
             Text: Text
             LineNumber: LineNumber
           LineItemType: Product
@@ -21405,43 +22080,57 @@ components:
             QuantityInDeliveryUnits: 2
             OrderDate: OrderDate
             CalculationFieldValues:
-            - TotalValue: 7.04836565559697
-              RemainingTotalValue: 5.533258397034986
-            - TotalValue: 7.04836565559697
-              RemainingTotalValue: 5.533258397034986
+            - TotalValue: 0.2025324113236393
+              Description: Description
+              QuantityInPriceUnits: 4.078845849666752
+              Number: 2
+              Value: 3.2588565619047607
+              RemainingTotalValue: 6.628464275087742
+              CountDecimalDigits: 5
+              QuantityUnitDescription: QuantityUnitDescription
+              ValueUnitDescription: ValueUnitDescription
+            - TotalValue: 0.2025324113236393
+              Description: Description
+              QuantityInPriceUnits: 4.078845849666752
+              Number: 2
+              Value: 3.2588565619047607
+              RemainingTotalValue: 6.628464275087742
+              CountDecimalDigits: 5
+              QuantityUnitDescription: QuantityUnitDescription
+              ValueUnitDescription: ValueUnitDescription
             UnitPrice: 100
             StockNumber: 1
             QuantityUnit: Manntage
           Key: 9
           TextBlockLineItemData:
             RefersToProductLineItem: true
-            ReferringTo: 7
-            TextBlockId: 0
+            ReferringTo: 8
+            TextBlockId: 6
             Text: Text
             TextBlock: TextBlock
             LineNumber: LineNumber
         - ConditionLineItemData:
             Condition: Condition
             CalculationFieldConditionValues:
-            - Number: 9
-              Amount: 9.702963800023566
-              StartValue: 0.8774076871421566
-            - Number: 9
-              Amount: 9.702963800023566
-              StartValue: 0.8774076871421566
+            - Number: 7
+              Amount: 4.86315908102884
+              StartValue: 5.507386964179881
+            - Number: 7
+              Amount: 4.86315908102884
+              StartValue: 5.507386964179881
             OrderReferenceLineNumber: OrderReferenceLineNumber
             ObjectNumber: ObjectNumber
-            Percentage: 0.2025324113236393
+            Percentage: 4.678947989005849
             Accounting:
               Account: 6.778324963048013
               CostCenter: CostCenter
               DiscountAccount: 6.878052220127876
               Tax: Tax
               CostUnit: CostUnit
-            Amount: 4.258773108174356
-            AmountAlreadyProcessed: 1.041444916118296
+            Amount: 9.132027271330688
+            AmountAlreadyProcessed: 0.8774076871421566
             Text: Text
-            ReferencedAmount: 6.628464275087742
+            ReferencedAmount: 7.260521264802104
             UserDefinedFields:
             - DefinitionId: 1
               Type: Alphanumeric
@@ -21457,21 +22146,23 @@ components:
               DateValue: DateValue
               NumericValue: NumericValue
               Name: Verkaufsgebiet
-            CalculationFieldNumber: 7
+            CalculationFieldNumber: 0
+            ReasonCode: FC
             LineNumber: LineNumber
             OrderDate: OrderDate
-            AmountToProcess: 4.678947989005849
+            AmountToProcess: 9.702963800023566
+            IsAssignedToDocument: true
             CalculationFieldConditionType: Factor
             ReferringTo:
-            - 4
-            - 4
+            - 1
+            - 1
             ChargeType: Surcharge
             OrderReference: OrderReference
-            ConditionId: 3
+            ConditionId: 4
             ConditionType: Amount
           TextLineItemData:
             RefersToProductLineItem: true
-            ReferringTo: 5
+            ReferringTo: 4
             Text: Text
             LineNumber: LineNumber
           LineItemType: Product
@@ -21825,23 +22516,41 @@ components:
             QuantityInDeliveryUnits: 2
             OrderDate: OrderDate
             CalculationFieldValues:
-            - TotalValue: 7.04836565559697
-              RemainingTotalValue: 5.533258397034986
-            - TotalValue: 7.04836565559697
-              RemainingTotalValue: 5.533258397034986
+            - TotalValue: 0.2025324113236393
+              Description: Description
+              QuantityInPriceUnits: 4.078845849666752
+              Number: 2
+              Value: 3.2588565619047607
+              RemainingTotalValue: 6.628464275087742
+              CountDecimalDigits: 5
+              QuantityUnitDescription: QuantityUnitDescription
+              ValueUnitDescription: ValueUnitDescription
+            - TotalValue: 0.2025324113236393
+              Description: Description
+              QuantityInPriceUnits: 4.078845849666752
+              Number: 2
+              Value: 3.2588565619047607
+              RemainingTotalValue: 6.628464275087742
+              CountDecimalDigits: 5
+              QuantityUnitDescription: QuantityUnitDescription
+              ValueUnitDescription: ValueUnitDescription
             UnitPrice: 100
             StockNumber: 1
             QuantityUnit: Manntage
           Key: 9
           TextBlockLineItemData:
             RefersToProductLineItem: true
-            ReferringTo: 7
-            TextBlockId: 0
+            ReferringTo: 8
+            TextBlockId: 6
             Text: Text
             TextBlock: TextBlock
             LineNumber: LineNumber
         CreatedBy: CreatedBy
         ChangedBy: ChangedBy
+        CompanyContact:
+          PhoneNumber: PhoneNumber
+          EMail: EMail
+          Name: Name
         ConsiderForPackagingLaw: true
         Prepayments:
         - TaxKey: M19
@@ -21862,13 +22571,13 @@ components:
           IsActivated: true
           DoEmbedIntoXRechnung: true
           DmsId: DmsId
-          Id: 2
+          Id: 4
         - FileSystemPath: FileSystemPath
           Type: LinkToFileSystem
           IsActivated: true
           DoEmbedIntoXRechnung: true
           DmsId: DmsId
-          Id: 2
+          Id: 4
         SepaMandateReference: SepaMandateReference
         ShowNotesOnChange: true
         InvoiceRecipientAccountingDistribution: true
@@ -21883,33 +22592,33 @@ components:
         BusinessOpportunity: 1
         ExchangeRate: 9.301444243932576
         BankKey: BankKey
-        NetAmountMinusInterimInvoices: 8.251625748923757
+        NetAmountMinusInterimInvoices: 2.9409642974827896
         IsPrinted: true
         EoriNumber: EoriNumber
         AgentCommissions:
         - Supervisor: Supervisor
           Agent: Agent
-          PercentageToBePaid: 8.28965939814297
-          SupervisorRate: 4.573936264232251
-          Rate: 1.7325933120207193
+          PercentageToBePaid: 9.254183946267839
+          SupervisorRate: 3.502657762086401
+          Rate: 8.863729185622827
           DoDetermineRate: true
-          BonusAmount: 6.623518433804886
+          BonusAmount: 1.8268702177058116
           DoShareWithSupervisor: true
           DoDetermineSupervisor: true
           SupervisorSharingKind: Commission
         - Supervisor: Supervisor
           Agent: Agent
-          PercentageToBePaid: 8.28965939814297
-          SupervisorRate: 4.573936264232251
-          Rate: 1.7325933120207193
+          PercentageToBePaid: 9.254183946267839
+          SupervisorRate: 3.502657762086401
+          Rate: 8.863729185622827
           DoDetermineRate: true
-          BonusAmount: 6.623518433804886
+          BonusAmount: 1.8268702177058116
           DoShareWithSupervisor: true
           DoDetermineSupervisor: true
           SupervisorSharingKind: Commission
         InvoiceRecipientTurnover: true
         Preamble: Preamble
-        TotalNetAmount: 4.86315908102884
+        TotalNetAmount: 3.901545264248647
         InvoiceRecipientNumber: 1.2315135367772556
         CurrencyId: 4
         IdInThirdPartyApplication: IdInThirdPartyApplication
@@ -21918,24 +22627,24 @@ components:
         ElectronicAddressType: VatId
         StockId: 1
         Language: Language
-        GrossAmountMinusInterimInvoices: 4.459605034958679
+        GrossAmountMinusInterimInvoices: 1.7325933120207193
         CostCenter: CostCenter
-        NetAmountMinusPrepaymentsAndInterimInvoices: 3.901545264248647
+        NetAmountMinusPrepaymentsAndInterimInvoices: 8.28965939814297
         OrderReference: OrderReference
         PriceList: 1
         Notes: Notes
         CalculationFieldTotals:
-        - TotalValue: 1.8268702177058116
+        - TotalValue: 0.4182561061793122
           Description: Description
           Number: 2
-          RemainingTotalValue: 3.502657762086401
-          CountDecimalDigits: 9
+          RemainingTotalValue: 5.299143560275359
+          CountDecimalDigits: 8
           ValueUnitDescription: ValueUnitDescription
-        - TotalValue: 1.8268702177058116
+        - TotalValue: 0.4182561061793122
           Description: Description
           Number: 2
-          RemainingTotalValue: 3.502657762086401
-          CountDecimalDigits: 9
+          RemainingTotalValue: 5.299143560275359
+          CountDecimalDigits: 8
           ValueUnitDescription: ValueUnitDescription
         ObjectNumber: ObjectNumber
         UsePeppol: true
@@ -21947,10 +22656,10 @@ components:
         Rebate: 2.3021358869347655
         DocumentNumber: 6.027456183070403
         IncotermCode: IncotermCode
-        GrossAmountMinusPrepaymentsAndInterimInvoices: 0.43431398824148815
+        GrossAmountMinusPrepaymentsAndInterimInvoices: 6.623518433804886
         DocumentTypeId: 1
         OrderDate: OrderDate
-        TotalGrossAmount: 6.073898085781152
+        TotalGrossAmount: 0.43431398824148815
         Contact:
           FirstName: FirstName
           FaxNumber: FaxNumber
@@ -22484,6 +23193,8 @@ components:
           type: string
         Contact:
           $ref: '#/components/schemas/DocumentContact'
+        CompanyContact:
+          $ref: '#/components/schemas/CompanyContact'
         Prepayments:
           description: |
             Liste der Anzahlungen zu dem Verkaufsbeleg
@@ -24891,7 +25602,18 @@ components:
       - type: object
       description: |
         Enthält alle Informationen zum Status für ein Element in der Warteschlange für Belegabrufe.
-      example: {}
+      example:
+        Status: Pending
+        Errors:
+        - Message: Message
+          MessageDetail: MessageDetail
+          Identity: Identity
+          HsErrorId: HsErrorId
+        - Message: Message
+          MessageDetail: MessageDetail
+          Identity: Identity
+          HsErrorId: HsErrorId
+        DocumentId: 0
       title: DocumentProcessQueueItemStatus
     ProcessHistoryInfo:
       description: Enthält Informationen zur Abrufhistorie eines Belegs.
@@ -25101,25 +25823,25 @@ components:
         - ConditionLineItemData:
             Condition: Condition
             CalculationFieldConditionValues:
-            - Number: 9
-              Amount: 9.702963800023566
-              StartValue: 0.8774076871421566
-            - Number: 9
-              Amount: 9.702963800023566
-              StartValue: 0.8774076871421566
+            - Number: 7
+              Amount: 4.86315908102884
+              StartValue: 5.507386964179881
+            - Number: 7
+              Amount: 4.86315908102884
+              StartValue: 5.507386964179881
             OrderReferenceLineNumber: OrderReferenceLineNumber
             ObjectNumber: ObjectNumber
-            Percentage: 0.2025324113236393
+            Percentage: 4.678947989005849
             Accounting:
               Account: 6.778324963048013
               CostCenter: CostCenter
               DiscountAccount: 6.878052220127876
               Tax: Tax
               CostUnit: CostUnit
-            Amount: 4.258773108174356
-            AmountAlreadyProcessed: 1.041444916118296
+            Amount: 9.132027271330688
+            AmountAlreadyProcessed: 0.8774076871421566
             Text: Text
-            ReferencedAmount: 6.628464275087742
+            ReferencedAmount: 7.260521264802104
             UserDefinedFields:
             - DefinitionId: 1
               Type: Alphanumeric
@@ -25135,21 +25857,23 @@ components:
               DateValue: DateValue
               NumericValue: NumericValue
               Name: Verkaufsgebiet
-            CalculationFieldNumber: 7
+            CalculationFieldNumber: 0
+            ReasonCode: FC
             LineNumber: LineNumber
             OrderDate: OrderDate
-            AmountToProcess: 4.678947989005849
+            AmountToProcess: 9.702963800023566
+            IsAssignedToDocument: true
             CalculationFieldConditionType: Factor
             ReferringTo:
-            - 4
-            - 4
+            - 1
+            - 1
             ChargeType: Surcharge
             OrderReference: OrderReference
-            ConditionId: 3
+            ConditionId: 4
             ConditionType: Amount
           TextLineItemData:
             RefersToProductLineItem: true
-            ReferringTo: 5
+            ReferringTo: 4
             Text: Text
             LineNumber: LineNumber
           LineItemType: Product
@@ -25503,43 +26227,57 @@ components:
             QuantityInDeliveryUnits: 2
             OrderDate: OrderDate
             CalculationFieldValues:
-            - TotalValue: 7.04836565559697
-              RemainingTotalValue: 5.533258397034986
-            - TotalValue: 7.04836565559697
-              RemainingTotalValue: 5.533258397034986
+            - TotalValue: 0.2025324113236393
+              Description: Description
+              QuantityInPriceUnits: 4.078845849666752
+              Number: 2
+              Value: 3.2588565619047607
+              RemainingTotalValue: 6.628464275087742
+              CountDecimalDigits: 5
+              QuantityUnitDescription: QuantityUnitDescription
+              ValueUnitDescription: ValueUnitDescription
+            - TotalValue: 0.2025324113236393
+              Description: Description
+              QuantityInPriceUnits: 4.078845849666752
+              Number: 2
+              Value: 3.2588565619047607
+              RemainingTotalValue: 6.628464275087742
+              CountDecimalDigits: 5
+              QuantityUnitDescription: QuantityUnitDescription
+              ValueUnitDescription: ValueUnitDescription
             UnitPrice: 100
             StockNumber: 1
             QuantityUnit: Manntage
           Key: 9
           TextBlockLineItemData:
             RefersToProductLineItem: true
-            ReferringTo: 7
-            TextBlockId: 0
+            ReferringTo: 8
+            TextBlockId: 6
             Text: Text
             TextBlock: TextBlock
             LineNumber: LineNumber
         - ConditionLineItemData:
             Condition: Condition
             CalculationFieldConditionValues:
-            - Number: 9
-              Amount: 9.702963800023566
-              StartValue: 0.8774076871421566
-            - Number: 9
-              Amount: 9.702963800023566
-              StartValue: 0.8774076871421566
+            - Number: 7
+              Amount: 4.86315908102884
+              StartValue: 5.507386964179881
+            - Number: 7
+              Amount: 4.86315908102884
+              StartValue: 5.507386964179881
             OrderReferenceLineNumber: OrderReferenceLineNumber
             ObjectNumber: ObjectNumber
-            Percentage: 0.2025324113236393
+            Percentage: 4.678947989005849
             Accounting:
               Account: 6.778324963048013
               CostCenter: CostCenter
               DiscountAccount: 6.878052220127876
               Tax: Tax
               CostUnit: CostUnit
-            Amount: 4.258773108174356
-            AmountAlreadyProcessed: 1.041444916118296
+            Amount: 9.132027271330688
+            AmountAlreadyProcessed: 0.8774076871421566
             Text: Text
-            ReferencedAmount: 6.628464275087742
+            ReferencedAmount: 7.260521264802104
             UserDefinedFields:
             - DefinitionId: 1
               Type: Alphanumeric
@@ -25555,21 +26293,23 @@ components:
               DateValue: DateValue
               NumericValue: NumericValue
               Name: Verkaufsgebiet
-            CalculationFieldNumber: 7
+            CalculationFieldNumber: 0
+            ReasonCode: FC
             LineNumber: LineNumber
             OrderDate: OrderDate
-            AmountToProcess: 4.678947989005849
+            AmountToProcess: 9.702963800023566
+            IsAssignedToDocument: true
             CalculationFieldConditionType: Factor
             ReferringTo:
-            - 4
-            - 4
+            - 1
+            - 1
             ChargeType: Surcharge
             OrderReference: OrderReference
-            ConditionId: 3
+            ConditionId: 4
             ConditionType: Amount
           TextLineItemData:
             RefersToProductLineItem: true
-            ReferringTo: 5
+            ReferringTo: 4
             Text: Text
             LineNumber: LineNumber
           LineItemType: Product
@@ -25923,24 +26663,42 @@ components:
             QuantityInDeliveryUnits: 2
             OrderDate: OrderDate
             CalculationFieldValues:
-            - TotalValue: 7.04836565559697
-              RemainingTotalValue: 5.533258397034986
-            - TotalValue: 7.04836565559697
-              RemainingTotalValue: 5.533258397034986
+            - TotalValue: 0.2025324113236393
+              Description: Description
+              QuantityInPriceUnits: 4.078845849666752
+              Number: 2
+              Value: 3.2588565619047607
+              RemainingTotalValue: 6.628464275087742
+              CountDecimalDigits: 5
+              QuantityUnitDescription: QuantityUnitDescription
+              ValueUnitDescription: ValueUnitDescription
+            - TotalValue: 0.2025324113236393
+              Description: Description
+              QuantityInPriceUnits: 4.078845849666752
+              Number: 2
+              Value: 3.2588565619047607
+              RemainingTotalValue: 6.628464275087742
+              CountDecimalDigits: 5
+              QuantityUnitDescription: QuantityUnitDescription
+              ValueUnitDescription: ValueUnitDescription
             UnitPrice: 100
             StockNumber: 1
             QuantityUnit: Manntage
           Key: 9
           TextBlockLineItemData:
             RefersToProductLineItem: true
-            ReferringTo: 7
-            TextBlockId: 0
+            ReferringTo: 8
+            TextBlockId: 6
             Text: Text
             TextBlock: TextBlock
             LineNumber: LineNumber
         CreatedBy: CreatedBy
         PayeeTurnover: true
         ChangedBy: ChangedBy
+        CompanyContact:
+          PhoneNumber: PhoneNumber
+          EMail: EMail
+          Name: Name
         IsInStatistics: true
         TermsOfPaymentId: 3
         AdditionalText: AdditionalText
@@ -25950,13 +26708,13 @@ components:
           IsActivated: true
           DoEmbedIntoXRechnung: true
           DmsId: DmsId
-          Id: 2
+          Id: 4
         - FileSystemPath: FileSystemPath
           Type: LinkToFileSystem
           IsActivated: true
           DoEmbedIntoXRechnung: true
           DmsId: DmsId
-          Id: 2
+          Id: 4
         SupplierId: 5
         ShowNotesOnChange: true
         PayeeId: 2
@@ -25983,17 +26741,17 @@ components:
         PriceList: 7
         Notes: Notes
         CalculationFieldTotals:
-        - TotalValue: 1.8268702177058116
+        - TotalValue: 0.4182561061793122
           Description: Description
           Number: 2
-          RemainingTotalValue: 3.502657762086401
-          CountDecimalDigits: 9
+          RemainingTotalValue: 5.299143560275359
+          CountDecimalDigits: 8
           ValueUnitDescription: ValueUnitDescription
-        - TotalValue: 1.8268702177058116
+        - TotalValue: 0.4182561061793122
           Description: Description
           Number: 2
-          RemainingTotalValue: 3.502657762086401
-          CountDecimalDigits: 9
+          RemainingTotalValue: 5.299143560275359
+          CountDecimalDigits: 8
           ValueUnitDescription: ValueUnitDescription
         BusinessTransaction: DomesticPurchaseWithInputVat
         ElectronicInvoiceFormat: None
@@ -26396,6 +27154,8 @@ components:
           type: string
         Contact:
           $ref: '#/components/schemas/DocumentContact'
+        CompanyContact:
+          $ref: '#/components/schemas/CompanyContact'
         ElectronicInvoiceFormat:
           description: |
             Format der E-Rechnung (für Eigenrechnung)
@@ -26767,6 +27527,10 @@ components:
         CreatedBy: CreatedBy
         ChangedBy: ChangedBy
         RemainingQuantity: 1.4894159098541704
+        CompanyContact:
+          PhoneNumber: PhoneNumber
+          EMail: EMail
+          Name: Name
         ProductNumber: ProductNumber
         AdditionalText: AdditionalText
         DrawingModificationStatus: Abgeschlossen
@@ -26776,13 +27540,13 @@ components:
           IsActivated: true
           DoEmbedIntoXRechnung: true
           DmsId: DmsId
-          Id: 2
+          Id: 4
         - FileSystemPath: FileSystemPath
           Type: LinkToFileSystem
           IsActivated: true
           DoEmbedIntoXRechnung: true
           DmsId: DmsId
-          Id: 2
+          Id: 4
         ShowNotesOnChange: true
         DrawingCreatedBy: Helmut von Wahl
         Id: 0
@@ -26824,17 +27588,17 @@ components:
         ExternalManufacturerNumber: 7.061401241503109
         ReferencedSalesDocumentCustomerId: 17
         CalculationFieldTotals:
-        - TotalValue: 1.8268702177058116
+        - TotalValue: 0.4182561061793122
           Description: Description
           Number: 2
-          RemainingTotalValue: 3.502657762086401
-          CountDecimalDigits: 9
+          RemainingTotalValue: 5.299143560275359
+          CountDecimalDigits: 8
           ValueUnitDescription: ValueUnitDescription
-        - TotalValue: 1.8268702177058116
+        - TotalValue: 0.4182561061793122
           Description: Description
           Number: 2
-          RemainingTotalValue: 3.502657762086401
-          CountDecimalDigits: 9
+          RemainingTotalValue: 5.299143560275359
+          CountDecimalDigits: 8
           ValueUnitDescription: ValueUnitDescription
         DocumentType: DocumentType
         ManufacturingOrderId: 5
@@ -27250,6 +28014,8 @@ components:
           type: string
         Contact:
           $ref: '#/components/schemas/DocumentContact'
+        CompanyContact:
+          $ref: '#/components/schemas/CompanyContact'
       title: ManufactureDocument
       type: object
     ManufactureLineItem:
@@ -28066,25 +28832,25 @@ components:
         - ConditionLineItemData:
             Condition: Condition
             CalculationFieldConditionValues:
-            - Number: 9
-              Amount: 9.702963800023566
-              StartValue: 0.8774076871421566
-            - Number: 9
-              Amount: 9.702963800023566
-              StartValue: 0.8774076871421566
+            - Number: 7
+              Amount: 4.86315908102884
+              StartValue: 5.507386964179881
+            - Number: 7
+              Amount: 4.86315908102884
+              StartValue: 5.507386964179881
             OrderReferenceLineNumber: OrderReferenceLineNumber
             ObjectNumber: ObjectNumber
-            Percentage: 0.2025324113236393
+            Percentage: 4.678947989005849
             Accounting:
               Account: 6.778324963048013
               CostCenter: CostCenter
               DiscountAccount: 6.878052220127876
               Tax: Tax
               CostUnit: CostUnit
-            Amount: 4.258773108174356
-            AmountAlreadyProcessed: 1.041444916118296
+            Amount: 9.132027271330688
+            AmountAlreadyProcessed: 0.8774076871421566
             Text: Text
-            ReferencedAmount: 6.628464275087742
+            ReferencedAmount: 7.260521264802104
             UserDefinedFields:
             - DefinitionId: 1
               Type: Alphanumeric
@@ -28100,21 +28866,23 @@ components:
               DateValue: DateValue
               NumericValue: NumericValue
               Name: Verkaufsgebiet
-            CalculationFieldNumber: 7
+            CalculationFieldNumber: 0
+            ReasonCode: FC
             LineNumber: LineNumber
             OrderDate: OrderDate
-            AmountToProcess: 4.678947989005849
+            AmountToProcess: 9.702963800023566
+            IsAssignedToDocument: true
             CalculationFieldConditionType: Factor
             ReferringTo:
-            - 4
-            - 4
+            - 1
+            - 1
             ChargeType: Surcharge
             OrderReference: OrderReference
-            ConditionId: 3
+            ConditionId: 4
             ConditionType: Amount
           TextLineItemData:
             RefersToProductLineItem: true
-            ReferringTo: 5
+            ReferringTo: 4
             Text: Text
             LineNumber: LineNumber
           LineItemType: Product
@@ -28468,43 +29236,57 @@ components:
             QuantityInDeliveryUnits: 2
             OrderDate: OrderDate
             CalculationFieldValues:
-            - TotalValue: 7.04836565559697
-              RemainingTotalValue: 5.533258397034986
-            - TotalValue: 7.04836565559697
-              RemainingTotalValue: 5.533258397034986
+            - TotalValue: 0.2025324113236393
+              Description: Description
+              QuantityInPriceUnits: 4.078845849666752
+              Number: 2
+              Value: 3.2588565619047607
+              RemainingTotalValue: 6.628464275087742
+              CountDecimalDigits: 5
+              QuantityUnitDescription: QuantityUnitDescription
+              ValueUnitDescription: ValueUnitDescription
+            - TotalValue: 0.2025324113236393
+              Description: Description
+              QuantityInPriceUnits: 4.078845849666752
+              Number: 2
+              Value: 3.2588565619047607
+              RemainingTotalValue: 6.628464275087742
+              CountDecimalDigits: 5
+              QuantityUnitDescription: QuantityUnitDescription
+              ValueUnitDescription: ValueUnitDescription
             UnitPrice: 100
             StockNumber: 1
             QuantityUnit: Manntage
           Key: 9
           TextBlockLineItemData:
             RefersToProductLineItem: true
-            ReferringTo: 7
-            TextBlockId: 0
+            ReferringTo: 8
+            TextBlockId: 6
             Text: Text
             TextBlock: TextBlock
             LineNumber: LineNumber
         - ConditionLineItemData:
             Condition: Condition
             CalculationFieldConditionValues:
-            - Number: 9
-              Amount: 9.702963800023566
-              StartValue: 0.8774076871421566
-            - Number: 9
-              Amount: 9.702963800023566
-              StartValue: 0.8774076871421566
+            - Number: 7
+              Amount: 4.86315908102884
+              StartValue: 5.507386964179881
+            - Number: 7
+              Amount: 4.86315908102884
+              StartValue: 5.507386964179881
             OrderReferenceLineNumber: OrderReferenceLineNumber
             ObjectNumber: ObjectNumber
-            Percentage: 0.2025324113236393
+            Percentage: 4.678947989005849
             Accounting:
               Account: 6.778324963048013
               CostCenter: CostCenter
               DiscountAccount: 6.878052220127876
               Tax: Tax
               CostUnit: CostUnit
-            Amount: 4.258773108174356
-            AmountAlreadyProcessed: 1.041444916118296
+            Amount: 9.132027271330688
+            AmountAlreadyProcessed: 0.8774076871421566
             Text: Text
-            ReferencedAmount: 6.628464275087742
+            ReferencedAmount: 7.260521264802104
             UserDefinedFields:
             - DefinitionId: 1
               Type: Alphanumeric
@@ -28520,21 +29302,23 @@ components:
               DateValue: DateValue
               NumericValue: NumericValue
               Name: Verkaufsgebiet
-            CalculationFieldNumber: 7
+            CalculationFieldNumber: 0
+            ReasonCode: FC
             LineNumber: LineNumber
             OrderDate: OrderDate
-            AmountToProcess: 4.678947989005849
+            AmountToProcess: 9.702963800023566
+            IsAssignedToDocument: true
             CalculationFieldConditionType: Factor
             ReferringTo:
-            - 4
-            - 4
+            - 1
+            - 1
             ChargeType: Surcharge
             OrderReference: OrderReference
-            ConditionId: 3
+            ConditionId: 4
             ConditionType: Amount
           TextLineItemData:
             RefersToProductLineItem: true
-            ReferringTo: 5
+            ReferringTo: 4
             Text: Text
             LineNumber: LineNumber
           LineItemType: Product
@@ -28888,23 +29672,41 @@ components:
             QuantityInDeliveryUnits: 2
             OrderDate: OrderDate
             CalculationFieldValues:
-            - TotalValue: 7.04836565559697
-              RemainingTotalValue: 5.533258397034986
-            - TotalValue: 7.04836565559697
-              RemainingTotalValue: 5.533258397034986
+            - TotalValue: 0.2025324113236393
+              Description: Description
+              QuantityInPriceUnits: 4.078845849666752
+              Number: 2
+              Value: 3.2588565619047607
+              RemainingTotalValue: 6.628464275087742
+              CountDecimalDigits: 5
+              QuantityUnitDescription: QuantityUnitDescription
+              ValueUnitDescription: ValueUnitDescription
+            - TotalValue: 0.2025324113236393
+              Description: Description
+              QuantityInPriceUnits: 4.078845849666752
+              Number: 2
+              Value: 3.2588565619047607
+              RemainingTotalValue: 6.628464275087742
+              CountDecimalDigits: 5
+              QuantityUnitDescription: QuantityUnitDescription
+              ValueUnitDescription: ValueUnitDescription
             UnitPrice: 100
             StockNumber: 1
             QuantityUnit: Manntage
           Key: 9
           TextBlockLineItemData:
             RefersToProductLineItem: true
-            ReferringTo: 7
-            TextBlockId: 0
+            ReferringTo: 8
+            TextBlockId: 6
             Text: Text
             TextBlock: TextBlock
             LineNumber: LineNumber
         CreatedBy: CreatedBy
         ChangedBy: ChangedBy
+        CompanyContact:
+          PhoneNumber: PhoneNumber
+          EMail: EMail
+          Name: Name
         ConsiderForPackagingLaw: true
         CustomerId: 5
         TermsOfPaymentId: 2
@@ -28915,13 +29717,13 @@ components:
           IsActivated: true
           DoEmbedIntoXRechnung: true
           DmsId: DmsId
-          Id: 2
+          Id: 4
         - FileSystemPath: FileSystemPath
           Type: LinkToFileSystem
           IsActivated: true
           DoEmbedIntoXRechnung: true
           DmsId: DmsId
-          Id: 2
+          Id: 4
         IntervalUnit: Days
         SepaMandateReference: SepaMandateReference
         ShowNotesOnChange: true
@@ -28939,21 +29741,21 @@ components:
         AgentCommissions:
         - Supervisor: Supervisor
           Agent: Agent
-          PercentageToBePaid: 8.28965939814297
-          SupervisorRate: 4.573936264232251
-          Rate: 1.7325933120207193
+          PercentageToBePaid: 9.254183946267839
+          SupervisorRate: 3.502657762086401
+          Rate: 8.863729185622827
           DoDetermineRate: true
-          BonusAmount: 6.623518433804886
+          BonusAmount: 1.8268702177058116
           DoShareWithSupervisor: true
           DoDetermineSupervisor: true
           SupervisorSharingKind: Commission
         - Supervisor: Supervisor
           Agent: Agent
-          PercentageToBePaid: 8.28965939814297
-          SupervisorRate: 4.573936264232251
-          Rate: 1.7325933120207193
+          PercentageToBePaid: 9.254183946267839
+          SupervisorRate: 3.502657762086401
+          Rate: 8.863729185622827
           DoDetermineRate: true
-          BonusAmount: 6.623518433804886
+          BonusAmount: 1.8268702177058116
           DoShareWithSupervisor: true
           DoDetermineSupervisor: true
           SupervisorSharingKind: Commission
@@ -28973,17 +29775,17 @@ components:
         PriceList: 1
         Notes: Notes
         CalculationFieldTotals:
-        - TotalValue: 1.8268702177058116
+        - TotalValue: 0.4182561061793122
           Description: Description
           Number: 2
-          RemainingTotalValue: 3.502657762086401
-          CountDecimalDigits: 9
+          RemainingTotalValue: 5.299143560275359
+          CountDecimalDigits: 8
           ValueUnitDescription: ValueUnitDescription
-        - TotalValue: 1.8268702177058116
+        - TotalValue: 0.4182561061793122
           Description: Description
           Number: 2
-          RemainingTotalValue: 3.502657762086401
-          CountDecimalDigits: 9
+          RemainingTotalValue: 5.299143560275359
+          CountDecimalDigits: 8
           ValueUnitDescription: ValueUnitDescription
         ObjectNumber: ObjectNumber
         CreditTransferHousebankNumber: 7
@@ -28997,6 +29799,18 @@ components:
         DocumentTypeId: 1
         OrderDate: OrderDate
         TotalGrossAmount: 9.369310271410669
+        Contact:
+          FirstName: FirstName
+          FaxNumber: FaxNumber
+          Title: Title
+          PhoneNumber: PhoneNumber
+          LastName: LastName
+          EMail: EMail
+          NameAddition: NameAddition
+          DoPresetEmail: true
+          Salutation: Salutation
+          MobilePhoneNumber: MobilePhoneNumber
+          FormOfAdress: FormOfAdress
         ChangingDate: 2000-01-23T04:56:07.000+00:00
         CurrencyIso: EUR
         DeliverOnlyIfAllProductsInStock: true
@@ -29391,6 +30205,10 @@ components:
           description: Kostenträger (Ordnungsbegriff)
           nullable: true
           type: string
+        Contact:
+          $ref: '#/components/schemas/DocumentContact'
+        CompanyContact:
+          $ref: '#/components/schemas/CompanyContact'
       title: PeriodicalSalesDocumentTemplate
       type: object
     PeriodicalPurchaseDocumentTemplate:
@@ -29469,25 +30287,25 @@ components:
         - ConditionLineItemData:
             Condition: Condition
             CalculationFieldConditionValues:
-            - Number: 9
-              Amount: 9.702963800023566
-              StartValue: 0.8774076871421566
-            - Number: 9
-              Amount: 9.702963800023566
-              StartValue: 0.8774076871421566
+            - Number: 7
+              Amount: 4.86315908102884
+              StartValue: 5.507386964179881
+            - Number: 7
+              Amount: 4.86315908102884
+              StartValue: 5.507386964179881
             OrderReferenceLineNumber: OrderReferenceLineNumber
             ObjectNumber: ObjectNumber
-            Percentage: 0.2025324113236393
+            Percentage: 4.678947989005849
             Accounting:
               Account: 6.778324963048013
               CostCenter: CostCenter
               DiscountAccount: 6.878052220127876
               Tax: Tax
               CostUnit: CostUnit
-            Amount: 4.258773108174356
-            AmountAlreadyProcessed: 1.041444916118296
+            Amount: 9.132027271330688
+            AmountAlreadyProcessed: 0.8774076871421566
             Text: Text
-            ReferencedAmount: 6.628464275087742
+            ReferencedAmount: 7.260521264802104
             UserDefinedFields:
             - DefinitionId: 1
               Type: Alphanumeric
@@ -29503,21 +30321,23 @@ components:
               DateValue: DateValue
               NumericValue: NumericValue
               Name: Verkaufsgebiet
-            CalculationFieldNumber: 7
+            CalculationFieldNumber: 0
+            ReasonCode: FC
             LineNumber: LineNumber
             OrderDate: OrderDate
-            AmountToProcess: 4.678947989005849
+            AmountToProcess: 9.702963800023566
+            IsAssignedToDocument: true
             CalculationFieldConditionType: Factor
             ReferringTo:
-            - 4
-            - 4
+            - 1
+            - 1
             ChargeType: Surcharge
             OrderReference: OrderReference
-            ConditionId: 3
+            ConditionId: 4
             ConditionType: Amount
           TextLineItemData:
             RefersToProductLineItem: true
-            ReferringTo: 5
+            ReferringTo: 4
             Text: Text
             LineNumber: LineNumber
           LineItemType: Product
@@ -29871,43 +30691,57 @@ components:
             QuantityInDeliveryUnits: 2
             OrderDate: OrderDate
             CalculationFieldValues:
-            - TotalValue: 7.04836565559697
-              RemainingTotalValue: 5.533258397034986
-            - TotalValue: 7.04836565559697
-              RemainingTotalValue: 5.533258397034986
+            - TotalValue: 0.2025324113236393
+              Description: Description
+              QuantityInPriceUnits: 4.078845849666752
+              Number: 2
+              Value: 3.2588565619047607
+              RemainingTotalValue: 6.628464275087742
+              CountDecimalDigits: 5
+              QuantityUnitDescription: QuantityUnitDescription
+              ValueUnitDescription: ValueUnitDescription
+            - TotalValue: 0.2025324113236393
+              Description: Description
+              QuantityInPriceUnits: 4.078845849666752
+              Number: 2
+              Value: 3.2588565619047607
+              RemainingTotalValue: 6.628464275087742
+              CountDecimalDigits: 5
+              QuantityUnitDescription: QuantityUnitDescription
+              ValueUnitDescription: ValueUnitDescription
             UnitPrice: 100
             StockNumber: 1
             QuantityUnit: Manntage
           Key: 9
           TextBlockLineItemData:
             RefersToProductLineItem: true
-            ReferringTo: 7
-            TextBlockId: 0
+            ReferringTo: 8
+            TextBlockId: 6
             Text: Text
             TextBlock: TextBlock
             LineNumber: LineNumber
         - ConditionLineItemData:
             Condition: Condition
             CalculationFieldConditionValues:
-            - Number: 9
-              Amount: 9.702963800023566
-              StartValue: 0.8774076871421566
-            - Number: 9
-              Amount: 9.702963800023566
-              StartValue: 0.8774076871421566
+            - Number: 7
+              Amount: 4.86315908102884
+              StartValue: 5.507386964179881
+            - Number: 7
+              Amount: 4.86315908102884
+              StartValue: 5.507386964179881
             OrderReferenceLineNumber: OrderReferenceLineNumber
             ObjectNumber: ObjectNumber
-            Percentage: 0.2025324113236393
+            Percentage: 4.678947989005849
             Accounting:
               Account: 6.778324963048013
               CostCenter: CostCenter
               DiscountAccount: 6.878052220127876
               Tax: Tax
               CostUnit: CostUnit
-            Amount: 4.258773108174356
-            AmountAlreadyProcessed: 1.041444916118296
+            Amount: 9.132027271330688
+            AmountAlreadyProcessed: 0.8774076871421566
             Text: Text
-            ReferencedAmount: 6.628464275087742
+            ReferencedAmount: 7.260521264802104
             UserDefinedFields:
             - DefinitionId: 1
               Type: Alphanumeric
@@ -29923,21 +30757,23 @@ components:
               DateValue: DateValue
               NumericValue: NumericValue
               Name: Verkaufsgebiet
-            CalculationFieldNumber: 7
+            CalculationFieldNumber: 0
+            ReasonCode: FC
             LineNumber: LineNumber
             OrderDate: OrderDate
-            AmountToProcess: 4.678947989005849
+            AmountToProcess: 9.702963800023566
+            IsAssignedToDocument: true
             CalculationFieldConditionType: Factor
             ReferringTo:
-            - 4
-            - 4
+            - 1
+            - 1
             ChargeType: Surcharge
             OrderReference: OrderReference
-            ConditionId: 3
+            ConditionId: 4
             ConditionType: Amount
           TextLineItemData:
             RefersToProductLineItem: true
-            ReferringTo: 5
+            ReferringTo: 4
             Text: Text
             LineNumber: LineNumber
           LineItemType: Product
@@ -30291,24 +31127,42 @@ components:
             QuantityInDeliveryUnits: 2
             OrderDate: OrderDate
             CalculationFieldValues:
-            - TotalValue: 7.04836565559697
-              RemainingTotalValue: 5.533258397034986
-            - TotalValue: 7.04836565559697
-              RemainingTotalValue: 5.533258397034986
+            - TotalValue: 0.2025324113236393
+              Description: Description
+              QuantityInPriceUnits: 4.078845849666752
+              Number: 2
+              Value: 3.2588565619047607
+              RemainingTotalValue: 6.628464275087742
+              CountDecimalDigits: 5
+              QuantityUnitDescription: QuantityUnitDescription
+              ValueUnitDescription: ValueUnitDescription
+            - TotalValue: 0.2025324113236393
+              Description: Description
+              QuantityInPriceUnits: 4.078845849666752
+              Number: 2
+              Value: 3.2588565619047607
+              RemainingTotalValue: 6.628464275087742
+              CountDecimalDigits: 5
+              QuantityUnitDescription: QuantityUnitDescription
+              ValueUnitDescription: ValueUnitDescription
             UnitPrice: 100
             StockNumber: 1
             QuantityUnit: Manntage
           Key: 9
           TextBlockLineItemData:
             RefersToProductLineItem: true
-            ReferringTo: 7
-            TextBlockId: 0
+            ReferringTo: 8
+            TextBlockId: 6
             Text: Text
             TextBlock: TextBlock
             LineNumber: LineNumber
         CreatedBy: CreatedBy
         PayeeTurnover: true
         ChangedBy: ChangedBy
+        CompanyContact:
+          PhoneNumber: PhoneNumber
+          EMail: EMail
+          Name: Name
         TermsOfPaymentId: 2
         AdditionalText: AdditionalText
         DocumentLinks:
@@ -30317,13 +31171,13 @@ components:
           IsActivated: true
           DoEmbedIntoXRechnung: true
           DmsId: DmsId
-          Id: 2
+          Id: 4
         - FileSystemPath: FileSystemPath
           Type: LinkToFileSystem
           IsActivated: true
           DoEmbedIntoXRechnung: true
           DmsId: DmsId
-          Id: 2
+          Id: 4
         IntervalUnit: Days
         SupplierId: 5
         ShowNotesOnChange: true
@@ -30347,17 +31201,17 @@ components:
         PriceList: 1
         Notes: Notes
         CalculationFieldTotals:
-        - TotalValue: 1.8268702177058116
+        - TotalValue: 0.4182561061793122
           Description: Description
           Number: 2
-          RemainingTotalValue: 3.502657762086401
-          CountDecimalDigits: 9
+          RemainingTotalValue: 5.299143560275359
+          CountDecimalDigits: 8
           ValueUnitDescription: ValueUnitDescription
-        - TotalValue: 1.8268702177058116
+        - TotalValue: 0.4182561061793122
           Description: Description
           Number: 2
-          RemainingTotalValue: 3.502657762086401
-          CountDecimalDigits: 9
+          RemainingTotalValue: 5.299143560275359
+          CountDecimalDigits: 8
           ValueUnitDescription: ValueUnitDescription
         BusinessTransaction: DomesticPurchaseWithInputVat
         BillingPeriodEnd: BillingPeriodEnd
@@ -30370,6 +31224,18 @@ components:
         DocumentTypeId: 1
         OrderDate: OrderDate
         TotalGrossAmount: 1.1730742509559433
+        Contact:
+          FirstName: FirstName
+          FaxNumber: FaxNumber
+          Title: Title
+          PhoneNumber: PhoneNumber
+          LastName: LastName
+          EMail: EMail
+          NameAddition: NameAddition
+          DoPresetEmail: true
+          Salutation: Salutation
+          MobilePhoneNumber: MobilePhoneNumber
+          FormOfAdress: FormOfAdress
         ChangingDate: 2000-01-23T04:56:07.000+00:00
         CurrencyIso: EUR
         HintText: HintText
@@ -30684,6 +31550,10 @@ components:
           description: Kostenträger (Ordnungsbegriff)
           nullable: true
           type: string
+        Contact:
+          $ref: '#/components/schemas/DocumentContact'
+        CompanyContact:
+          $ref: '#/components/schemas/CompanyContact'
       title: PeriodicalPurchaseDocumentTemplate
       type: object
     InventoryTransaction:
@@ -32489,32 +33359,36 @@ components:
     ContactPersonData:
       description: Enthält die Daten eines Ansprechpartners
       example:
-        DateOfBirth: DateOfBirth
-        FirstName: FirstName
+        DateOfBirth: 1967-10-29
+        FirstName: Erika
         Title: Title
         Gender: Female
-        EMail: EMail
-        Salutation: Salutation
-        MobilePhoneNumber: MobilePhoneNumber
-        Role: Role
-        Department: Department
-        FaxNumber: FaxNumber
-        PhoneNumber: PhoneNumber
-        Id: 7
-        LastName: LastName
-        Notes: Notes
-        FormOfAdress: FormOfAdress
+        EMail: e.musterfrau@example.com
+        Salutation: Frau
+        MobilePhoneNumber: +49172 9925904
+        IdInThirdPartyApplication: FB3EE3DE-0EE6-4F3F-980C-50218467B1C1
+        Role: Sekretariat
+        Department: Verkauf
+        FaxNumber: 040/66969007
+        PhoneNumber: 040/66969007
+        Id: 1
+        LastName: Musterfrau
+        Notes: Nur Mo-Mi erreichbar
+        FormOfAdress: Sehr geehrte Frau
       properties:
         Id:
           description: Id des Ansprechpartners
+          example: 1
           nullable: true
           type: integer
         LastName:
           description: Nachname
+          example: Musterfrau
           nullable: true
           type: string
         FirstName:
           description: Vorname
+          example: Erika
           nullable: true
           type: string
         Gender:
@@ -32524,50 +33398,68 @@ components:
           - Male
           - Diverse
           - NotSelected
+          example: Female
           nullable: true
           type: string
         FormOfAdress:
           description: Begrüßung
+          example: Sehr geehrte Frau
           nullable: true
           type: string
         Salutation:
           description: Anrede
+          example: Frau
           nullable: true
           type: string
         Title:
           description: Titel
           nullable: true
           type: string
+          example: null
         DateOfBirth:
           description: Geburtsdatum im Format YYYY-MM-DD
+          example: 1967-10-29
           nullable: true
           type: string
         PhoneNumber:
           description: Telefonnummer
+          example: 040/66969007
           nullable: true
           type: string
         MobilePhoneNumber:
           description: Handynummer
+          example: +49172 9925904
           nullable: true
           type: string
         FaxNumber:
           description: Telefaxnummer
+          example: 040/66969007
           nullable: true
           type: string
         EMail:
           description: E-Mail-Adresse
+          example: e.musterfrau@example.com
           nullable: true
           type: string
         Role:
           description: Funktion im Unternehmen
+          example: Sekretariat
           nullable: true
           type: string
         Department:
           description: Abteilung
+          example: Verkauf
           nullable: true
           type: string
         Notes:
           description: Anmerkung
+          example: Nur Mo-Mi erreichbar
+          nullable: true
+          type: string
+        IdInThirdPartyApplication:
+          description: Id der Fremdanwendung
+          example: FB3EE3DE-0EE6-4F3F-980C-50218467B1C1
+          maxLength: 50
           nullable: true
           type: string
       title: ContactPerson
@@ -32578,25 +33470,25 @@ components:
         ConditionLineItemData:
           Condition: Condition
           CalculationFieldConditionValues:
-          - Number: 9
-            Amount: 9.702963800023566
-            StartValue: 0.8774076871421566
-          - Number: 9
-            Amount: 9.702963800023566
-            StartValue: 0.8774076871421566
+          - Number: 7
+            Amount: 4.86315908102884
+            StartValue: 5.507386964179881
+          - Number: 7
+            Amount: 4.86315908102884
+            StartValue: 5.507386964179881
           OrderReferenceLineNumber: OrderReferenceLineNumber
           ObjectNumber: ObjectNumber
-          Percentage: 0.2025324113236393
+          Percentage: 4.678947989005849
           Accounting:
             Account: 6.778324963048013
             CostCenter: CostCenter
             DiscountAccount: 6.878052220127876
             Tax: Tax
             CostUnit: CostUnit
-          Amount: 4.258773108174356
-          AmountAlreadyProcessed: 1.041444916118296
+          Amount: 9.132027271330688
+          AmountAlreadyProcessed: 0.8774076871421566
           Text: Text
-          ReferencedAmount: 6.628464275087742
+          ReferencedAmount: 7.260521264802104
           UserDefinedFields:
           - DefinitionId: 1
             Type: Alphanumeric
@@ -32612,21 +33504,23 @@ components:
             DateValue: DateValue
             NumericValue: NumericValue
             Name: Verkaufsgebiet
-          CalculationFieldNumber: 7
+          CalculationFieldNumber: 0
+          ReasonCode: FC
           LineNumber: LineNumber
           OrderDate: OrderDate
-          AmountToProcess: 4.678947989005849
+          AmountToProcess: 9.702963800023566
+          IsAssignedToDocument: true
           CalculationFieldConditionType: Factor
           ReferringTo:
-          - 4
-          - 4
+          - 1
+          - 1
           ChargeType: Surcharge
           OrderReference: OrderReference
-          ConditionId: 3
+          ConditionId: 4
           ConditionType: Amount
         TextLineItemData:
           RefersToProductLineItem: true
-          ReferringTo: 5
+          ReferringTo: 4
           Text: Text
           LineNumber: LineNumber
         LineItemType: Product
@@ -32980,18 +33874,32 @@ components:
           QuantityInDeliveryUnits: 2
           OrderDate: OrderDate
           CalculationFieldValues:
-          - TotalValue: 7.04836565559697
-            RemainingTotalValue: 5.533258397034986
-          - TotalValue: 7.04836565559697
-            RemainingTotalValue: 5.533258397034986
+          - TotalValue: 0.2025324113236393
+            Description: Description
+            QuantityInPriceUnits: 4.078845849666752
+            Number: 2
+            Value: 3.2588565619047607
+            RemainingTotalValue: 6.628464275087742
+            CountDecimalDigits: 5
+            QuantityUnitDescription: QuantityUnitDescription
+            ValueUnitDescription: ValueUnitDescription
+          - TotalValue: 0.2025324113236393
+            Description: Description
+            QuantityInPriceUnits: 4.078845849666752
+            Number: 2
+            Value: 3.2588565619047607
+            RemainingTotalValue: 6.628464275087742
+            CountDecimalDigits: 5
+            QuantityUnitDescription: QuantityUnitDescription
+            ValueUnitDescription: ValueUnitDescription
           UnitPrice: 100
           StockNumber: 1
           QuantityUnit: Manntage
         Key: 9
         TextBlockLineItemData:
           RefersToProductLineItem: true
-          ReferringTo: 7
-          TextBlockId: 0
+          ReferringTo: 8
+          TextBlockId: 6
           Text: Text
           TextBlock: TextBlock
           LineNumber: LineNumber
@@ -33388,10 +34296,24 @@ components:
         QuantityInDeliveryUnits: 2
         OrderDate: OrderDate
         CalculationFieldValues:
-        - TotalValue: 7.04836565559697
-          RemainingTotalValue: 5.533258397034986
-        - TotalValue: 7.04836565559697
-          RemainingTotalValue: 5.533258397034986
+        - TotalValue: 0.2025324113236393
+          Description: Description
+          QuantityInPriceUnits: 4.078845849666752
+          Number: 2
+          Value: 3.2588565619047607
+          RemainingTotalValue: 6.628464275087742
+          CountDecimalDigits: 5
+          QuantityUnitDescription: QuantityUnitDescription
+          ValueUnitDescription: ValueUnitDescription
+        - TotalValue: 0.2025324113236393
+          Description: Description
+          QuantityInPriceUnits: 4.078845849666752
+          Number: 2
+          Value: 3.2588565619047607
+          RemainingTotalValue: 6.628464275087742
+          CountDecimalDigits: 5
+          QuantityUnitDescription: QuantityUnitDescription
+          ValueUnitDescription: ValueUnitDescription
         UnitPrice: 100
         StockNumber: 1
         QuantityUnit: Manntage
@@ -34351,8 +35273,15 @@ components:
       - $ref: '#/components/schemas/CalculationFieldTotal'
       description: Wert eines Rechenfelds einer Belegposition inkl. Definition
       example:
-        TotalValue: 7.04836565559697
-        RemainingTotalValue: 5.533258397034986
+        TotalValue: 0.2025324113236393
+        Description: Description
+        QuantityInPriceUnits: 4.078845849666752
+        Number: 2
+        Value: 3.2588565619047607
+        RemainingTotalValue: 6.628464275087742
+        CountDecimalDigits: 5
+        QuantityUnitDescription: QuantityUnitDescription
+        ValueUnitDescription: ValueUnitDescription
       title: LineItemCalculationFieldValue
       type: object
     ConditionLineItem:
@@ -34360,25 +35289,25 @@ components:
       example:
         Condition: Condition
         CalculationFieldConditionValues:
-        - Number: 9
-          Amount: 9.702963800023566
-          StartValue: 0.8774076871421566
-        - Number: 9
-          Amount: 9.702963800023566
-          StartValue: 0.8774076871421566
+        - Number: 7
+          Amount: 4.86315908102884
+          StartValue: 5.507386964179881
+        - Number: 7
+          Amount: 4.86315908102884
+          StartValue: 5.507386964179881
         OrderReferenceLineNumber: OrderReferenceLineNumber
         ObjectNumber: ObjectNumber
-        Percentage: 0.2025324113236393
+        Percentage: 4.678947989005849
         Accounting:
           Account: 6.778324963048013
           CostCenter: CostCenter
           DiscountAccount: 6.878052220127876
           Tax: Tax
           CostUnit: CostUnit
-        Amount: 4.258773108174356
-        AmountAlreadyProcessed: 1.041444916118296
+        Amount: 9.132027271330688
+        AmountAlreadyProcessed: 0.8774076871421566
         Text: Text
-        ReferencedAmount: 6.628464275087742
+        ReferencedAmount: 7.260521264802104
         UserDefinedFields:
         - DefinitionId: 1
           Type: Alphanumeric
@@ -34394,17 +35323,19 @@ components:
           DateValue: DateValue
           NumericValue: NumericValue
           Name: Verkaufsgebiet
-        CalculationFieldNumber: 7
+        CalculationFieldNumber: 0
+        ReasonCode: FC
         LineNumber: LineNumber
         OrderDate: OrderDate
-        AmountToProcess: 4.678947989005849
+        AmountToProcess: 9.702963800023566
+        IsAssignedToDocument: true
         CalculationFieldConditionType: Factor
         ReferringTo:
-        - 4
-        - 4
+        - 1
+        - 1
         ChargeType: Surcharge
         OrderReference: OrderReference
-        ConditionId: 3
+        ConditionId: 4
         ConditionType: Amount
       properties:
         LineNumber:
@@ -34515,6 +35446,13 @@ components:
             Nur für Verkaufsbelege.
           nullable: true
           type: string
+        ReasonCode:
+          description: |
+            Internationaler Begründungscode (Reason Code) gemäß UNTDID 7161/5189 der Konditionsposition.
+            Nur für Verkaufsbelege.
+          example: FC
+          nullable: true
+          type: string
         OrderDate:
           description: |
             Auftragsdatum im Format YYYY-MM-DD.
@@ -34522,6 +35460,12 @@ components:
             Zum Löschen des Datums muss ein Leerstring übermittelt werden.
           nullable: true
           type: string
+        IsAssignedToDocument:
+          description: |
+            Bezieht sich die Kondition auf den gesamten Beleg?
+            Nur möglich, wenn es sich nicht um eine Umlagekondition handelt.
+          nullable: true
+          type: boolean
         UserDefinedFields:
           description: Benutzerdefinierte Felder
           items:
@@ -34536,8 +35480,8 @@ components:
       description: Enthält die speziellen Daten einer Textbausteinposition
       example:
         RefersToProductLineItem: true
-        ReferringTo: 7
-        TextBlockId: 0
+        ReferringTo: 8
+        TextBlockId: 6
         Text: Text
         TextBlock: TextBlock
         LineNumber: LineNumber
@@ -34584,7 +35528,7 @@ components:
       description: Enthält die speziellen Daten einer Textposition
       example:
         RefersToProductLineItem: true
-        ReferringTo: 5
+        ReferringTo: 4
         Text: Text
         LineNumber: LineNumber
       properties:
@@ -34625,7 +35569,7 @@ components:
         IsActivated: true
         DoEmbedIntoXRechnung: true
         DmsId: DmsId
-        Id: 2
+        Id: 4
       properties:
         Id:
           description: Identifikator der Dokumentverknüpfung (Technischer Schlüssel)
@@ -34689,11 +35633,11 @@ components:
       example:
         Supervisor: Supervisor
         Agent: Agent
-        PercentageToBePaid: 8.28965939814297
-        SupervisorRate: 4.573936264232251
-        Rate: 1.7325933120207193
+        PercentageToBePaid: 9.254183946267839
+        SupervisorRate: 3.502657762086401
+        Rate: 8.863729185622827
         DoDetermineRate: true
-        BonusAmount: 6.623518433804886
+        BonusAmount: 1.8268702177058116
         DoShareWithSupervisor: true
         DoDetermineSupervisor: true
         SupervisorSharingKind: Commission
@@ -34750,11 +35694,11 @@ components:
       - $ref: '#/components/schemas/CalculationFieldTotal'
       description: Gesamtwert eines Rechenfelds inkl. Definition des Rechenfelds.
       example:
-        TotalValue: 1.8268702177058116
+        TotalValue: 0.4182561061793122
         Description: Description
         Number: 2
-        RemainingTotalValue: 3.502657762086401
-        CountDecimalDigits: 9
+        RemainingTotalValue: 5.299143560275359
+        CountDecimalDigits: 8
         ValueUnitDescription: ValueUnitDescription
       title: CalculationFieldTotalWithDefinition
       type: object
@@ -34776,7 +35720,8 @@ components:
       title: CalculationFieldTotal
       type: object
     DocumentContact:
-      description: Enthält die Daten einer Kontaktperson zu einem Beleg
+      description: Enthält die Daten der Kontaktperson beim Kunden/Lieferanten zu
+        einem Beleg
       example:
         FirstName: FirstName
         FaxNumber: FaxNumber
@@ -34837,6 +35782,27 @@ components:
           nullable: true
           type: boolean
       title: DocumentContact
+      type: object
+    CompanyContact:
+      description: Enthält die Daten der eigenen Kontaktperson zu einem Beleg
+      example:
+        PhoneNumber: PhoneNumber
+        EMail: EMail
+        Name: Name
+      properties:
+        Name:
+          description: Name
+          nullable: true
+          type: string
+        PhoneNumber:
+          description: Telefonnummer
+          nullable: true
+          type: string
+        EMail:
+          description: E-Mail-Adresse
+          nullable: true
+          type: string
+      title: CompanyContact
       type: object
     SerialOrLotLineItem:
       description: Enthält die Daten einer Serien-/Chargennummer einer Belegposition.
