@@ -1,3 +1,65 @@
+AB 3.80 00/00
+---------------------------------------------------------------------------------------------------
+Neue Endpunkte für Beleg-Kontakte
+- DELETE /v1/periodical_purchase_document_templates/{documentTemplateId}/document-contact
+- DELETE /v1/periodical_sales_document_templates/{documentTemplateId}/document-contact
+
+Änderungen an bestehenden Models
+- Condition/IsAssignedToDocument -> Neue Property für eine Kondition, die sich auf den gesamten
+  Beleg bezieht.
+- Condition/ReasonCode -> Neue Property für den Begründungscode
+- ContactPerson/IdInThirdPartyApplication -> Neue Property für die Id der Fremdanwendung
+- Customer/CountryId -> Neue Property für die Id des Landes.
+- Customer/CountryIso -> Neue readOnly Property für den ISO-Code des Landes.
+- Customer/CountryKey -> Neue Property für die Ordnungsbegriff des Landes.
+- LineItem/ConditionLineItemData/IsAssignedToDocument -> Neue Property für eine Kondition, die sich
+  auf den gesamten Beleg bezieht.
+- LineItem/ConditionLineItemData/ReasonCode -> Neue Property für den Begründungscode
+- ManufactureDocument/CompanyContact -> Neue Property für den eigenen Kontakt
+- PeriodicalPurchaseDocumentTemplate/CompanyContact -> Neue Property für den eigenen Kontakt
+- PeriodicalSalesDocumentTemplate/CompanyContact -> Neue Property für den eigenen Kontakt
+- Purchase/CompanyContact -> Neue Property für den eigenen Kontakt
+- Product/IntrastatCountryOfOriginIso -> Property als veraltet markiert
+- Product/CountryOfOriginIso -> Neue Property für das Herkunftsland der Ware
+- SalesDocument/CompanyContact -> Neue Property für den eigenen Kontakt
+- Supplier/CountryId -> Neue Property für die Id des Landes.
+- Supplier/CountryIso -> Neue readOnly Property für den ISO-Code des Landes.
+- Supplier/CountryKey -> Neue Property für die Ordnungsbegriff des Landes.
+
+Sonstiges
+- Zur Filterung auf benutzerdefinierte Felder steht der neue Parameter "userDefinedFieldFilter" für
+  die Endpunkte zum Lesen von Belegen, Artikeln und Kunden/Lieferanten zur Verfügung.
+- Der Webservice kann nun auch mit einem Benutzer gestartet werden, der nur das Recht hat, per API
+  mit der Auftragsbearbeitung zu arbeiten.
+- Der Ablauf des Zertifikats wird überwacht. 90 Tage vor Ablauf wird eine Warnung in die
+  Protokolldatei geschrieben und bei hinterlegter E-Mail-Adresse eine Nachricht gesendet.
+- Die Beschreibung für Customer/ContactPersons wurde angepasst.
+- Die Beschreibung für Supplier/ContactPersons wurde angepasst.
+- Die URL für den Changelog wurde von /ab-api/appinfo/changelog auf /ab-api/changelog.txt geändert.
+
+AB 3.70 03/05
+---------------------------------------------------------------------------------------------------
+
+Änderungen an bestehenden Models
+- PeriodicalPurchaseDocumentTemplate/Contact -> Neue Property für einen Kontakt des Lieferanten
+- PeriodicalSalesDocumentTemplate/Contact -> Neue Property für einen Kontakt des Kunden
+
+Fehlerkorrekturen
+- Wiederkehrende Belege mit einem Kontakt.konnten nicht gelesen/geändert werden, da die Property
+  Contact nicht im Model PeriodicalPurchaseDocumentTemplate und PeriodicalSalesDocumentTemplate
+  enthalten war.
+
+AB 3.70 03/03
+---------------------------------------------------------------------------------------------------
+
+Fehlerkorrekturen
+- Ein Querabruf in einen Zielbeleg in Fremdwährung führte zum Fehler.
+  Die API reagiert nun korrekt auf diese Situation:
+  Wenn ein gültiger Kurs in den Stammdaten hinterlegt ist, wird dieser verwendet und der Abruf ist
+  möglich.
+  Wenn kein gültiger Kurs in den Stammdaten hinterlegt ist, wird ein aussagekräftiger Fehlertext
+  zurückgegeben.
+
 AB 3.70 03/00
 ---------------------------------------------------------------------------------------------------
 
