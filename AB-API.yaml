@@ -14,7 +14,7 @@ info:
     url: https://www.hamburger-software.de
   termsOfService: https://www.hamburger-software.de
   title: HS API (Auftragsbearbeitung)
-  version: 3.80.0000
+  version: 3.80.0100
 servers:
 - url: "https://{hostname}:{port}/ab-api"
   variables:
@@ -55,6 +55,8 @@ tags:
   name: PDF
 - description: Endpunktgruppe für Dokumente im DMS
   name: DMS
+- description: Endpunktgruppe für E-Rechnungen
+  name: E-Rechnung
 paths:
   /v1/token:
     post:
@@ -8427,6 +8429,273 @@ paths:
       summary: Metadaten zu den DMS-Dokumenten des Kunden abrufen.
       tags:
       - DMS
+  /v1/customers/{customerId}/vatid-check:
+    get:
+      description: |
+        Die Historie der USt-IdNr. Prüfungen des Kunden abrufen.
+        Liefert eine Liste der bisherigen USt-IdNr. Prüfungen des Customers.
+      operationId: getCustomerVatIdCheckHistory
+      parameters:
+      - description: Id eines Kunden (technischer Schlüssel)
+        in: path
+        name: customerId
+        required: true
+        schema:
+          type: integer
+      - description: |
+          Filter für die Ergebnismenge<br>
+          Die Syntax für die Filter orientiert sich an der Filter-Syntax von OData.<br>
+          Es kann auf die Property-Namen der Models gefiltert werden, siehe '#/components/schemas'.<br>
+          Folgende Vergleichsoperatoren stehen zur Verfügung: eq (gleich), ne (ungleich), lt (kleiner als), gt (größer als), le (kleiner gleich), ge (größer gleich)<br>
+          Beispiel: ...filter=StockNumber eq 5...<br>
+          Mehrere Filter können durch "and" getrennt werden. <br>
+          Beispiel: ...filter=StockNumber ge 5 and StockNumber le 10...<br>
+          Es ist möglich, auf NULL oder NOT NULL zu prüfen. Dafür steht das Schlüsselwort "null" für die Operatoren "eq" und "ne" bereit.<br>
+          Beispiel: ...filter=DefaultStockNumber eq null...<br>
+          Beispiel: ...filter=DefaultStockNumber ne null...<br>
+          Strings müssen in einfache Hochkommata eingeschlossen werden, wenn sie ein Minus, Schrägstrich, Komma Punkt oder Leerzeichen enthalten.<br>
+          Wenn im Suchstring ein Hochkomma enthalten ist, muss dieses verdoppelt werden.<br>
+          Beispiel: ...filter=Description eq 'Dampf- u. Trockenbügelautomat'...<br>
+          Beispiel: ...filter=Description eq 'Merry''s Pub'...<br>
+          Datumsangaben (Tagesdatum) müssen im internationalen Format YYYY-MM-DD angegeben werden.<br>
+          Beispiel: ...filter=InspectionDate eq 2023-02-23...<br>
+          Datum-/Zeitangaben müssen im Format ISO 8601 angegeben werden, d.h. sie müssen den Trenner "T" <br>
+          zwischen Datum und Zeit und einen Offset (+00:00) oder ein "Z" (für UTC) an Ende haben. <br>
+          Die Fraction ist optional.<br>
+          Die Auftragsbearbeitung wertet nur den Datum-/Zeit-String aus, nicht den Offset oder die UTC-Angabe.<br>
+          Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56.335476+00:00...<br>
+          Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56.335476Z...<br>
+          Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56+00:00...<br>
+          Wird ein ungültiger Filter-String übermittelt, wird der Request mit StatusCode 400 abgewiesen.<br>
+        examples:
+          filterSimple:
+            summary: Einfacher Filter im Format <PropertyName> <Vergleichsoperator>
+              <Wert>
+            value: StockNumber eq 5
+          filterWithAnd:
+            summary: |
+              Filter mit 2 Bedingungen, die durch "and" verknüpft sind.
+            value: StockNumber ge 5 and StockNumber le 10
+          filterNull:
+            summary: Filter zur Prüfung auf NULL.
+            value: DefaultStockNumber eq null
+          filterNotNull:
+            summary: Filter zur Prüfung auf NOT NULL.
+            value: DefaultStockNumber ne null
+          filterString:
+            summary: |
+              Filter für einen String, bei dem der Wert in Hochkommata eingeschlossen ist.
+            value: Description eq 'Dampf- u. Trockenbügelautomat'
+          filterStringWithQuote:
+            summary: |
+              Filter für einen String, bei dem der Wert ein Hochkomma enthält.
+            value: Description eq 'Merry''s Pub'
+          filterDate:
+            summary: Filter auf ein Tagesdatum.
+            value: InspectionDate eq 2023-02-23
+          filterDateTimeWithOffset:
+            summary: Filter auf einen Datum-/Zeitwert mit Offset.
+            value: LastModified ge 2023-02-23T09:01:56.335476+00:00
+          filterDateTimeWithTimezone:
+            summary: Filter auf einen Datum-/Zeitwert mit Zeitzone.
+            value: LastModified ge 2023-02-23T09:01:56.335476Z
+          filterDateTimeWithoutFraction:
+            summary: Filter auf einen Datum-/Zeitwert ohne Fraction.
+            value: LastModified ge 2023-02-23T09:01:56+00:00
+        in: query
+        name: filter
+        required: false
+        schema:
+          nullable: true
+          type: string
+      - description: |
+          Parameter, der das Lesen einer Ressource mit untergeordneten Ressourcen
+          ermöglicht.
+          Bei der Angabe von **all** werden alle untergeordneten Ressourcen mitgeladen. (Keine Angabe entspricht **none**)
+        examples:
+          expandNone:
+            summary: Es werden keine untergeordneten Ressourcen geladen (Standard).
+            value: none
+          expandAll:
+            summary: Es werden alle untergeordneten Ressourcen geladen.
+            value: all
+        in: query
+        name: expand
+        required: false
+        schema:
+          default: none
+          nullable: true
+          type: string
+      - description: |
+          Angabe von relevanten Attributen, auf die die Ergebnismenge beschränkt
+          werden soll.
+          Beispiel: ...select=SampleProperty1, SampleProperty2...
+        examples:
+          selectOneProperty:
+            summary: Auswahl einer einzelnen Property
+            value: Number
+          selectTwoProperties:
+            summary: Auswahl von 2 Properties
+            value: "Number,Description"
+        in: query
+        name: select
+        required: false
+        schema:
+          nullable: true
+          type: string
+      - description: |
+          Gibt die Anzahl der Elemente an, die maximal in der Ergebnismenge
+          enthalten sein sollen.
+          Beispiel: ...top=10...
+        examples:
+          top10:
+            summary: Auswahl von 10 Elementen
+            value: 10
+          top50:
+            summary: Auswahl von 50 Elementen
+            value: 50
+        in: query
+        name: top
+        required: false
+        schema:
+          nullable: true
+          type: integer
+      - description: "Gibt an, wie viele Elemente der Gesamtmenge übersprungen werden\
+          \ sollen. \nBeispiel: ...skip=10...\n"
+        examples:
+          skip10:
+            summary: Überspringen der ersten 10 Elemente
+            value: 10
+          skip50:
+            summary: Überspringen der ersten 50 Elemente
+            value: 50
+        in: query
+        name: skip
+        required: false
+        schema:
+          nullable: true
+          type: integer
+      - description: |
+          Art der Sortierung.
+          Ist keine Sortierreihenfolge (asc oder desc) angegeben, wird aufsteigend (asc) sortiert.
+        examples:
+          onePropertyAscSort:
+            summary: Nach einer Propery aufsteigend sortieren
+            value:
+            - SampleProperty1
+          onePropertyDescSort:
+            summary: Nach einer Propery absteigend sortieren
+            value:
+            - SampleProperty1:desc
+          multiplePropertiesAscSort:
+            summary: Nach mehreren Properies aufsteigend sortieren
+            value:
+            - SampleProperty1
+            - SampleProperty2
+          multiplePropertiesMixedSort:
+            summary: Nach mehreren Properies auf- und absteigend sortieren
+            value:
+            - SampleProperty1
+            - SampleProperty2:desc
+        explode: true
+        in: query
+        name: sort
+        required: false
+        schema:
+          items:
+            type: string
+          nullable: true
+          type: array
+        style: form
+      responses:
+        "200":
+          content:
+            application/json;charset=utf-8:
+              schema:
+                items:
+                  $ref: '#/components/schemas/VatIdCheckResult'
+                type: array
+          description: Erfolgreicher Abruf der Ressource.
+        "401":
+          description: |
+            Die Authentifizierungs-Information fehlt oder ist ungültig. Weitere
+            Informationen sind in der Response-Nachricht als HttpError enthalten.
+          headers:
+            WWW_Authenticate:
+              schema:
+                type: string
+        "403":
+          description: Es fehlt die Berechtigung zum Zugriff auf die Ressource.
+        "404":
+          description: |
+            Die angeforderte Ressource ist dauerhaft oder temporär nicht verfügbar.
+            Eine mögliche Ursache kann sein, dass die URI fehlerhaft ist.
+        "423":
+          description: Die Ressource ist aufgrund einer exklusiven Verarbeitung temporär
+            gesperrt.
+      security:
+      - BasicAuth: []
+        ApiKeyAuth: []
+      - OAuth2: []
+        ApiKeyAuth: []
+      summary: Die Historie der USt-IdNr. Prüfungen des Kunden abrufen.
+      tags:
+      - Geschaeftspartner
+    post:
+      description: |
+        Eine Aufgabe zur USt-IdNr. Prüfung anlegen.
+        Es wird eine asynchrone Aufgabe zur Prüfung der USt-IdNr. des Kunden angelegt.
+        Das Ergebnis der Prüfung kann über die Historie der USt-IdNr. Prüfungen abgefragt werden.
+
+        Für die USt-IdNr. Prüfung wird der Service des Bundeszentralamts für Steuern (BZSt) verwendet
+        und es wird eine Internetverbindung benötigt.
+        Mit der Nutzung des Endpunktes werden automatisch die Bedingungen des BZSt akzeptiert.
+      operationId: postCustomerVatIdCheck
+      parameters:
+      - description: Id eines Kunden (technischer Schlüssel)
+        in: path
+        name: customerId
+        required: true
+        schema:
+          type: integer
+      requestBody:
+        $ref: '#/components/requestBodies/VatIdCheckRequestBody'
+      responses:
+        "202":
+          description: |
+            Erfolgreiches anlegen einer Aufgabe zur USt-IdNr. Prüfung.
+            Informationen zum Status sind unter der URL zu finden, die im Header der Response
+            gesendet wird, z.B. /v1/vatid-check/queue/.
+        "400":
+          description: |
+            Es liegt ein fehlerhafter Clientaufruf vor. Eine mögliche Ursache kann
+            sein, dass ein fehlerhafter Wert übergeben wurde. Weitere Informationen
+            sind in der Response-Nachricht als HttpError enthalten.
+        "401":
+          description: |
+            Die Authentifizierungs-Information fehlt oder ist ungültig. Weitere
+            Informationen sind in der Response-Nachricht als HttpError enthalten.
+          headers:
+            WWW_Authenticate:
+              schema:
+                type: string
+        "403":
+          description: Es fehlt die Berechtigung zum Zugriff auf die Ressource.
+        "404":
+          description: |
+            Die angeforderte Ressource ist dauerhaft oder temporär nicht verfügbar.
+            Eine mögliche Ursache kann sein, dass die URI fehlerhaft ist.
+        "423":
+          description: Die Ressource ist aufgrund einer exklusiven Verarbeitung temporär
+            gesperrt.
+      security:
+      - BasicAuth: []
+        ApiKeyAuth: []
+      - OAuth2: []
+        ApiKeyAuth: []
+      summary: Eine Aufgabe zur USt-IdNr. Prüfung anlegen.
+      tags:
+      - Geschaeftspartner
   /v1/dms-documents/{dmsDocumentKey}:
     get:
       description: Ein Dokument aus dem DMS abrufen.
@@ -8983,7 +9252,7 @@ paths:
         ApiKeyAuth: []
       - OAuth2: []
         ApiKeyAuth: []
-      summary: Lieferant löschen-
+      summary: Lieferant löschen.
       tags:
       - Geschaeftspartner
     get:
@@ -9225,6 +9494,330 @@ paths:
       summary: Metadaten zu den DMS-Dokumenten des Lieferanten abrufen.
       tags:
       - DMS
+  /v1/suppliers/{supplierId}/vatid-check:
+    get:
+      description: |
+        Die Historie der USt-IdNr. Prüfungen des Lieferanten abrufen.
+        Liefert eine Liste der bisherigen USt-IdNr. Prüfungen des Lieferanten.
+      operationId: getSupplierVatIdCheckHistory
+      parameters:
+      - description: Id eines Lieferanten (technischer Schlüssel)
+        in: path
+        name: supplierId
+        required: true
+        schema:
+          type: integer
+      - description: |
+          Filter für die Ergebnismenge<br>
+          Die Syntax für die Filter orientiert sich an der Filter-Syntax von OData.<br>
+          Es kann auf die Property-Namen der Models gefiltert werden, siehe '#/components/schemas'.<br>
+          Folgende Vergleichsoperatoren stehen zur Verfügung: eq (gleich), ne (ungleich), lt (kleiner als), gt (größer als), le (kleiner gleich), ge (größer gleich)<br>
+          Beispiel: ...filter=StockNumber eq 5...<br>
+          Mehrere Filter können durch "and" getrennt werden. <br>
+          Beispiel: ...filter=StockNumber ge 5 and StockNumber le 10...<br>
+          Es ist möglich, auf NULL oder NOT NULL zu prüfen. Dafür steht das Schlüsselwort "null" für die Operatoren "eq" und "ne" bereit.<br>
+          Beispiel: ...filter=DefaultStockNumber eq null...<br>
+          Beispiel: ...filter=DefaultStockNumber ne null...<br>
+          Strings müssen in einfache Hochkommata eingeschlossen werden, wenn sie ein Minus, Schrägstrich, Komma Punkt oder Leerzeichen enthalten.<br>
+          Wenn im Suchstring ein Hochkomma enthalten ist, muss dieses verdoppelt werden.<br>
+          Beispiel: ...filter=Description eq 'Dampf- u. Trockenbügelautomat'...<br>
+          Beispiel: ...filter=Description eq 'Merry''s Pub'...<br>
+          Datumsangaben (Tagesdatum) müssen im internationalen Format YYYY-MM-DD angegeben werden.<br>
+          Beispiel: ...filter=InspectionDate eq 2023-02-23...<br>
+          Datum-/Zeitangaben müssen im Format ISO 8601 angegeben werden, d.h. sie müssen den Trenner "T" <br>
+          zwischen Datum und Zeit und einen Offset (+00:00) oder ein "Z" (für UTC) an Ende haben. <br>
+          Die Fraction ist optional.<br>
+          Die Auftragsbearbeitung wertet nur den Datum-/Zeit-String aus, nicht den Offset oder die UTC-Angabe.<br>
+          Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56.335476+00:00...<br>
+          Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56.335476Z...<br>
+          Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56+00:00...<br>
+          Wird ein ungültiger Filter-String übermittelt, wird der Request mit StatusCode 400 abgewiesen.<br>
+        examples:
+          filterSimple:
+            summary: Einfacher Filter im Format <PropertyName> <Vergleichsoperator>
+              <Wert>
+            value: StockNumber eq 5
+          filterWithAnd:
+            summary: |
+              Filter mit 2 Bedingungen, die durch "and" verknüpft sind.
+            value: StockNumber ge 5 and StockNumber le 10
+          filterNull:
+            summary: Filter zur Prüfung auf NULL.
+            value: DefaultStockNumber eq null
+          filterNotNull:
+            summary: Filter zur Prüfung auf NOT NULL.
+            value: DefaultStockNumber ne null
+          filterString:
+            summary: |
+              Filter für einen String, bei dem der Wert in Hochkommata eingeschlossen ist.
+            value: Description eq 'Dampf- u. Trockenbügelautomat'
+          filterStringWithQuote:
+            summary: |
+              Filter für einen String, bei dem der Wert ein Hochkomma enthält.
+            value: Description eq 'Merry''s Pub'
+          filterDate:
+            summary: Filter auf ein Tagesdatum.
+            value: InspectionDate eq 2023-02-23
+          filterDateTimeWithOffset:
+            summary: Filter auf einen Datum-/Zeitwert mit Offset.
+            value: LastModified ge 2023-02-23T09:01:56.335476+00:00
+          filterDateTimeWithTimezone:
+            summary: Filter auf einen Datum-/Zeitwert mit Zeitzone.
+            value: LastModified ge 2023-02-23T09:01:56.335476Z
+          filterDateTimeWithoutFraction:
+            summary: Filter auf einen Datum-/Zeitwert ohne Fraction.
+            value: LastModified ge 2023-02-23T09:01:56+00:00
+        in: query
+        name: filter
+        required: false
+        schema:
+          nullable: true
+          type: string
+      - description: |
+          Parameter, der das Lesen einer Ressource mit untergeordneten Ressourcen
+          ermöglicht.
+          Bei der Angabe von **all** werden alle untergeordneten Ressourcen mitgeladen. (Keine Angabe entspricht **none**)
+        examples:
+          expandNone:
+            summary: Es werden keine untergeordneten Ressourcen geladen (Standard).
+            value: none
+          expandAll:
+            summary: Es werden alle untergeordneten Ressourcen geladen.
+            value: all
+        in: query
+        name: expand
+        required: false
+        schema:
+          default: none
+          nullable: true
+          type: string
+      - description: |
+          Angabe von relevanten Attributen, auf die die Ergebnismenge beschränkt
+          werden soll.
+          Beispiel: ...select=SampleProperty1, SampleProperty2...
+        examples:
+          selectOneProperty:
+            summary: Auswahl einer einzelnen Property
+            value: Number
+          selectTwoProperties:
+            summary: Auswahl von 2 Properties
+            value: "Number,Description"
+        in: query
+        name: select
+        required: false
+        schema:
+          nullable: true
+          type: string
+      - description: |
+          Gibt die Anzahl der Elemente an, die maximal in der Ergebnismenge
+          enthalten sein sollen.
+          Beispiel: ...top=10...
+        examples:
+          top10:
+            summary: Auswahl von 10 Elementen
+            value: 10
+          top50:
+            summary: Auswahl von 50 Elementen
+            value: 50
+        in: query
+        name: top
+        required: false
+        schema:
+          nullable: true
+          type: integer
+      - description: "Gibt an, wie viele Elemente der Gesamtmenge übersprungen werden\
+          \ sollen. \nBeispiel: ...skip=10...\n"
+        examples:
+          skip10:
+            summary: Überspringen der ersten 10 Elemente
+            value: 10
+          skip50:
+            summary: Überspringen der ersten 50 Elemente
+            value: 50
+        in: query
+        name: skip
+        required: false
+        schema:
+          nullable: true
+          type: integer
+      - description: |
+          Art der Sortierung.
+          Ist keine Sortierreihenfolge (asc oder desc) angegeben, wird aufsteigend (asc) sortiert.
+        examples:
+          onePropertyAscSort:
+            summary: Nach einer Propery aufsteigend sortieren
+            value:
+            - SampleProperty1
+          onePropertyDescSort:
+            summary: Nach einer Propery absteigend sortieren
+            value:
+            - SampleProperty1:desc
+          multiplePropertiesAscSort:
+            summary: Nach mehreren Properies aufsteigend sortieren
+            value:
+            - SampleProperty1
+            - SampleProperty2
+          multiplePropertiesMixedSort:
+            summary: Nach mehreren Properies auf- und absteigend sortieren
+            value:
+            - SampleProperty1
+            - SampleProperty2:desc
+        explode: true
+        in: query
+        name: sort
+        required: false
+        schema:
+          items:
+            type: string
+          nullable: true
+          type: array
+        style: form
+      responses:
+        "200":
+          content:
+            application/json;charset=utf-8:
+              schema:
+                items:
+                  $ref: '#/components/schemas/VatIdCheckResult'
+                type: array
+          description: Erfolgreicher Abruf der Ressource.
+        "401":
+          description: |
+            Die Authentifizierungs-Information fehlt oder ist ungültig. Weitere
+            Informationen sind in der Response-Nachricht als HttpError enthalten.
+          headers:
+            WWW_Authenticate:
+              schema:
+                type: string
+        "403":
+          description: Es fehlt die Berechtigung zum Zugriff auf die Ressource.
+        "404":
+          description: |
+            Die angeforderte Ressource ist dauerhaft oder temporär nicht verfügbar.
+            Eine mögliche Ursache kann sein, dass die URI fehlerhaft ist.
+        "423":
+          description: Die Ressource ist aufgrund einer exklusiven Verarbeitung temporär
+            gesperrt.
+      security:
+      - BasicAuth: []
+        ApiKeyAuth: []
+      - OAuth2: []
+        ApiKeyAuth: []
+      summary: Die Historie der USt-IdNr. Prüfungen des Lieferanten abrufen.
+      tags:
+      - Geschaeftspartner
+    post:
+      description: |
+        Eine Aufgabe zur USt-IdNr. Prüfung anlegen.
+        Es wird eine asynchrone Aufgabe zur Prüfung der USt-IdNr. des Lieferanten angelegt.
+        Das Ergebnis der Prüfung kann über die Historie der USt-IdNr. Prüfungen abgefragt werden.
+
+        Für die USt-IdNr. Prüfung wird der Service des Bundeszentralamts für Steuern (BZSt) verwendet
+        und es wird eine Internetverbindung benötigt.
+        Mit der Nutzung des Endpunktes werden automatisch die Bedingungen des BZSt akzeptiert.
+      operationId: postSupplierVatIdCheck
+      parameters:
+      - description: Id eines Lieferanten (technischer Schlüssel)
+        in: path
+        name: supplierId
+        required: true
+        schema:
+          type: integer
+      requestBody:
+        $ref: '#/components/requestBodies/VatIdCheckRequestBody'
+      responses:
+        "202":
+          description: |
+            Erfolgreiches anlegen einer Aufgabe zur USt-IdNr. Prüfung.
+            Informationen zum Status sind unter der URL zu finden, die im Header der Response
+            gesendet wird, z.B. /v1/vatid-check/queue/.
+        "400":
+          description: |
+            Es liegt ein fehlerhafter Clientaufruf vor. Eine mögliche Ursache kann
+            sein, dass ein fehlerhafter Wert übergeben wurde. Weitere Informationen
+            sind in der Response-Nachricht als HttpError enthalten.
+        "401":
+          description: |
+            Die Authentifizierungs-Information fehlt oder ist ungültig. Weitere
+            Informationen sind in der Response-Nachricht als HttpError enthalten.
+          headers:
+            WWW_Authenticate:
+              schema:
+                type: string
+        "403":
+          description: Es fehlt die Berechtigung zum Zugriff auf die Ressource.
+        "404":
+          description: |
+            Die angeforderte Ressource ist dauerhaft oder temporär nicht verfügbar.
+            Eine mögliche Ursache kann sein, dass die URI fehlerhaft ist.
+        "423":
+          description: Die Ressource ist aufgrund einer exklusiven Verarbeitung temporär
+            gesperrt.
+      security:
+      - BasicAuth: []
+        ApiKeyAuth: []
+      - OAuth2: []
+        ApiKeyAuth: []
+      summary: Eine Aufgabe zur USt-IdNr. Prüfung anlegen.
+      tags:
+      - Geschaeftspartner
+  /v1/vatid-check/queue/{queueItemId}:
+    get:
+      description: "Abfragen des Status eines Elements in der USt-IdNr. Prüfungs-Warteschlange.\n\
+        Solange die Prüfung noch nicht abgeschlossen ist, wird Status 200 geliefert.\n\
+        Sofern die Prüfung abgeschlossen wurde, wird Status 201 und im Body das \n\
+        Prüfungsergebnis geliefert.\n"
+      operationId: getVatIdCheckQueueStatus
+      parameters:
+      - description: Id eines Elements einer Warteschlange
+        in: path
+        name: queueItemId
+        required: true
+        schema:
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/QueueItemStatus'
+          description: |
+            Das Element befindet sich noch in der Warteschlange. Die Prüfung wurde
+            noch nicht abgeschlossen.
+        "201":
+          description: |
+            Die Prüfung wurde abgeschlossen. Die URL zum Ergebnis der Prüfung wird im Header der
+            Response geliefert.
+        "400":
+          description: |
+            Es liegt ein fehlerhafter Clientaufruf vor. Eine mögliche Ursache kann
+            sein, dass ein fehlerhafter Wert übergeben wurde. Weitere Informationen
+            sind in der Response-Nachricht als HttpError enthalten.
+        "401":
+          description: |
+            Die Authentifizierungs-Information fehlt oder ist ungültig. Weitere
+            Informationen sind in der Response-Nachricht als HttpError enthalten.
+          headers:
+            WWW_Authenticate:
+              schema:
+                type: string
+        "403":
+          description: Es fehlt die Berechtigung zum Zugriff auf die Ressource.
+        "404":
+          description: |
+            Die angeforderte Ressource ist dauerhaft oder temporär nicht verfügbar.
+            Eine mögliche Ursache kann sein, dass die URI fehlerhaft ist.
+        "423":
+          description: Die Ressource ist aufgrund einer exklusiven Verarbeitung temporär
+            gesperrt.
+      security:
+      - BasicAuth: []
+        ApiKeyAuth: []
+      - OAuth2: []
+        ApiKeyAuth: []
+      summary: Abfragen des Status eines Elements in der USt-IdNr. Prüfungs-Warteschlange.
+      tags:
+      - Geschaeftspartner
   /v1/sales-documents/create:
     post:
       description: "Einen neuen Verkaufsbeleg anlegen. \nDer Beleg wird nicht sofort\
@@ -10417,6 +11010,192 @@ paths:
       summary: Kontaktperson zu einem Verkaufsbeleg löschen.
       tags:
       - Verkaufsbelege
+  /v1/sales-documents/{salesDocumentId}/common-schema:
+    post:
+      description: |
+        Erzeugt eine Aufgabe, die aus den Daten des Verkaufsbelegs ein einheitliches
+        Common Schema für eine E-Rechnung generiert.
+
+        Voraussetzung ist, dass der Beleg als E-Rechnung gekennzeichnet ist.
+
+        Das Common Schema dient als interne, formatunabhängige Repräsentation der Rechnungsdaten
+        und kann als Grundlage für weitere Verarbeitungsschritte verwendet werden.
+
+        Die Aufgabe wird asynchron ausgeführt.
+        Der Fortschritt bzw. Status der Aufgabe kann über den Endpunkt
+        `/v1/e-invoicing/common-schema/queue/{queueItemId}` abgefragt werden.
+
+        Die Definition des Common Schemas als XSD-Datei kann unter dem Endpunkt
+        `/v1/e-invoicing/common-schema.xsd` heruntergeladen werden.
+
+        **Hinweis:** Für die Verwendung des Endpunktes ist eine Internetverbindung erforderlich.
+      operationId: postSalesDocumentCommonSchema
+      parameters:
+      - description: Id eines Verkaufsbelegs (technischer Schlüssel)
+        in: path
+        name: salesDocumentId
+        required: true
+        schema:
+          type: integer
+      responses:
+        "202":
+          description: |
+            Die Aufgabe zur Erstellung des Common Schemas wurde erfolgreich angelegt.
+            Die URL zur Statusabfrage wird im Location-Header der Antwort zurückgegeben,
+            z. B. `/v1/e-invoicing/common-schema/queue/1001`
+        "400":
+          description: |
+            Es liegt ein fehlerhafter Clientaufruf vor. Eine mögliche Ursache kann
+            sein, dass ein fehlerhafter Wert übergeben wurde. Weitere Informationen
+            sind in der Response-Nachricht als HttpError enthalten.
+        "401":
+          description: |
+            Die Authentifizierungs-Information fehlt oder ist ungültig. Weitere
+            Informationen sind in der Response-Nachricht als HttpError enthalten.
+          headers:
+            WWW_Authenticate:
+              schema:
+                type: string
+        "403":
+          description: Es fehlt die Berechtigung zum Zugriff auf die Ressource.
+        "404":
+          description: |
+            Die angeforderte Ressource ist dauerhaft oder temporär nicht verfügbar.
+            Eine mögliche Ursache kann sein, dass die URI fehlerhaft ist.
+        "423":
+          description: Die Ressource ist aufgrund einer exklusiven Verarbeitung temporär
+            gesperrt.
+      security:
+      - BasicAuth: []
+        ApiKeyAuth: []
+      - OAuth2: []
+        ApiKeyAuth: []
+      summary: Erzeugt aus den Daten des Verkaufsbelegs das Common Schema für eine
+        E-Rechnung.
+      tags:
+      - Verkaufsbelege
+      - E-Rechnung
+  /v1/sales-documents/{salesDocumentId}/validate:
+    post:
+      description: |
+        Erzeugt eine Aufgabe zur Validierung der Daten des Verkaufsbeleg bezogen auf Konformität zur
+        E-Rechnung. Dabei werden Formatkonformität, Pflichtfelder und Geschäftsregeln geprüft.
+
+        Voraussetzung ist, dass der Beleg als E-Rechnung gekennzeichnet ist.
+
+        Das Ergebnis wird als HTML-Prüfbericht aufbereitet, der strukturiert alle Prüfhinweise,
+        Warnungen und Fehler enthält.
+
+        Die Aufgabe wird asynchron ausgeführt.
+        Der Status der Aufgabe kann über den Endpunkt
+        `/v1/e-invoicing/validate/queue/{queueItemId}` abgefragt werden.
+
+        **Hinweis:** Für die Verwendung des Endpunktes ist eine Internetverbindung erforderlich.
+      operationId: postSalesDocumentValidate
+      parameters:
+      - description: Id eines Verkaufsbelegs (technischer Schlüssel)
+        in: path
+        name: salesDocumentId
+        required: true
+        schema:
+          type: integer
+      responses:
+        "202":
+          description: |
+            Die Aufgabe zur Validierung wurde erfolgreich angelegt.
+            Die URL zur Statusabfrage wird im Location-Header der Antwort zurückgegeben,
+            z. B. `/v1/e-invoicing/validate/queue/1001`.
+        "400":
+          description: |
+            Es liegt ein fehlerhafter Clientaufruf vor. Eine mögliche Ursache kann
+            sein, dass ein fehlerhafter Wert übergeben wurde. Weitere Informationen
+            sind in der Response-Nachricht als HttpError enthalten.
+        "401":
+          description: |
+            Die Authentifizierungs-Information fehlt oder ist ungültig. Weitere
+            Informationen sind in der Response-Nachricht als HttpError enthalten.
+          headers:
+            WWW_Authenticate:
+              schema:
+                type: string
+        "403":
+          description: Es fehlt die Berechtigung zum Zugriff auf die Ressource.
+        "404":
+          description: |
+            Die angeforderte Ressource ist dauerhaft oder temporär nicht verfügbar.
+            Eine mögliche Ursache kann sein, dass die URI fehlerhaft ist.
+        "423":
+          description: Die Ressource ist aufgrund einer exklusiven Verarbeitung temporär
+            gesperrt.
+      security:
+      - BasicAuth: []
+        ApiKeyAuth: []
+      - OAuth2: []
+        ApiKeyAuth: []
+      summary: Validiert die Daten des Verkaufsbelegs bzgl. Konformität zur E-Rechnung.
+      tags:
+      - Verkaufsbelege
+      - E-Rechnung
+  /v1/sales-documents/{salesDocumentId}/visualize:
+    post:
+      description: |
+        Erzeugt eine Aufgabe zur Visualisierung der E-Rechnungsdaten des Verkaufsbeleg.
+
+        Voraussetzung ist, dass der Beleg als E-Rechnung gekennzeichnet ist.
+
+        Das Ergebnis ist eine strukturierte, menschenlesbare Darstellung der Rechnungsinhalte,
+        die zur Anzeige in Browsern oder ERP-Systemen verwendet werden kann.
+
+        Die Aufgabe wird asynchron ausgeführt.
+        Der Status der Aufgabe kann über den Endpunkt
+        `/v1/e-invoicing/visualization/queue/{queueItemId}` abgefragt werden.
+
+        **Hinweis:** Für die Verwendung des Endpunktes ist eine Internetverbindung erforderlich.
+      operationId: postSalesDocumentVisualize
+      parameters:
+      - description: Id eines Verkaufsbelegs (technischer Schlüssel)
+        in: path
+        name: salesDocumentId
+        required: true
+        schema:
+          type: integer
+      responses:
+        "202":
+          description: |
+            Die Aufgabe zur Visualisierung wurde erfolgreich angelegt.
+            Die URL zur Statusabfrage wird im Location-Header der Antwort zurückgegeben,
+            z. B. `/v1/e-invoicing/visualization/queue/1001`.
+        "400":
+          description: |
+            Es liegt ein fehlerhafter Clientaufruf vor. Eine mögliche Ursache kann
+            sein, dass ein fehlerhafter Wert übergeben wurde. Weitere Informationen
+            sind in der Response-Nachricht als HttpError enthalten.
+        "401":
+          description: |
+            Die Authentifizierungs-Information fehlt oder ist ungültig. Weitere
+            Informationen sind in der Response-Nachricht als HttpError enthalten.
+          headers:
+            WWW_Authenticate:
+              schema:
+                type: string
+        "403":
+          description: Es fehlt die Berechtigung zum Zugriff auf die Ressource.
+        "404":
+          description: |
+            Die angeforderte Ressource ist dauerhaft oder temporär nicht verfügbar.
+            Eine mögliche Ursache kann sein, dass die URI fehlerhaft ist.
+        "423":
+          description: Die Ressource ist aufgrund einer exklusiven Verarbeitung temporär
+            gesperrt.
+      security:
+      - BasicAuth: []
+        ApiKeyAuth: []
+      - OAuth2: []
+        ApiKeyAuth: []
+      summary: Visualisiert die E-Rechnungsdaten des Verkaufsbelegs.
+      tags:
+      - Verkaufsbelege
+      - E-Rechnung
   /v1/purchase-documents/create:
     post:
       description: |
@@ -11563,6 +12342,192 @@ paths:
       summary: Kontaktperson zu einem Einkaufsbeleg löschen.
       tags:
       - Einkaufsbelege
+  /v1/purchase-documents/{purchaseDocumentId}/common-schema:
+    post:
+      description: |
+        Erzeugt eine Aufgabe, die aus den Daten des Einkaufsbelegs ein einheitliches
+        Common Schema für eine E-Rechnung generiert.
+
+        Voraussetzung ist, dass der Beleg als E-Rechnung gekennzeichnet ist.
+
+        Das Common Schema dient als interne, formatunabhängige Repräsentation der Rechnungsdaten
+        und kann als Grundlage für weitere Verarbeitungsschritte verwendet werden.
+
+        Die Aufgabe wird asynchron ausgeführt.
+        Der Fortschritt bzw. Status der Aufgabe kann über den Endpunkt
+        `/v1/e-invoicing/common-schema/queue/{queueItemId}` abgefragt werden.
+
+        Die Definition des Common Schemas als XSD-Datei kann unter dem Endpunkt
+        `/v1/e-invoicing/common-schema.xsd` heruntergeladen werden.
+
+        **Hinweis:** Für die Verwendung des Endpunktes ist eine Internetverbindung erforderlich.
+      operationId: postPurchaseDocumentCommonSchema
+      parameters:
+      - description: Id eines Einkaufsbelegs (technischer Schlüssel)
+        in: path
+        name: purchaseDocumentId
+        required: true
+        schema:
+          type: integer
+      responses:
+        "202":
+          description: |
+            Die Aufgabe zur Erstellung des Common Schemas wurde erfolgreich angelegt.
+            Die URL zur Statusabfrage wird im Location-Header der Antwort zurückgegeben,
+            z. B. `/v1/e-invoicing/common-schema/queue/1001`
+        "400":
+          description: |
+            Es liegt ein fehlerhafter Clientaufruf vor. Eine mögliche Ursache kann
+            sein, dass ein fehlerhafter Wert übergeben wurde. Weitere Informationen
+            sind in der Response-Nachricht als HttpError enthalten.
+        "401":
+          description: |
+            Die Authentifizierungs-Information fehlt oder ist ungültig. Weitere
+            Informationen sind in der Response-Nachricht als HttpError enthalten.
+          headers:
+            WWW_Authenticate:
+              schema:
+                type: string
+        "403":
+          description: Es fehlt die Berechtigung zum Zugriff auf die Ressource.
+        "404":
+          description: |
+            Die angeforderte Ressource ist dauerhaft oder temporär nicht verfügbar.
+            Eine mögliche Ursache kann sein, dass die URI fehlerhaft ist.
+        "423":
+          description: Die Ressource ist aufgrund einer exklusiven Verarbeitung temporär
+            gesperrt.
+      security:
+      - BasicAuth: []
+        ApiKeyAuth: []
+      - OAuth2: []
+        ApiKeyAuth: []
+      summary: Erzeugt aus den Daten des Einkaufsbelegs das Common Schema für eine
+        E-Rechnung.
+      tags:
+      - Einkaufsbelege
+      - E-Rechnung
+  /v1/purchase-documents/{purchaseDocumentId}/validate:
+    post:
+      description: |
+        Erzeugt eine Aufgabe zur Validierung der Daten des Einkaufsbeleg bezogen auf Konformität zur
+        E-Rechnung. Dabei werden Formatkonformität, Pflichtfelder und Geschäftsregeln geprüft.
+
+        Voraussetzung ist, dass der Beleg als E-Rechnung gekennzeichnet ist.
+
+        Das Ergebnis wird als HTML-Prüfbericht aufbereitet, der strukturiert alle Prüfhinweise,
+        Warnungen und Fehler enthält.
+
+        Die Aufgabe wird asynchron ausgeführt.
+        Der Status der Aufgabe kann über den Endpunkt
+        `/v1/e-invoicing/validate/queue/{queueItemId}` abgefragt werden.
+
+        **Hinweis:** Für die Verwendung des Endpunktes ist eine Internetverbindung erforderlich.
+      operationId: postPurchaseDocumentValidate
+      parameters:
+      - description: Id eines Einkaufsbelegs (technischer Schlüssel)
+        in: path
+        name: purchaseDocumentId
+        required: true
+        schema:
+          type: integer
+      responses:
+        "202":
+          description: |
+            Die Aufgabe zur Validierung wurde erfolgreich angelegt.
+            Die URL zur Statusabfrage wird im Location-Header der Antwort zurückgegeben,
+            z. B. `/v1/e-invoicing/validate/queue/1001`.
+        "400":
+          description: |
+            Es liegt ein fehlerhafter Clientaufruf vor. Eine mögliche Ursache kann
+            sein, dass ein fehlerhafter Wert übergeben wurde. Weitere Informationen
+            sind in der Response-Nachricht als HttpError enthalten.
+        "401":
+          description: |
+            Die Authentifizierungs-Information fehlt oder ist ungültig. Weitere
+            Informationen sind in der Response-Nachricht als HttpError enthalten.
+          headers:
+            WWW_Authenticate:
+              schema:
+                type: string
+        "403":
+          description: Es fehlt die Berechtigung zum Zugriff auf die Ressource.
+        "404":
+          description: |
+            Die angeforderte Ressource ist dauerhaft oder temporär nicht verfügbar.
+            Eine mögliche Ursache kann sein, dass die URI fehlerhaft ist.
+        "423":
+          description: Die Ressource ist aufgrund einer exklusiven Verarbeitung temporär
+            gesperrt.
+      security:
+      - BasicAuth: []
+        ApiKeyAuth: []
+      - OAuth2: []
+        ApiKeyAuth: []
+      summary: Validiert die Daten des Einkaufsbelegs bzgl. Konformität zur E-Rechnung.
+      tags:
+      - Einkaufsbelege
+      - E-Rechnung
+  /v1/purchase-documents/{purchaseDocumentId}/visualize:
+    post:
+      description: |
+        Erzeugt eine Aufgabe zur Visualisierung der E-Rechnungsdaten des Einkaufsbeleg.
+
+        Voraussetzung ist, dass der Beleg als E-Rechnung gekennzeichnet ist.
+
+        Das Ergebnis ist eine strukturierte, menschenlesbare Darstellung der Rechnungsinhalte,
+        die zur Anzeige in Browsern oder ERP-Systemen verwendet werden kann.
+
+        Die Aufgabe wird asynchron ausgeführt.
+        Der Status der Aufgabe kann über den Endpunkt
+        `/v1/e-invoicing/visualization/queue/{queueItemId}` abgefragt werden.
+
+        **Hinweis:** Für die Verwendung des Endpunktes ist eine Internetverbindung erforderlich.
+      operationId: postPurchaseDocumentVisualize
+      parameters:
+      - description: Id eines Einkaufsbelegs (technischer Schlüssel)
+        in: path
+        name: purchaseDocumentId
+        required: true
+        schema:
+          type: integer
+      responses:
+        "202":
+          description: |
+            Die Aufgabe zur Visualisierung wurde erfolgreich angelegt.
+            Die URL zur Statusabfrage wird im Location-Header der Antwort zurückgegeben,
+            z. B. `/v1/e-invoicing/visualization/queue/1001`.
+        "400":
+          description: |
+            Es liegt ein fehlerhafter Clientaufruf vor. Eine mögliche Ursache kann
+            sein, dass ein fehlerhafter Wert übergeben wurde. Weitere Informationen
+            sind in der Response-Nachricht als HttpError enthalten.
+        "401":
+          description: |
+            Die Authentifizierungs-Information fehlt oder ist ungültig. Weitere
+            Informationen sind in der Response-Nachricht als HttpError enthalten.
+          headers:
+            WWW_Authenticate:
+              schema:
+                type: string
+        "403":
+          description: Es fehlt die Berechtigung zum Zugriff auf die Ressource.
+        "404":
+          description: |
+            Die angeforderte Ressource ist dauerhaft oder temporär nicht verfügbar.
+            Eine mögliche Ursache kann sein, dass die URI fehlerhaft ist.
+        "423":
+          description: Die Ressource ist aufgrund einer exklusiven Verarbeitung temporär
+            gesperrt.
+      security:
+      - BasicAuth: []
+        ApiKeyAuth: []
+      - OAuth2: []
+        ApiKeyAuth: []
+      summary: Visualisiert die E-Rechnungsdaten des Einkaufsbelegs.
+      tags:
+      - Einkaufsbelege
+      - E-Rechnung
   /v1/manufacture-documents:
     get:
       description: "Fertigungsbelege auslesen.<br> \nLiefert eine Liste von Fertigungsbelegen.<br>\n\
@@ -16202,6 +17167,366 @@ paths:
       summary: Ressource ändern.
       tags:
       - Stammdaten
+  /v1/e-invoicing/common-schema:
+    post:
+      description: |
+        Erzeugt eine Aufgabe, um aus der hochgeladenen E-Rechnung (ZUGFeRD 2 PDF-Datei /
+        XML-Datei in Syntax CII oder UBL)
+        ein vereinheitlichtes Schema zu generieren.
+        Die Aufgabe wird asynchron verarbeitet.
+
+        Das Common Schema dient als interne, formatunabhängige Repräsentation der Rechnungsdaten
+        und kann als Grundlage für weitere Verarbeitungsschritte verwendet werden.
+
+        Der Fortschritt bzw. Status der Aufgabe kann über den Endpunkt
+        `/v1/e-invoicing/common-schema/queue/{queueItemId}` abgefragt werden.
+        Die konkrete URL mit der `queueItemId` wird im Location-Header der Antwort zurückgegeben.
+
+        Die Definition des Common Schemas als XSD-Datei kann über den Endpunkt
+        `/v1/e-invoicing/common-schema.xsd` heruntergeladen werden.
+
+        **Hinweis:** Für die Verwendung des Endpunktes ist eine Internetverbindung erforderlich.
+      operationId: postEInvoiceCommonSchema
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/postEInvoiceCommonSchema_request'
+      responses:
+        "202":
+          description: |
+            Die Aufgabe zur Erstellung des Common Schemas wurde erfolgreich angelegt.
+            Die URL zur Statusabfrage wird im Location-Header der Antwort zurückgegeben,
+            z. B. `/v1/e-invoicing/common-schema/queue/1001`
+        "400":
+          description: |
+            Es liegt ein fehlerhafter Clientaufruf vor. Eine mögliche Ursache kann
+            sein, dass ein fehlerhafter Wert übergeben wurde. Weitere Informationen
+            sind in der Response-Nachricht als HttpError enthalten.
+        "401":
+          description: |
+            Die Authentifizierungs-Information fehlt oder ist ungültig. Weitere
+            Informationen sind in der Response-Nachricht als HttpError enthalten.
+          headers:
+            WWW_Authenticate:
+              schema:
+                type: string
+        "403":
+          description: Es fehlt die Berechtigung zum Zugriff auf die Ressource.
+        "404":
+          description: |
+            Die angeforderte Ressource ist dauerhaft oder temporär nicht verfügbar.
+            Eine mögliche Ursache kann sein, dass die URI fehlerhaft ist.
+        "423":
+          description: Die Ressource ist aufgrund einer exklusiven Verarbeitung temporär
+            gesperrt.
+      security:
+      - BasicAuth: []
+        ApiKeyAuth: []
+      - OAuth2: []
+        ApiKeyAuth: []
+      summary: |
+        Für eine ZUGFeRD 2 PDF-Datei oder XML-Datei als E-Rechnung (CII oder UBL) ein Common Schema
+        generieren lassen.
+      tags:
+      - E-Rechnung
+  /v1/e-invoicing/common-schema/queue/{queueItemId}:
+    get:
+      operationId: getEInvoiceCommonSchemaQueueStatus
+      parameters:
+      - description: Id eines Elements einer Warteschlange
+        in: path
+        name: queueItemId
+        required: true
+        schema:
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/EInvoiceCommonSchemaStatus'
+          description: |
+            Die Anfrage war erfolgreich. Das zurückgegebene Objekt beschreibt den aktuellen Status
+            der Aufgabe in der Warteschlange. Clients sollen dieselbe URL wiederholt abfragen (Polling).
+            Solange das Feld `Status` den Wert `Pending` enthält, ist die Verarbeitung noch nicht
+            abgeschlossen.
+            Sobald das Feld `Status` den Wert `Finished` hat, ist die Verarbeitung beendet und das
+            Ergebnis ist im selben Response-Objekt enthalten.
+        "400":
+          description: |
+            Es liegt ein fehlerhafter Clientaufruf vor. Eine mögliche Ursache kann
+            sein, dass ein fehlerhafter Wert übergeben wurde. Weitere Informationen
+            sind in der Response-Nachricht als HttpError enthalten.
+        "401":
+          description: |
+            Die Authentifizierungs-Information fehlt oder ist ungültig. Weitere
+            Informationen sind in der Response-Nachricht als HttpError enthalten.
+          headers:
+            WWW_Authenticate:
+              schema:
+                type: string
+        "403":
+          description: Es fehlt die Berechtigung zum Zugriff auf die Ressource.
+        "404":
+          description: |
+            Die angeforderte Ressource ist dauerhaft oder temporär nicht verfügbar.
+            Eine mögliche Ursache kann sein, dass die URI fehlerhaft ist.
+        "423":
+          description: Die Ressource ist aufgrund einer exklusiven Verarbeitung temporär
+            gesperrt.
+      security:
+      - BasicAuth: []
+        ApiKeyAuth: []
+      - OAuth2: []
+        ApiKeyAuth: []
+      summary: Abfragen des Status eines Elements in der Common Schema Warteschlange.
+      tags:
+      - E-Rechnung
+  /v1/e-invoicing/common-schema.xsd:
+    get:
+      description: |
+        Endpunkt zum Abrufen der Common Schema Definition als XSD-Datei.
+      operationId: getEInvoiceCommonSchemaDefinition
+      responses:
+        "200":
+          content:
+            application/xml;charset=utf-8:
+              schema:
+                type: string
+          description: Erfolgreicher Abruf der Ressource.
+        "403":
+          description: Es fehlt die Berechtigung zum Zugriff auf die Ressource.
+      security:
+      - ApiKeyAuth: []
+      summary: Abrufen der Common Schema Definition
+      tags:
+      - E-Rechnung
+  /v1/e-invoicing/validate:
+    post:
+      description: |
+        Erzeugt eine Aufgabe zur Validierung der hochgeladenen E-Rechnung (ZUGFeRD 2 PDF-Datei /
+        XML-Datei in Syntax CII oder UBL).
+        Dabei werden Formatkonformität, Pflichtfelder und Geschäftsregeln geprüft.
+        Die Aufgabe wird asynchron verarbeitet.
+
+        Das Ergebnis wird als HTML-Prüfbericht aufbereitet, der strukturiert alle Prüfhinweise,
+        Warnungen und Fehler enthält.
+
+        Der Status der Aufgabe kann über den Endpunkt
+        `/v1/e-invoicing/validate/queue/{queueItemId}` abgefragt werden.
+        Die konkrete URL mit der `queueItemId` wird im Location-Header der Antwort zurückgegeben.
+
+        **Hinweis:** Für die Verwendung des Endpunktes ist eine Internetverbindung erforderlich.
+      operationId: postEInvoiceValidation
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/postEInvoiceCommonSchema_request'
+      responses:
+        "202":
+          description: |
+            Die Aufgabe zur Validierung wurde erfolgreich angelegt.
+            Die URL zur Statusabfrage wird im Location-Header der Antwort zurückgegeben,
+            z. B. `/v1/e-invoicing/validate/queue/1001`.
+        "400":
+          description: |
+            Es liegt ein fehlerhafter Clientaufruf vor. Eine mögliche Ursache kann
+            sein, dass ein fehlerhafter Wert übergeben wurde. Weitere Informationen
+            sind in der Response-Nachricht als HttpError enthalten.
+        "401":
+          description: |
+            Die Authentifizierungs-Information fehlt oder ist ungültig. Weitere
+            Informationen sind in der Response-Nachricht als HttpError enthalten.
+          headers:
+            WWW_Authenticate:
+              schema:
+                type: string
+        "403":
+          description: Es fehlt die Berechtigung zum Zugriff auf die Ressource.
+        "404":
+          description: |
+            Die angeforderte Ressource ist dauerhaft oder temporär nicht verfügbar.
+            Eine mögliche Ursache kann sein, dass die URI fehlerhaft ist.
+        "423":
+          description: Die Ressource ist aufgrund einer exklusiven Verarbeitung temporär
+            gesperrt.
+      security:
+      - BasicAuth: []
+        ApiKeyAuth: []
+      - OAuth2: []
+        ApiKeyAuth: []
+      summary: |
+        Für eine ZUGFeRD 2 PDF-Datei oder XML-Datei als E-Rechnung (CII oder UBL) ein Common Schema
+        generieren lassen.
+      tags:
+      - E-Rechnung
+  /v1/e-invoicing/validate/queue/{queueItemId}:
+    get:
+      operationId: getEInvoiceValidationQueueStatus
+      parameters:
+      - description: Id eines Elements einer Warteschlange
+        in: path
+        name: queueItemId
+        required: true
+        schema:
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/EInvoiceValidationStatus'
+          description: |
+            Die Anfrage war erfolgreich. Das zurückgegebene Objekt beschreibt den aktuellen Status
+            der Aufgabe in der Warteschlange. Clients sollen dieselbe URL wiederholt abfragen (Polling).
+            Solange das Feld `Status` den Wert `Pending` enthält, ist die Verarbeitung noch nicht
+            abgeschlossen.
+            Sobald das Feld `Status` den Wert `Finished` hat, ist die Verarbeitung beendet und das
+            Ergebnis ist im selben Response-Objekt enthalten.
+        "400":
+          description: |
+            Es liegt ein fehlerhafter Clientaufruf vor. Eine mögliche Ursache kann
+            sein, dass ein fehlerhafter Wert übergeben wurde. Weitere Informationen
+            sind in der Response-Nachricht als HttpError enthalten.
+        "401":
+          description: |
+            Die Authentifizierungs-Information fehlt oder ist ungültig. Weitere
+            Informationen sind in der Response-Nachricht als HttpError enthalten.
+          headers:
+            WWW_Authenticate:
+              schema:
+                type: string
+        "403":
+          description: Es fehlt die Berechtigung zum Zugriff auf die Ressource.
+        "404":
+          description: |
+            Die angeforderte Ressource ist dauerhaft oder temporär nicht verfügbar.
+            Eine mögliche Ursache kann sein, dass die URI fehlerhaft ist.
+        "423":
+          description: Die Ressource ist aufgrund einer exklusiven Verarbeitung temporär
+            gesperrt.
+      security:
+      - BasicAuth: []
+        ApiKeyAuth: []
+      - OAuth2: []
+        ApiKeyAuth: []
+      summary: Abfragen des Status eines Elements in der Validation Warteschlange.
+      tags:
+      - E-Rechnung
+  /v1/e-invoicing/visualize:
+    post:
+      description: |
+        Erzeugt eine Aufgabe zur Erstellung einer HTML-Visualisierung der hochgeladenen E-Rechnung
+        (ZUGFeRD 2 PDF-Datei / XML-Datei in Syntax CII oder UBL).
+        Die Aufgabe wird asynchron verarbeitet.
+
+        Das Ergebnis ist eine strukturierte, menschenlesbare Darstellung der Rechnungsinhalte im
+        HTML-Format und kann zur Anzeige z.B. in Browsern verwendet werden.
+
+        Der Status der Aufgabe kann über den Endpunkt
+        `/v1/e-invoicing/visualize/queue/{queueItemId}` abgefragt werden.
+        Die konkrete URL mit der `queueItemId` wird im Location-Header der Antwort zurückgegeben.
+
+        **Hinweis:** Für die Verwendung des Endpunktes ist eine Internetverbindung erforderlich.
+      operationId: postEInvoiceVisualization
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/postEInvoiceCommonSchema_request'
+      responses:
+        "202":
+          description: |
+            Die Aufgabe zur Visualisierung wurde erfolgreich angelegt.
+            Die URL zur Statusabfrage wird im Location-Header der Antwort zurückgegeben,
+            z. B. `/v1/e-invoicing/visualize/queue/1001`.
+        "400":
+          description: |
+            Es liegt ein fehlerhafter Clientaufruf vor. Eine mögliche Ursache kann
+            sein, dass ein fehlerhafter Wert übergeben wurde. Weitere Informationen
+            sind in der Response-Nachricht als HttpError enthalten.
+        "401":
+          description: |
+            Die Authentifizierungs-Information fehlt oder ist ungültig. Weitere
+            Informationen sind in der Response-Nachricht als HttpError enthalten.
+          headers:
+            WWW_Authenticate:
+              schema:
+                type: string
+        "403":
+          description: Es fehlt die Berechtigung zum Zugriff auf die Ressource.
+        "404":
+          description: |
+            Die angeforderte Ressource ist dauerhaft oder temporär nicht verfügbar.
+            Eine mögliche Ursache kann sein, dass die URI fehlerhaft ist.
+        "423":
+          description: Die Ressource ist aufgrund einer exklusiven Verarbeitung temporär
+            gesperrt.
+      security:
+      - BasicAuth: []
+        ApiKeyAuth: []
+      - OAuth2: []
+        ApiKeyAuth: []
+      summary: |
+        Für eine ZUGFeRD 2 PDF-Datei oder XML-Datei als E-Rechnung (CII oder UBL) eine
+        HTML-Visualisierung generieren lassen.
+      tags:
+      - E-Rechnung
+  /v1/e-invoicing/visualize/queue/{queueItemId}:
+    get:
+      operationId: getEInvoiceVisualizationQueueStatus
+      parameters:
+      - description: Id eines Elements einer Warteschlange
+        in: path
+        name: queueItemId
+        required: true
+        schema:
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/EInvoiceVisualizationStatus'
+          description: |
+            Die Anfrage war erfolgreich. Das zurückgegebene Objekt beschreibt den aktuellen Status
+            der Aufgabe in der Warteschlange. Clients sollen dieselbe URL wiederholt abfragen (Polling).
+            Solange das Feld `Status` den Wert `Pending` enthält, ist die Verarbeitung noch nicht
+            abgeschlossen.
+            Sobald das Feld `Status` den Wert `Finished` hat, ist die Verarbeitung beendet und das
+            Ergebnis ist im selben Response-Objekt enthalten.
+        "400":
+          description: |
+            Es liegt ein fehlerhafter Clientaufruf vor. Eine mögliche Ursache kann
+            sein, dass ein fehlerhafter Wert übergeben wurde. Weitere Informationen
+            sind in der Response-Nachricht als HttpError enthalten.
+        "401":
+          description: |
+            Die Authentifizierungs-Information fehlt oder ist ungültig. Weitere
+            Informationen sind in der Response-Nachricht als HttpError enthalten.
+          headers:
+            WWW_Authenticate:
+              schema:
+                type: string
+        "403":
+          description: Es fehlt die Berechtigung zum Zugriff auf die Ressource.
+        "404":
+          description: |
+            Die angeforderte Ressource ist dauerhaft oder temporär nicht verfügbar.
+            Eine mögliche Ursache kann sein, dass die URI fehlerhaft ist.
+        "423":
+          description: Die Ressource ist aufgrund einer exklusiven Verarbeitung temporär
+            gesperrt.
+      security:
+      - BasicAuth: []
+        ApiKeyAuth: []
+      - OAuth2: []
+        ApiKeyAuth: []
+      summary: Abfragen des Status eines Elements in der Visualization Warteschlange.
+      tags:
+      - E-Rechnung
 components:
   parameters:
     FilterParam:
@@ -16756,6 +18081,13 @@ components:
           schema:
             $ref: '#/components/schemas/Customer'
       description: Kunde
+      required: true
+    VatIdCheckRequestBody:
+      content:
+        application/json;charset=utf-8:
+          schema:
+            $ref: '#/components/schemas/VatIdCheckRequest'
+      description: USt-IdNr. Prüfanfrage
       required: true
     Supplier:
       content:
@@ -21021,6 +22353,173 @@ components:
           type: integer
       title: DateDependentPriceListInfo
       type: object
+    VatIdCheckResult:
+      example:
+        Zip: "12345"
+        CheckedVatId: ATU12345678
+        ResultForCompanyName: A
+        ResultForZip: A
+        City: musterort
+        EVatStatusCode: evatr-0004
+        Timestamp: 2000-01-23T04:56:07.000+00:00
+        ResultForCity: A
+        RawResult: RawResult
+        CompanyName: Musterhaus GmbH & Co KG
+        CheckType: Qualified
+        ValidTo: 2000-01-23
+        Street: Musterstrasse 22
+        ValidFrom: 2000-01-23
+        Id: 1
+        RequesterVatId: DE123456789
+        ResultForStreet: A
+        IsValid: true
+      properties:
+        Id:
+          description: Id der USt-IdNr. Prüfung (technischer Schlüssel)
+          example: 1
+          nullable: true
+          type: integer
+        CheckType:
+          description: |
+            Art der durchgeführten Prüfung
+
+            Mögliche Ausprägungen:
+            - **Simple** -> Einfache Prüfung ohne Rückmeldung des Namens und der Anschrift
+            - **Qualified** -> Qualifizierte Prüfung mit Rückmeldung des Namens und der Anschrift
+            - **Manual** -> Manuelle Prüfung via Webbrowser
+          enum:
+          - Simple
+          - Qualified
+          - Manual
+          example: Qualified
+          nullable: true
+          type: string
+        CheckedVatId:
+          description: USt-IdNr. die geprüft wurde.
+          example: ATU12345678
+          nullable: true
+          type: string
+        RequesterVatId:
+          description: USt-IdNr. des Anfragenden.
+          example: DE123456789
+          nullable: true
+          type: string
+        CompanyName:
+          description: Firmenname bei qualifizierter Prüfung.
+          example: Musterhaus GmbH & Co KG
+          nullable: true
+          type: string
+        ResultForCompanyName:
+          $ref: '#/components/schemas/VatIdFieldCheckResult'
+        Street:
+          description: Straße bei qualifizierter Prüfung.
+          example: Musterstrasse 22
+          nullable: true
+          type: string
+        ResultForStreet:
+          $ref: '#/components/schemas/VatIdFieldCheckResult'
+        City:
+          description: Ort bei qualifizierter Prüfung.
+          example: musterort
+          nullable: true
+          type: string
+        ResultForCity:
+          $ref: '#/components/schemas/VatIdFieldCheckResult'
+        Zip:
+          description: Postleitzahl bei qualifizierter Prüfung.
+          example: "12345"
+          nullable: true
+          type: string
+        ResultForZip:
+          $ref: '#/components/schemas/VatIdFieldCheckResult'
+        EVatStatusCode:
+          description: |
+            Erweiterter Statuscode der USt-IdNr.-Prüfung.
+            Nur bei einem "Simple" oder "Qualified" Check besetzt.
+
+            Weitere Informationen zum EVatStatusCode finden Sie in der Schnittstellenbeschreibung des BZSt.
+            https://api.evatr.vies.bzst.de/api-docs
+          example: evatr-0004
+          nullable: true
+          type: string
+        IsValid:
+          description: "Gibt an, ob die zu prüfende USt-IdNr. gültig ist."
+          example: true
+          nullable: true
+          type: boolean
+        ValidFrom:
+          description: "Gibt an, ab welchem Datum die zu prüfende USt-IdNr. gültig\
+            \ ist."
+          format: date
+          nullable: true
+          type: string
+        ValidTo:
+          description: "Gibt an, ab welchem Datum die zu prüfende USt-IdNr. gültig\
+            \ ist."
+          format: date
+          nullable: true
+          type: string
+        RawResult:
+          description: Rohergebnis der USt-IdNr. Prüfung.
+          nullable: true
+          type: string
+        Timestamp:
+          description: Zeitstempel der USt-IdNr. Prüfung.
+          format: date-time
+          nullable: true
+          type: string
+      type: object
+    VatIdFieldCheckResult:
+      description: |
+        Gibt das Ergebnis der qualifizierten Prüfung an.
+
+        Ausprägungen:
+        - A -> Die Angaben zur geprüften USt-IdNr. stimmen mit den registrierten Daten überein.
+        - B -> Die Angaben zur geprüften USt-IdNr. stimmen mit den registrierten Daten nicht überein.
+        - C -> Die Angaben zur geprüften USt-IdNr. wurden nicht angefragt.
+        - D -> Die Angaben zur geprüften USt-IdNr. wurden vom EU-Mitgliedstaat nicht übermittelt.
+      enum:
+      - A
+      - B
+      - C
+      - D
+      example: A
+      nullable: true
+      type: string
+    VatIdCheckRequest:
+      example:
+        VatIdToCheck: VatIdToCheck
+        CheckType: Simple
+        RequesterVatId: RequesterVatId
+      properties:
+        CheckType:
+          description: |
+            Art der durchzuführenden Prüfung.
+
+            Mögliche Ausprägungen:
+            - **Simple** -> Einfache Prüfung ohne Rückmeldung des Namens und der Anschrift
+            - **Qualified** -> Qualifizierte Prüfung mit Rückmeldung des Namens und der Anschrift
+          enum:
+          - Simple
+          - Qualified
+          type: string
+        VatIdToCheck:
+          description: |
+            Abweichende USt-IdNr. des Geschäftspartners,
+            die anstelle der in den Stammdaten des Kunden/Lieferanten hinterlegten USt-IdNr.
+            für die Prüfanfrage an das BZSt verwendet werden soll. *(Optional)*
+          nullable: true
+          type: string
+        RequesterVatId:
+          description: |
+            Abweichende USt-IdNr. des prüfenden Unternehmens,
+            die anstelle der in den Stammdaten der Firma hinterlegten USt-IdNr.
+            für die Prüfanfrage an das BZSt verwendet werden soll. *(Optional)*
+          nullable: true
+          type: string
+      required:
+      - CheckType
+      type: object
     Supplier:
       example:
         CreationDate: 2000-01-23T04:56:07.000+00:00
@@ -21587,6 +23086,40 @@ components:
           type: string
       title: Supplier
       type: object
+    QueueItemStatus:
+      description: |
+        Enthält Informationen zum Status für ein Element in der Warteschlange.
+      example:
+        Status: Pending
+        Errors:
+        - Message: Message
+          MessageDetail: MessageDetail
+          Identity: Identity
+          HsErrorId: HsErrorId
+        - Message: Message
+          MessageDetail: MessageDetail
+          Identity: Identity
+          HsErrorId: HsErrorId
+      properties:
+        Status:
+          description: |
+            Statusinformation:
+            Pending  -> Die Aktion wurde noch nicht gestartet oder noch nicht vollständig ausgeführt.
+            Finished -> Die Aktion wurde erfolgreich ausgeführt.
+            Error    -> Fehler bei der Ausführung der Aktion. Details stehen in der Property "Errors".
+          enum:
+          - Pending
+          - Finished
+          - Error
+          nullable: true
+          type: string
+        Errors:
+          items:
+            $ref: '#/components/schemas/ErrorMessage'
+          nullable: true
+          type: array
+      title: QueueItemStatus
+      type: object
     SalesDocument:
       description: |
         Enthält die Daten eines Verkaufsbelegs
@@ -21775,6 +23308,7 @@ components:
               SerialOrLotNumber: SerialOrLotNumber
               DateOfManufacture: DateOfManufacture
               DateOfExpiry: DateOfExpiry
+              Notes: Notes
             - SerialOrLotId: 7
               Quantity: 3.0205796992916243
               UserDefinedFields:
@@ -21795,6 +23329,7 @@ components:
               SerialOrLotNumber: SerialOrLotNumber
               DateOfManufacture: DateOfManufacture
               DateOfExpiry: DateOfExpiry
+              Notes: Notes
             QuantityFactor1: 8
             Remark: Anmerkung
             QuantityUnitIndicator: DeliveryUnit
@@ -21890,6 +23425,7 @@ components:
                     SerialOrLotNumber: SerialOrLotNumber
                     DateOfManufacture: DateOfManufacture
                     DateOfExpiry: DateOfExpiry
+                    Notes: Notes
                   - SerialOrLotId: 7
                     Quantity: 3.0205796992916243
                     UserDefinedFields:
@@ -21910,6 +23446,7 @@ components:
                     SerialOrLotNumber: SerialOrLotNumber
                     DateOfManufacture: DateOfManufacture
                     DateOfExpiry: DateOfExpiry
+                    Notes: Notes
                   UserDefinedFields:
                   - DefinitionId: 1
                     Type: Alphanumeric
@@ -21999,6 +23536,7 @@ components:
                     SerialOrLotNumber: SerialOrLotNumber
                     DateOfManufacture: DateOfManufacture
                     DateOfExpiry: DateOfExpiry
+                    Notes: Notes
                   - SerialOrLotId: 7
                     Quantity: 3.0205796992916243
                     UserDefinedFields:
@@ -22019,6 +23557,7 @@ components:
                     SerialOrLotNumber: SerialOrLotNumber
                     DateOfManufacture: DateOfManufacture
                     DateOfExpiry: DateOfExpiry
+                    Notes: Notes
                   UserDefinedFields:
                   - DefinitionId: 1
                     Type: Alphanumeric
@@ -22211,6 +23750,7 @@ components:
               SerialOrLotNumber: SerialOrLotNumber
               DateOfManufacture: DateOfManufacture
               DateOfExpiry: DateOfExpiry
+              Notes: Notes
             - SerialOrLotId: 7
               Quantity: 3.0205796992916243
               UserDefinedFields:
@@ -22231,6 +23771,7 @@ components:
               SerialOrLotNumber: SerialOrLotNumber
               DateOfManufacture: DateOfManufacture
               DateOfExpiry: DateOfExpiry
+              Notes: Notes
             QuantityFactor1: 8
             Remark: Anmerkung
             QuantityUnitIndicator: DeliveryUnit
@@ -22326,6 +23867,7 @@ components:
                     SerialOrLotNumber: SerialOrLotNumber
                     DateOfManufacture: DateOfManufacture
                     DateOfExpiry: DateOfExpiry
+                    Notes: Notes
                   - SerialOrLotId: 7
                     Quantity: 3.0205796992916243
                     UserDefinedFields:
@@ -22346,6 +23888,7 @@ components:
                     SerialOrLotNumber: SerialOrLotNumber
                     DateOfManufacture: DateOfManufacture
                     DateOfExpiry: DateOfExpiry
+                    Notes: Notes
                   UserDefinedFields:
                   - DefinitionId: 1
                     Type: Alphanumeric
@@ -22435,6 +23978,7 @@ components:
                     SerialOrLotNumber: SerialOrLotNumber
                     DateOfManufacture: DateOfManufacture
                     DateOfExpiry: DateOfExpiry
+                    Notes: Notes
                   - SerialOrLotId: 7
                     Quantity: 3.0205796992916243
                     UserDefinedFields:
@@ -22455,6 +23999,7 @@ components:
                     SerialOrLotNumber: SerialOrLotNumber
                     DateOfManufacture: DateOfManufacture
                     DateOfExpiry: DateOfExpiry
+                    Notes: Notes
                   UserDefinedFields:
                   - DefinitionId: 1
                     Type: Alphanumeric
@@ -23397,6 +24942,7 @@ components:
               SerialOrLotNumber: SerialOrLotNumber
               DateOfManufacture: DateOfManufacture
               DateOfExpiry: DateOfExpiry
+              Notes: Notes
             - SerialOrLotId: 7
               Quantity: 3.0205796992916243
               UserDefinedFields:
@@ -23417,6 +24963,7 @@ components:
               SerialOrLotNumber: SerialOrLotNumber
               DateOfManufacture: DateOfManufacture
               DateOfExpiry: DateOfExpiry
+              Notes: Notes
             UserDefinedFields:
             - DefinitionId: 1
               Type: Alphanumeric
@@ -23455,6 +25002,7 @@ components:
                 SerialOrLotNumber: SerialOrLotNumber
                 DateOfManufacture: DateOfManufacture
                 DateOfExpiry: DateOfExpiry
+                Notes: Notes
               - SerialOrLotId: 7
                 Quantity: 3.0205796992916243
                 UserDefinedFields:
@@ -23475,6 +25023,7 @@ components:
                 SerialOrLotNumber: SerialOrLotNumber
                 DateOfManufacture: DateOfManufacture
                 DateOfExpiry: DateOfExpiry
+                Notes: Notes
             - SourceBillOfMaterialItemId: 1
               SerialOrLotNumbers:
               - SerialOrLotId: 7
@@ -23497,6 +25046,7 @@ components:
                 SerialOrLotNumber: SerialOrLotNumber
                 DateOfManufacture: DateOfManufacture
                 DateOfExpiry: DateOfExpiry
+                Notes: Notes
               - SerialOrLotId: 7
                 Quantity: 3.0205796992916243
                 UserDefinedFields:
@@ -23517,6 +25067,7 @@ components:
                 SerialOrLotNumber: SerialOrLotNumber
                 DateOfManufacture: DateOfManufacture
                 DateOfExpiry: DateOfExpiry
+                Notes: Notes
           - Account: 7.457744773683766
             DatevQuantityForSkr14: 1
             SourceLineItems:
@@ -23634,6 +25185,7 @@ components:
               SerialOrLotNumber: SerialOrLotNumber
               DateOfManufacture: DateOfManufacture
               DateOfExpiry: DateOfExpiry
+              Notes: Notes
             - SerialOrLotId: 7
               Quantity: 3.0205796992916243
               UserDefinedFields:
@@ -23654,6 +25206,7 @@ components:
               SerialOrLotNumber: SerialOrLotNumber
               DateOfManufacture: DateOfManufacture
               DateOfExpiry: DateOfExpiry
+              Notes: Notes
             UserDefinedFields:
             - DefinitionId: 1
               Type: Alphanumeric
@@ -23692,6 +25245,7 @@ components:
                 SerialOrLotNumber: SerialOrLotNumber
                 DateOfManufacture: DateOfManufacture
                 DateOfExpiry: DateOfExpiry
+                Notes: Notes
               - SerialOrLotId: 7
                 Quantity: 3.0205796992916243
                 UserDefinedFields:
@@ -23712,6 +25266,7 @@ components:
                 SerialOrLotNumber: SerialOrLotNumber
                 DateOfManufacture: DateOfManufacture
                 DateOfExpiry: DateOfExpiry
+                Notes: Notes
             - SourceBillOfMaterialItemId: 1
               SerialOrLotNumbers:
               - SerialOrLotId: 7
@@ -23734,6 +25289,7 @@ components:
                 SerialOrLotNumber: SerialOrLotNumber
                 DateOfManufacture: DateOfManufacture
                 DateOfExpiry: DateOfExpiry
+                Notes: Notes
               - SerialOrLotId: 7
                 Quantity: 3.0205796992916243
                 UserDefinedFields:
@@ -23754,6 +25310,7 @@ components:
                 SerialOrLotNumber: SerialOrLotNumber
                 DateOfManufacture: DateOfManufacture
                 DateOfExpiry: DateOfExpiry
+                Notes: Notes
           InspectionDate: InspectionDate
           Agents:
           - Agents
@@ -23927,6 +25484,7 @@ components:
             SerialOrLotNumber: SerialOrLotNumber
             DateOfManufacture: DateOfManufacture
             DateOfExpiry: DateOfExpiry
+            Notes: Notes
           - SerialOrLotId: 7
             Quantity: 3.0205796992916243
             UserDefinedFields:
@@ -23947,6 +25505,7 @@ components:
             SerialOrLotNumber: SerialOrLotNumber
             DateOfManufacture: DateOfManufacture
             DateOfExpiry: DateOfExpiry
+            Notes: Notes
           UserDefinedFields:
           - DefinitionId: 1
             Type: Alphanumeric
@@ -23985,6 +25544,7 @@ components:
               SerialOrLotNumber: SerialOrLotNumber
               DateOfManufacture: DateOfManufacture
               DateOfExpiry: DateOfExpiry
+              Notes: Notes
             - SerialOrLotId: 7
               Quantity: 3.0205796992916243
               UserDefinedFields:
@@ -24005,6 +25565,7 @@ components:
               SerialOrLotNumber: SerialOrLotNumber
               DateOfManufacture: DateOfManufacture
               DateOfExpiry: DateOfExpiry
+              Notes: Notes
           - SourceBillOfMaterialItemId: 1
             SerialOrLotNumbers:
             - SerialOrLotId: 7
@@ -24027,6 +25588,7 @@ components:
               SerialOrLotNumber: SerialOrLotNumber
               DateOfManufacture: DateOfManufacture
               DateOfExpiry: DateOfExpiry
+              Notes: Notes
             - SerialOrLotId: 7
               Quantity: 3.0205796992916243
               UserDefinedFields:
@@ -24047,6 +25609,7 @@ components:
               SerialOrLotNumber: SerialOrLotNumber
               DateOfManufacture: DateOfManufacture
               DateOfExpiry: DateOfExpiry
+              Notes: Notes
         - Account: 7.457744773683766
           DatevQuantityForSkr14: 1
           SourceLineItems:
@@ -24164,6 +25727,7 @@ components:
             SerialOrLotNumber: SerialOrLotNumber
             DateOfManufacture: DateOfManufacture
             DateOfExpiry: DateOfExpiry
+            Notes: Notes
           - SerialOrLotId: 7
             Quantity: 3.0205796992916243
             UserDefinedFields:
@@ -24184,6 +25748,7 @@ components:
             SerialOrLotNumber: SerialOrLotNumber
             DateOfManufacture: DateOfManufacture
             DateOfExpiry: DateOfExpiry
+            Notes: Notes
           UserDefinedFields:
           - DefinitionId: 1
             Type: Alphanumeric
@@ -24222,6 +25787,7 @@ components:
               SerialOrLotNumber: SerialOrLotNumber
               DateOfManufacture: DateOfManufacture
               DateOfExpiry: DateOfExpiry
+              Notes: Notes
             - SerialOrLotId: 7
               Quantity: 3.0205796992916243
               UserDefinedFields:
@@ -24242,6 +25808,7 @@ components:
               SerialOrLotNumber: SerialOrLotNumber
               DateOfManufacture: DateOfManufacture
               DateOfExpiry: DateOfExpiry
+              Notes: Notes
           - SourceBillOfMaterialItemId: 1
             SerialOrLotNumbers:
             - SerialOrLotId: 7
@@ -24264,6 +25831,7 @@ components:
               SerialOrLotNumber: SerialOrLotNumber
               DateOfManufacture: DateOfManufacture
               DateOfExpiry: DateOfExpiry
+              Notes: Notes
             - SerialOrLotId: 7
               Quantity: 3.0205796992916243
               UserDefinedFields:
@@ -24284,6 +25852,7 @@ components:
               SerialOrLotNumber: SerialOrLotNumber
               DateOfManufacture: DateOfManufacture
               DateOfExpiry: DateOfExpiry
+              Notes: Notes
         InspectionDate: InspectionDate
         Agents:
         - Agents
@@ -24525,6 +26094,7 @@ components:
           SerialOrLotNumber: SerialOrLotNumber
           DateOfManufacture: DateOfManufacture
           DateOfExpiry: DateOfExpiry
+          Notes: Notes
         - SerialOrLotId: 7
           Quantity: 3.0205796992916243
           UserDefinedFields:
@@ -24545,6 +26115,7 @@ components:
           SerialOrLotNumber: SerialOrLotNumber
           DateOfManufacture: DateOfManufacture
           DateOfExpiry: DateOfExpiry
+          Notes: Notes
         UserDefinedFields:
         - DefinitionId: 1
           Type: Alphanumeric
@@ -24583,6 +26154,7 @@ components:
             SerialOrLotNumber: SerialOrLotNumber
             DateOfManufacture: DateOfManufacture
             DateOfExpiry: DateOfExpiry
+            Notes: Notes
           - SerialOrLotId: 7
             Quantity: 3.0205796992916243
             UserDefinedFields:
@@ -24603,6 +26175,7 @@ components:
             SerialOrLotNumber: SerialOrLotNumber
             DateOfManufacture: DateOfManufacture
             DateOfExpiry: DateOfExpiry
+            Notes: Notes
         - SourceBillOfMaterialItemId: 1
           SerialOrLotNumbers:
           - SerialOrLotId: 7
@@ -24625,6 +26198,7 @@ components:
             SerialOrLotNumber: SerialOrLotNumber
             DateOfManufacture: DateOfManufacture
             DateOfExpiry: DateOfExpiry
+            Notes: Notes
           - SerialOrLotId: 7
             Quantity: 3.0205796992916243
             UserDefinedFields:
@@ -24645,6 +26219,7 @@ components:
             SerialOrLotNumber: SerialOrLotNumber
             DateOfManufacture: DateOfManufacture
             DateOfExpiry: DateOfExpiry
+            Notes: Notes
       properties:
         SourceLineItems:
           description: "Daten der Ursprungspositionen. Derzeit ist nur 1 Ursprungsposition\
@@ -24922,6 +26497,7 @@ components:
           SerialOrLotNumber: SerialOrLotNumber
           DateOfManufacture: DateOfManufacture
           DateOfExpiry: DateOfExpiry
+          Notes: Notes
         - SerialOrLotId: 7
           Quantity: 3.0205796992916243
           UserDefinedFields:
@@ -24942,6 +26518,7 @@ components:
           SerialOrLotNumber: SerialOrLotNumber
           DateOfManufacture: DateOfManufacture
           DateOfExpiry: DateOfExpiry
+          Notes: Notes
       properties:
         SourceBillOfMaterialItemId:
           description: |
@@ -25174,6 +26751,7 @@ components:
               SerialOrLotNumber: SerialOrLotNumber
               DateOfManufacture: DateOfManufacture
               DateOfExpiry: DateOfExpiry
+              Notes: Notes
             - SerialOrLotId: 7
               Quantity: 3.0205796992916243
               UserDefinedFields:
@@ -25194,6 +26772,7 @@ components:
               SerialOrLotNumber: SerialOrLotNumber
               DateOfManufacture: DateOfManufacture
               DateOfExpiry: DateOfExpiry
+              Notes: Notes
             UserDefinedFields:
             - DefinitionId: 1
               Type: Alphanumeric
@@ -25232,6 +26811,7 @@ components:
                 SerialOrLotNumber: SerialOrLotNumber
                 DateOfManufacture: DateOfManufacture
                 DateOfExpiry: DateOfExpiry
+                Notes: Notes
               - SerialOrLotId: 7
                 Quantity: 3.0205796992916243
                 UserDefinedFields:
@@ -25252,6 +26832,7 @@ components:
                 SerialOrLotNumber: SerialOrLotNumber
                 DateOfManufacture: DateOfManufacture
                 DateOfExpiry: DateOfExpiry
+                Notes: Notes
             - SourceBillOfMaterialItemId: 1
               SerialOrLotNumbers:
               - SerialOrLotId: 7
@@ -25274,6 +26855,7 @@ components:
                 SerialOrLotNumber: SerialOrLotNumber
                 DateOfManufacture: DateOfManufacture
                 DateOfExpiry: DateOfExpiry
+                Notes: Notes
               - SerialOrLotId: 7
                 Quantity: 3.0205796992916243
                 UserDefinedFields:
@@ -25294,6 +26876,7 @@ components:
                 SerialOrLotNumber: SerialOrLotNumber
                 DateOfManufacture: DateOfManufacture
                 DateOfExpiry: DateOfExpiry
+                Notes: Notes
           - Account: 7.457744773683766
             DatevQuantityForSkr14: 1
             SourceLineItems:
@@ -25411,6 +26994,7 @@ components:
               SerialOrLotNumber: SerialOrLotNumber
               DateOfManufacture: DateOfManufacture
               DateOfExpiry: DateOfExpiry
+              Notes: Notes
             - SerialOrLotId: 7
               Quantity: 3.0205796992916243
               UserDefinedFields:
@@ -25431,6 +27015,7 @@ components:
               SerialOrLotNumber: SerialOrLotNumber
               DateOfManufacture: DateOfManufacture
               DateOfExpiry: DateOfExpiry
+              Notes: Notes
             UserDefinedFields:
             - DefinitionId: 1
               Type: Alphanumeric
@@ -25469,6 +27054,7 @@ components:
                 SerialOrLotNumber: SerialOrLotNumber
                 DateOfManufacture: DateOfManufacture
                 DateOfExpiry: DateOfExpiry
+                Notes: Notes
               - SerialOrLotId: 7
                 Quantity: 3.0205796992916243
                 UserDefinedFields:
@@ -25489,6 +27075,7 @@ components:
                 SerialOrLotNumber: SerialOrLotNumber
                 DateOfManufacture: DateOfManufacture
                 DateOfExpiry: DateOfExpiry
+                Notes: Notes
             - SourceBillOfMaterialItemId: 1
               SerialOrLotNumbers:
               - SerialOrLotId: 7
@@ -25511,6 +27098,7 @@ components:
                 SerialOrLotNumber: SerialOrLotNumber
                 DateOfManufacture: DateOfManufacture
                 DateOfExpiry: DateOfExpiry
+                Notes: Notes
               - SerialOrLotId: 7
                 Quantity: 3.0205796992916243
                 UserDefinedFields:
@@ -25531,6 +27119,7 @@ components:
                 SerialOrLotNumber: SerialOrLotNumber
                 DateOfManufacture: DateOfManufacture
                 DateOfExpiry: DateOfExpiry
+                Notes: Notes
           InspectionDate: InspectionDate
           Agents:
           - Agents
@@ -25922,6 +27511,7 @@ components:
               SerialOrLotNumber: SerialOrLotNumber
               DateOfManufacture: DateOfManufacture
               DateOfExpiry: DateOfExpiry
+              Notes: Notes
             - SerialOrLotId: 7
               Quantity: 3.0205796992916243
               UserDefinedFields:
@@ -25942,6 +27532,7 @@ components:
               SerialOrLotNumber: SerialOrLotNumber
               DateOfManufacture: DateOfManufacture
               DateOfExpiry: DateOfExpiry
+              Notes: Notes
             QuantityFactor1: 8
             Remark: Anmerkung
             QuantityUnitIndicator: DeliveryUnit
@@ -26037,6 +27628,7 @@ components:
                     SerialOrLotNumber: SerialOrLotNumber
                     DateOfManufacture: DateOfManufacture
                     DateOfExpiry: DateOfExpiry
+                    Notes: Notes
                   - SerialOrLotId: 7
                     Quantity: 3.0205796992916243
                     UserDefinedFields:
@@ -26057,6 +27649,7 @@ components:
                     SerialOrLotNumber: SerialOrLotNumber
                     DateOfManufacture: DateOfManufacture
                     DateOfExpiry: DateOfExpiry
+                    Notes: Notes
                   UserDefinedFields:
                   - DefinitionId: 1
                     Type: Alphanumeric
@@ -26146,6 +27739,7 @@ components:
                     SerialOrLotNumber: SerialOrLotNumber
                     DateOfManufacture: DateOfManufacture
                     DateOfExpiry: DateOfExpiry
+                    Notes: Notes
                   - SerialOrLotId: 7
                     Quantity: 3.0205796992916243
                     UserDefinedFields:
@@ -26166,6 +27760,7 @@ components:
                     SerialOrLotNumber: SerialOrLotNumber
                     DateOfManufacture: DateOfManufacture
                     DateOfExpiry: DateOfExpiry
+                    Notes: Notes
                   UserDefinedFields:
                   - DefinitionId: 1
                     Type: Alphanumeric
@@ -26358,6 +27953,7 @@ components:
               SerialOrLotNumber: SerialOrLotNumber
               DateOfManufacture: DateOfManufacture
               DateOfExpiry: DateOfExpiry
+              Notes: Notes
             - SerialOrLotId: 7
               Quantity: 3.0205796992916243
               UserDefinedFields:
@@ -26378,6 +27974,7 @@ components:
               SerialOrLotNumber: SerialOrLotNumber
               DateOfManufacture: DateOfManufacture
               DateOfExpiry: DateOfExpiry
+              Notes: Notes
             QuantityFactor1: 8
             Remark: Anmerkung
             QuantityUnitIndicator: DeliveryUnit
@@ -26473,6 +28070,7 @@ components:
                     SerialOrLotNumber: SerialOrLotNumber
                     DateOfManufacture: DateOfManufacture
                     DateOfExpiry: DateOfExpiry
+                    Notes: Notes
                   - SerialOrLotId: 7
                     Quantity: 3.0205796992916243
                     UserDefinedFields:
@@ -26493,6 +28091,7 @@ components:
                     SerialOrLotNumber: SerialOrLotNumber
                     DateOfManufacture: DateOfManufacture
                     DateOfExpiry: DateOfExpiry
+                    Notes: Notes
                   UserDefinedFields:
                   - DefinitionId: 1
                     Type: Alphanumeric
@@ -26582,6 +28181,7 @@ components:
                     SerialOrLotNumber: SerialOrLotNumber
                     DateOfManufacture: DateOfManufacture
                     DateOfExpiry: DateOfExpiry
+                    Notes: Notes
                   - SerialOrLotId: 7
                     Quantity: 3.0205796992916243
                     UserDefinedFields:
@@ -26602,6 +28202,7 @@ components:
                     SerialOrLotNumber: SerialOrLotNumber
                     DateOfManufacture: DateOfManufacture
                     DateOfExpiry: DateOfExpiry
+                    Notes: Notes
                   UserDefinedFields:
                   - DefinitionId: 1
                     Type: Alphanumeric
@@ -27272,6 +28873,7 @@ components:
           SerialOrLotNumber: SerialOrLotNumber
           DateOfManufacture: DateOfManufacture
           DateOfExpiry: DateOfExpiry
+          Notes: Notes
         - SerialOrLotId: 7
           Quantity: 3.0205796992916243
           UserDefinedFields:
@@ -27292,6 +28894,7 @@ components:
           SerialOrLotNumber: SerialOrLotNumber
           DateOfManufacture: DateOfManufacture
           DateOfExpiry: DateOfExpiry
+          Notes: Notes
         StatusContinuation: NotContinued
         QuantityFactor1: 1.1730742509559433
         Remark: Remark
@@ -27367,6 +28970,7 @@ components:
             SerialOrLotNumber: SerialOrLotNumber
             DateOfManufacture: DateOfManufacture
             DateOfExpiry: DateOfExpiry
+            Notes: Notes
           - SerialOrLotId: 7
             Quantity: 3.0205796992916243
             UserDefinedFields:
@@ -27387,6 +28991,7 @@ components:
             SerialOrLotNumber: SerialOrLotNumber
             DateOfManufacture: DateOfManufacture
             DateOfExpiry: DateOfExpiry
+            Notes: Notes
           UserDefinedFields:
           - DefinitionId: 1
             Type: Alphanumeric
@@ -27458,6 +29063,7 @@ components:
             SerialOrLotNumber: SerialOrLotNumber
             DateOfManufacture: DateOfManufacture
             DateOfExpiry: DateOfExpiry
+            Notes: Notes
           - SerialOrLotId: 7
             Quantity: 3.0205796992916243
             UserDefinedFields:
@@ -27478,6 +29084,7 @@ components:
             SerialOrLotNumber: SerialOrLotNumber
             DateOfManufacture: DateOfManufacture
             DateOfExpiry: DateOfExpiry
+            Notes: Notes
           UserDefinedFields:
           - DefinitionId: 1
             Type: Alphanumeric
@@ -28046,6 +29653,7 @@ components:
           SerialOrLotNumber: SerialOrLotNumber
           DateOfManufacture: DateOfManufacture
           DateOfExpiry: DateOfExpiry
+          Notes: Notes
         - SerialOrLotId: 7
           Quantity: 3.0205796992916243
           UserDefinedFields:
@@ -28066,6 +29674,7 @@ components:
           SerialOrLotNumber: SerialOrLotNumber
           DateOfManufacture: DateOfManufacture
           DateOfExpiry: DateOfExpiry
+          Notes: Notes
         UserDefinedFields:
         - DefinitionId: 1
           Type: Alphanumeric
@@ -28488,6 +30097,7 @@ components:
             SerialOrLotNumber: SerialOrLotNumber
             DateOfManufacture: DateOfManufacture
             DateOfExpiry: DateOfExpiry
+            Notes: Notes
           - SerialOrLotId: 7
             Quantity: 3.0205796992916243
             UserDefinedFields:
@@ -28508,6 +30118,7 @@ components:
             SerialOrLotNumber: SerialOrLotNumber
             DateOfManufacture: DateOfManufacture
             DateOfExpiry: DateOfExpiry
+            Notes: Notes
         - ConsumedQuantity: 2.3021358869347655
           StockWithdrawalDate: StockWithdrawalDate
           ManufacturingOrderLineItemId: 5
@@ -28534,6 +30145,7 @@ components:
             SerialOrLotNumber: SerialOrLotNumber
             DateOfManufacture: DateOfManufacture
             DateOfExpiry: DateOfExpiry
+            Notes: Notes
           - SerialOrLotId: 7
             Quantity: 3.0205796992916243
             UserDefinedFields:
@@ -28554,6 +30166,7 @@ components:
             SerialOrLotNumber: SerialOrLotNumber
             DateOfManufacture: DateOfManufacture
             DateOfExpiry: DateOfExpiry
+            Notes: Notes
         InspectionDate: InspectionDate
         RealEndDate: RealEndDate
         DocumentType: DocumentType
@@ -28580,6 +30193,7 @@ components:
           SerialOrLotNumber: SerialOrLotNumber
           DateOfManufacture: DateOfManufacture
           DateOfExpiry: DateOfExpiry
+          Notes: Notes
         - SerialOrLotId: 7
           Quantity: 3.0205796992916243
           UserDefinedFields:
@@ -28600,6 +30214,7 @@ components:
           SerialOrLotNumber: SerialOrLotNumber
           DateOfManufacture: DateOfManufacture
           DateOfExpiry: DateOfExpiry
+          Notes: Notes
         DocumentDate: 2000-01-23
         ManufacturedQuantity: 1.4658129805029452
       properties:
@@ -28694,6 +30309,7 @@ components:
           SerialOrLotNumber: SerialOrLotNumber
           DateOfManufacture: DateOfManufacture
           DateOfExpiry: DateOfExpiry
+          Notes: Notes
         - SerialOrLotId: 7
           Quantity: 3.0205796992916243
           UserDefinedFields:
@@ -28714,6 +30330,7 @@ components:
           SerialOrLotNumber: SerialOrLotNumber
           DateOfManufacture: DateOfManufacture
           DateOfExpiry: DateOfExpiry
+          Notes: Notes
       properties:
         ManufacturingOrderLineItemId:
           description: |
@@ -28931,6 +30548,7 @@ components:
               SerialOrLotNumber: SerialOrLotNumber
               DateOfManufacture: DateOfManufacture
               DateOfExpiry: DateOfExpiry
+              Notes: Notes
             - SerialOrLotId: 7
               Quantity: 3.0205796992916243
               UserDefinedFields:
@@ -28951,6 +30569,7 @@ components:
               SerialOrLotNumber: SerialOrLotNumber
               DateOfManufacture: DateOfManufacture
               DateOfExpiry: DateOfExpiry
+              Notes: Notes
             QuantityFactor1: 8
             Remark: Anmerkung
             QuantityUnitIndicator: DeliveryUnit
@@ -29046,6 +30665,7 @@ components:
                     SerialOrLotNumber: SerialOrLotNumber
                     DateOfManufacture: DateOfManufacture
                     DateOfExpiry: DateOfExpiry
+                    Notes: Notes
                   - SerialOrLotId: 7
                     Quantity: 3.0205796992916243
                     UserDefinedFields:
@@ -29066,6 +30686,7 @@ components:
                     SerialOrLotNumber: SerialOrLotNumber
                     DateOfManufacture: DateOfManufacture
                     DateOfExpiry: DateOfExpiry
+                    Notes: Notes
                   UserDefinedFields:
                   - DefinitionId: 1
                     Type: Alphanumeric
@@ -29155,6 +30776,7 @@ components:
                     SerialOrLotNumber: SerialOrLotNumber
                     DateOfManufacture: DateOfManufacture
                     DateOfExpiry: DateOfExpiry
+                    Notes: Notes
                   - SerialOrLotId: 7
                     Quantity: 3.0205796992916243
                     UserDefinedFields:
@@ -29175,6 +30797,7 @@ components:
                     SerialOrLotNumber: SerialOrLotNumber
                     DateOfManufacture: DateOfManufacture
                     DateOfExpiry: DateOfExpiry
+                    Notes: Notes
                   UserDefinedFields:
                   - DefinitionId: 1
                     Type: Alphanumeric
@@ -29367,6 +30990,7 @@ components:
               SerialOrLotNumber: SerialOrLotNumber
               DateOfManufacture: DateOfManufacture
               DateOfExpiry: DateOfExpiry
+              Notes: Notes
             - SerialOrLotId: 7
               Quantity: 3.0205796992916243
               UserDefinedFields:
@@ -29387,6 +31011,7 @@ components:
               SerialOrLotNumber: SerialOrLotNumber
               DateOfManufacture: DateOfManufacture
               DateOfExpiry: DateOfExpiry
+              Notes: Notes
             QuantityFactor1: 8
             Remark: Anmerkung
             QuantityUnitIndicator: DeliveryUnit
@@ -29482,6 +31107,7 @@ components:
                     SerialOrLotNumber: SerialOrLotNumber
                     DateOfManufacture: DateOfManufacture
                     DateOfExpiry: DateOfExpiry
+                    Notes: Notes
                   - SerialOrLotId: 7
                     Quantity: 3.0205796992916243
                     UserDefinedFields:
@@ -29502,6 +31128,7 @@ components:
                     SerialOrLotNumber: SerialOrLotNumber
                     DateOfManufacture: DateOfManufacture
                     DateOfExpiry: DateOfExpiry
+                    Notes: Notes
                   UserDefinedFields:
                   - DefinitionId: 1
                     Type: Alphanumeric
@@ -29591,6 +31218,7 @@ components:
                     SerialOrLotNumber: SerialOrLotNumber
                     DateOfManufacture: DateOfManufacture
                     DateOfExpiry: DateOfExpiry
+                    Notes: Notes
                   - SerialOrLotId: 7
                     Quantity: 3.0205796992916243
                     UserDefinedFields:
@@ -29611,6 +31239,7 @@ components:
                     SerialOrLotNumber: SerialOrLotNumber
                     DateOfManufacture: DateOfManufacture
                     DateOfExpiry: DateOfExpiry
+                    Notes: Notes
                   UserDefinedFields:
                   - DefinitionId: 1
                     Type: Alphanumeric
@@ -30386,6 +32015,7 @@ components:
               SerialOrLotNumber: SerialOrLotNumber
               DateOfManufacture: DateOfManufacture
               DateOfExpiry: DateOfExpiry
+              Notes: Notes
             - SerialOrLotId: 7
               Quantity: 3.0205796992916243
               UserDefinedFields:
@@ -30406,6 +32036,7 @@ components:
               SerialOrLotNumber: SerialOrLotNumber
               DateOfManufacture: DateOfManufacture
               DateOfExpiry: DateOfExpiry
+              Notes: Notes
             QuantityFactor1: 8
             Remark: Anmerkung
             QuantityUnitIndicator: DeliveryUnit
@@ -30501,6 +32132,7 @@ components:
                     SerialOrLotNumber: SerialOrLotNumber
                     DateOfManufacture: DateOfManufacture
                     DateOfExpiry: DateOfExpiry
+                    Notes: Notes
                   - SerialOrLotId: 7
                     Quantity: 3.0205796992916243
                     UserDefinedFields:
@@ -30521,6 +32153,7 @@ components:
                     SerialOrLotNumber: SerialOrLotNumber
                     DateOfManufacture: DateOfManufacture
                     DateOfExpiry: DateOfExpiry
+                    Notes: Notes
                   UserDefinedFields:
                   - DefinitionId: 1
                     Type: Alphanumeric
@@ -30610,6 +32243,7 @@ components:
                     SerialOrLotNumber: SerialOrLotNumber
                     DateOfManufacture: DateOfManufacture
                     DateOfExpiry: DateOfExpiry
+                    Notes: Notes
                   - SerialOrLotId: 7
                     Quantity: 3.0205796992916243
                     UserDefinedFields:
@@ -30630,6 +32264,7 @@ components:
                     SerialOrLotNumber: SerialOrLotNumber
                     DateOfManufacture: DateOfManufacture
                     DateOfExpiry: DateOfExpiry
+                    Notes: Notes
                   UserDefinedFields:
                   - DefinitionId: 1
                     Type: Alphanumeric
@@ -30822,6 +32457,7 @@ components:
               SerialOrLotNumber: SerialOrLotNumber
               DateOfManufacture: DateOfManufacture
               DateOfExpiry: DateOfExpiry
+              Notes: Notes
             - SerialOrLotId: 7
               Quantity: 3.0205796992916243
               UserDefinedFields:
@@ -30842,6 +32478,7 @@ components:
               SerialOrLotNumber: SerialOrLotNumber
               DateOfManufacture: DateOfManufacture
               DateOfExpiry: DateOfExpiry
+              Notes: Notes
             QuantityFactor1: 8
             Remark: Anmerkung
             QuantityUnitIndicator: DeliveryUnit
@@ -30937,6 +32574,7 @@ components:
                     SerialOrLotNumber: SerialOrLotNumber
                     DateOfManufacture: DateOfManufacture
                     DateOfExpiry: DateOfExpiry
+                    Notes: Notes
                   - SerialOrLotId: 7
                     Quantity: 3.0205796992916243
                     UserDefinedFields:
@@ -30957,6 +32595,7 @@ components:
                     SerialOrLotNumber: SerialOrLotNumber
                     DateOfManufacture: DateOfManufacture
                     DateOfExpiry: DateOfExpiry
+                    Notes: Notes
                   UserDefinedFields:
                   - DefinitionId: 1
                     Type: Alphanumeric
@@ -31046,6 +32685,7 @@ components:
                     SerialOrLotNumber: SerialOrLotNumber
                     DateOfManufacture: DateOfManufacture
                     DateOfExpiry: DateOfExpiry
+                    Notes: Notes
                   - SerialOrLotId: 7
                     Quantity: 3.0205796992916243
                     UserDefinedFields:
@@ -31066,6 +32706,7 @@ components:
                     SerialOrLotNumber: SerialOrLotNumber
                     DateOfManufacture: DateOfManufacture
                     DateOfExpiry: DateOfExpiry
+                    Notes: Notes
                   UserDefinedFields:
                   - DefinitionId: 1
                     Type: Alphanumeric
@@ -31592,6 +33233,7 @@ components:
             SerialOrLotNumber: SerialOrLotNumber
             DateOfManufacture: DateOfManufacture
             DateOfExpiry: DateOfExpiry
+            Notes: Notes
           - SerialOrLotId: 7
             Quantity: 3.0205796992916243
             UserDefinedFields:
@@ -31612,6 +33254,7 @@ components:
             SerialOrLotNumber: SerialOrLotNumber
             DateOfManufacture: DateOfManufacture
             DateOfExpiry: DateOfExpiry
+            Notes: Notes
           CostCenterId: 6
           QuantityFactor1: 3.616076749251911
           Remark: Remark
@@ -31651,6 +33294,7 @@ components:
             SerialOrLotNumber: SerialOrLotNumber
             DateOfManufacture: DateOfManufacture
             DateOfExpiry: DateOfExpiry
+            Notes: Notes
           - SerialOrLotId: 7
             Quantity: 3.0205796992916243
             UserDefinedFields:
@@ -31671,6 +33315,7 @@ components:
             SerialOrLotNumber: SerialOrLotNumber
             DateOfManufacture: DateOfManufacture
             DateOfExpiry: DateOfExpiry
+            Notes: Notes
           CostCenterId: 6
           QuantityFactor1: 3.616076749251911
           Remark: Remark
@@ -31836,6 +33481,7 @@ components:
           SerialOrLotNumber: SerialOrLotNumber
           DateOfManufacture: DateOfManufacture
           DateOfExpiry: DateOfExpiry
+          Notes: Notes
         - SerialOrLotId: 7
           Quantity: 3.0205796992916243
           UserDefinedFields:
@@ -31856,6 +33502,7 @@ components:
           SerialOrLotNumber: SerialOrLotNumber
           DateOfManufacture: DateOfManufacture
           DateOfExpiry: DateOfExpiry
+          Notes: Notes
         CostCenterId: 6
         QuantityFactor1: 3.616076749251911
         Remark: Remark
@@ -31901,6 +33548,7 @@ components:
           SerialOrLotNumber: SerialOrLotNumber
           DateOfManufacture: DateOfManufacture
           DateOfExpiry: DateOfExpiry
+          Notes: Notes
         - SerialOrLotId: 7
           Quantity: 3.0205796992916243
           UserDefinedFields:
@@ -31921,6 +33569,7 @@ components:
           SerialOrLotNumber: SerialOrLotNumber
           DateOfManufacture: DateOfManufacture
           DateOfExpiry: DateOfExpiry
+          Notes: Notes
         QuantityUnit: QuantityUnit
         QuantityFactor1: 1.4894159098541704
         Remark: Remark
@@ -32063,6 +33712,7 @@ components:
             SerialOrLotNumber: SerialOrLotNumber
             DateOfManufacture: DateOfManufacture
             DateOfExpiry: DateOfExpiry
+            Notes: Notes
           - SerialOrLotId: 7
             Quantity: 3.0205796992916243
             UserDefinedFields:
@@ -32083,6 +33733,7 @@ components:
             SerialOrLotNumber: SerialOrLotNumber
             DateOfManufacture: DateOfManufacture
             DateOfExpiry: DateOfExpiry
+            Notes: Notes
           QuantityUnit: QuantityUnit
           QuantityFactor1: 1.4894159098541704
           Remark: Remark
@@ -32115,6 +33766,7 @@ components:
             SerialOrLotNumber: SerialOrLotNumber
             DateOfManufacture: DateOfManufacture
             DateOfExpiry: DateOfExpiry
+            Notes: Notes
           - SerialOrLotId: 7
             Quantity: 3.0205796992916243
             UserDefinedFields:
@@ -32135,6 +33787,7 @@ components:
             SerialOrLotNumber: SerialOrLotNumber
             DateOfManufacture: DateOfManufacture
             DateOfExpiry: DateOfExpiry
+            Notes: Notes
           QuantityUnit: QuantityUnit
           QuantityFactor1: 1.4894159098541704
           Remark: Remark
@@ -32964,6 +34617,118 @@ components:
           type: boolean
       title: Resource
       type: object
+    EInvoiceCommonSchemaStatus:
+      allOf:
+      - $ref: '#/components/schemas/QueueItemStatus'
+      - $ref: '#/components/schemas/EInvoiceCommonSchemaResult'
+      description: Status eines Elements in der Warteschlange für das Common Schema
+      example:
+        Status: Pending
+        Errors:
+        - Message: Message
+          MessageDetail: MessageDetail
+          Identity: Identity
+          HsErrorId: HsErrorId
+        - Message: Message
+          MessageDetail: MessageDetail
+          Identity: Identity
+          HsErrorId: HsErrorId
+        CommonSchema: CommonSchema
+      title: EInvoiceCommonSchemaStatus
+      type: object
+    EInvoiceCommonSchemaResult:
+      description: |
+        Enthält das Ergebnis (XML) nach erfolgreicher Verarbeitung der Aufgabe zur Generierung des
+        einheitlichen Schemas.VisualizationStatus
+      properties:
+        CommonSchema:
+          description: |
+            Enthält das angeforderte XML im Common Schema Format.
+            Das Common Schema ist ein seperates Format, in dem die Felder der Norm EN16931
+            einheitlich abgebildet werden.
+            Die Daten einer E-Rechnung in Syntax UBL oder CII sind in das einheitliche Schema
+            transformiert.
+          nullable: true
+          type: string
+      title: EInvoiceCommonSchemaResult
+      type: object
+    EInvoiceValidationStatus:
+      allOf:
+      - $ref: '#/components/schemas/QueueItemStatus'
+      - $ref: '#/components/schemas/EInvoiceValidationResult'
+      description: Status eines Elements in der Warteschlange für die Visualisierung
+      example:
+        Status: Pending
+        Errors:
+        - Message: Message
+          MessageDetail: MessageDetail
+          Identity: Identity
+          HsErrorId: HsErrorId
+        - Message: Message
+          MessageDetail: MessageDetail
+          Identity: Identity
+          HsErrorId: HsErrorId
+        ValidationStatus: Valid
+        ValidationReport: ValidationReport
+      title: EInvoiceValidationStatus
+      type: object
+    EInvoiceValidationResult:
+      description: |
+        Enthält das Ergebnis (Prüfbericht und Status) nach erfolgreicher Verarbeitung der Aufgabe
+        zur Validierung.
+      properties:
+        ValidationReport:
+          description: |
+            Enthält den angeforderten Prüfbericht der E-Rechnung als HTML.
+          nullable: true
+          type: string
+        ValidationStatus:
+          description: |
+            Enthält den Status der Validierung der E-Rechnung.
+
+            Ausprägungen:
+            - **Valid** -> Die E-Rechnung ist valide und entspricht den Spezifikationen.
+            - **Warning** -> Die E-Rechnung ist valide, es wurden jedoch Warnungen festgestellt.
+            - **Invalid** -> Die E-Rechnung ist nicht valide und entspricht nicht den Spezifikationen.
+          enum:
+          - Valid
+          - Invalid
+          - Warning
+          nullable: true
+          type: string
+      title: EInvoiceValidationResult
+      type: object
+    EInvoiceVisualizationStatus:
+      allOf:
+      - $ref: '#/components/schemas/QueueItemStatus'
+      - $ref: '#/components/schemas/EInvoiceVisualizationResult'
+      description: Status eines Elements in der Warteschlange für die Visualisierung
+      example:
+        Status: Pending
+        Errors:
+        - Message: Message
+          MessageDetail: MessageDetail
+          Identity: Identity
+          HsErrorId: HsErrorId
+        - Message: Message
+          MessageDetail: MessageDetail
+          Identity: Identity
+          HsErrorId: HsErrorId
+        Visualization: Visualization
+      title: EInvoiceVisualizationStatus
+      type: object
+    EInvoiceVisualizationResult:
+      description: |
+        Enthält das Ergebnis (HTML-Visualisierung) nach erfolgreicher Verarbeitung der Aufgabe zur
+        Visualisierung.
+      properties:
+        Visualization:
+          description: |
+            Enthält die generierte Visualisierung der E-Rechnung als HTML.
+          nullable: true
+          type: string
+      title: EInvoiceVisualizationResult
+      type: object
     UserDefinedFieldValue:
       description: Wert für ein benutzerdefiniertes Feld
       example:
@@ -33229,29 +34994,6 @@ components:
       - Value
       title: CalculationFieldValueExtendedProperties
       type: object
-    QueueItemStatus:
-      description: |
-        Enthält Informationen zum Status für ein Element in der Warteschlange.
-      properties:
-        Status:
-          description: |
-            Statusinformation:
-            Pending  -> Die Aktion wurde noch nicht gestartet oder noch nicht vollständig ausgeführt.
-            Finished -> Die Aktion wurde erfolgreich ausgeführt.
-            Error    -> Fehler bei der Ausführung der Aktion. Details stehen in der Property "Errors".
-          enum:
-          - Pending
-          - Finished
-          - Error
-          nullable: true
-          type: string
-        Errors:
-          items:
-            $ref: '#/components/schemas/ErrorMessage'
-          nullable: true
-          type: array
-      title: QueueItemStatus
-      type: object
     Address:
       description: Enthält die Daten einer Adresse
       example:
@@ -33464,6 +35206,27 @@ components:
           type: string
       title: ContactPerson
       type: object
+    ErrorMessage:
+      example:
+        Message: Message
+        MessageDetail: MessageDetail
+        Identity: Identity
+        HsErrorId: HsErrorId
+      properties:
+        HsErrorId:
+          description: contains a HS-specific error code - optional
+          type: string
+        Message:
+          description: information about the error - optional
+          type: string
+        MessageDetail:
+          description: information about the error - optional
+          type: string
+        Identity:
+          description: identity - optional
+          type: string
+      title: ErrorMessage
+      type: object
     LineItem:
       description: Enthält die Daten einer Belegposition
       example:
@@ -33569,6 +35332,7 @@ components:
             SerialOrLotNumber: SerialOrLotNumber
             DateOfManufacture: DateOfManufacture
             DateOfExpiry: DateOfExpiry
+            Notes: Notes
           - SerialOrLotId: 7
             Quantity: 3.0205796992916243
             UserDefinedFields:
@@ -33589,6 +35353,7 @@ components:
             SerialOrLotNumber: SerialOrLotNumber
             DateOfManufacture: DateOfManufacture
             DateOfExpiry: DateOfExpiry
+            Notes: Notes
           QuantityFactor1: 8
           Remark: Anmerkung
           QuantityUnitIndicator: DeliveryUnit
@@ -33684,6 +35449,7 @@ components:
                   SerialOrLotNumber: SerialOrLotNumber
                   DateOfManufacture: DateOfManufacture
                   DateOfExpiry: DateOfExpiry
+                  Notes: Notes
                 - SerialOrLotId: 7
                   Quantity: 3.0205796992916243
                   UserDefinedFields:
@@ -33704,6 +35470,7 @@ components:
                   SerialOrLotNumber: SerialOrLotNumber
                   DateOfManufacture: DateOfManufacture
                   DateOfExpiry: DateOfExpiry
+                  Notes: Notes
                 UserDefinedFields:
                 - DefinitionId: 1
                   Type: Alphanumeric
@@ -33793,6 +35560,7 @@ components:
                   SerialOrLotNumber: SerialOrLotNumber
                   DateOfManufacture: DateOfManufacture
                   DateOfExpiry: DateOfExpiry
+                  Notes: Notes
                 - SerialOrLotId: 7
                   Quantity: 3.0205796992916243
                   UserDefinedFields:
@@ -33813,6 +35581,7 @@ components:
                   SerialOrLotNumber: SerialOrLotNumber
                   DateOfManufacture: DateOfManufacture
                   DateOfExpiry: DateOfExpiry
+                  Notes: Notes
                 UserDefinedFields:
                 - DefinitionId: 1
                   Type: Alphanumeric
@@ -33991,6 +35760,7 @@ components:
           SerialOrLotNumber: SerialOrLotNumber
           DateOfManufacture: DateOfManufacture
           DateOfExpiry: DateOfExpiry
+          Notes: Notes
         - SerialOrLotId: 7
           Quantity: 3.0205796992916243
           UserDefinedFields:
@@ -34011,6 +35781,7 @@ components:
           SerialOrLotNumber: SerialOrLotNumber
           DateOfManufacture: DateOfManufacture
           DateOfExpiry: DateOfExpiry
+          Notes: Notes
         QuantityFactor1: 8
         Remark: Anmerkung
         QuantityUnitIndicator: DeliveryUnit
@@ -34106,6 +35877,7 @@ components:
                 SerialOrLotNumber: SerialOrLotNumber
                 DateOfManufacture: DateOfManufacture
                 DateOfExpiry: DateOfExpiry
+                Notes: Notes
               - SerialOrLotId: 7
                 Quantity: 3.0205796992916243
                 UserDefinedFields:
@@ -34126,6 +35898,7 @@ components:
                 SerialOrLotNumber: SerialOrLotNumber
                 DateOfManufacture: DateOfManufacture
                 DateOfExpiry: DateOfExpiry
+                Notes: Notes
               UserDefinedFields:
               - DefinitionId: 1
                 Type: Alphanumeric
@@ -34215,6 +35988,7 @@ components:
                 SerialOrLotNumber: SerialOrLotNumber
                 DateOfManufacture: DateOfManufacture
                 DateOfExpiry: DateOfExpiry
+                Notes: Notes
               - SerialOrLotId: 7
                 Quantity: 3.0205796992916243
                 UserDefinedFields:
@@ -34235,6 +36009,7 @@ components:
                 SerialOrLotNumber: SerialOrLotNumber
                 DateOfManufacture: DateOfManufacture
                 DateOfExpiry: DateOfExpiry
+                Notes: Notes
               UserDefinedFields:
               - DefinitionId: 1
                 Type: Alphanumeric
@@ -34657,6 +36432,7 @@ components:
               SerialOrLotNumber: SerialOrLotNumber
               DateOfManufacture: DateOfManufacture
               DateOfExpiry: DateOfExpiry
+              Notes: Notes
             - SerialOrLotId: 7
               Quantity: 3.0205796992916243
               UserDefinedFields:
@@ -34677,6 +36453,7 @@ components:
               SerialOrLotNumber: SerialOrLotNumber
               DateOfManufacture: DateOfManufacture
               DateOfExpiry: DateOfExpiry
+              Notes: Notes
             UserDefinedFields:
             - DefinitionId: 1
               Type: Alphanumeric
@@ -34766,6 +36543,7 @@ components:
               SerialOrLotNumber: SerialOrLotNumber
               DateOfManufacture: DateOfManufacture
               DateOfExpiry: DateOfExpiry
+              Notes: Notes
             - SerialOrLotId: 7
               Quantity: 3.0205796992916243
               UserDefinedFields:
@@ -34786,6 +36564,7 @@ components:
               SerialOrLotNumber: SerialOrLotNumber
               DateOfManufacture: DateOfManufacture
               DateOfExpiry: DateOfExpiry
+              Notes: Notes
             UserDefinedFields:
             - DefinitionId: 1
               Type: Alphanumeric
@@ -34898,6 +36677,7 @@ components:
             SerialOrLotNumber: SerialOrLotNumber
             DateOfManufacture: DateOfManufacture
             DateOfExpiry: DateOfExpiry
+            Notes: Notes
           - SerialOrLotId: 7
             Quantity: 3.0205796992916243
             UserDefinedFields:
@@ -34918,6 +36698,7 @@ components:
             SerialOrLotNumber: SerialOrLotNumber
             DateOfManufacture: DateOfManufacture
             DateOfExpiry: DateOfExpiry
+            Notes: Notes
           UserDefinedFields:
           - DefinitionId: 1
             Type: Alphanumeric
@@ -35042,6 +36823,7 @@ components:
           SerialOrLotNumber: SerialOrLotNumber
           DateOfManufacture: DateOfManufacture
           DateOfExpiry: DateOfExpiry
+          Notes: Notes
         - SerialOrLotId: 7
           Quantity: 3.0205796992916243
           UserDefinedFields:
@@ -35062,6 +36844,7 @@ components:
           SerialOrLotNumber: SerialOrLotNumber
           DateOfManufacture: DateOfManufacture
           DateOfExpiry: DateOfExpiry
+          Notes: Notes
         UserDefinedFields:
         - DefinitionId: 1
           Type: Alphanumeric
@@ -35827,6 +37610,7 @@ components:
         SerialOrLotNumber: SerialOrLotNumber
         DateOfManufacture: DateOfManufacture
         DateOfExpiry: DateOfExpiry
+        Notes: Notes
       properties:
         SerialOrLotId:
           description: Technischer Schlüssel
@@ -35851,6 +37635,10 @@ components:
             \ muss ein Leerstring übermittelt werden.\n"
           nullable: true
           type: string
+        Notes:
+          description: Notiz
+          nullable: true
+          type: string
         UserDefinedFields:
           description: Benutzerdefinierte Felder
           items:
@@ -35858,27 +37646,6 @@ components:
           nullable: true
           type: array
       title: SerialOrLotLineItem
-      type: object
-    ErrorMessage:
-      example:
-        Message: Message
-        MessageDetail: MessageDetail
-        Identity: Identity
-        HsErrorId: HsErrorId
-      properties:
-        HsErrorId:
-          description: contains a HS-specific error code - optional
-          type: string
-        Message:
-          description: information about the error - optional
-          type: string
-        MessageDetail:
-          description: information about the error - optional
-          type: string
-        Identity:
-          description: identity - optional
-          type: string
-      title: ErrorMessage
       type: object
     Accounting:
       description: Enthält die Buchungsangaben.
@@ -36013,6 +37780,15 @@ components:
       required:
       - image
       - name
+      type: object
+    postEInvoiceCommonSchema_request:
+      properties:
+        file:
+          format: binary
+          nullable: false
+          type: string
+      required:
+      - file
       type: object
   securitySchemes:
     BasicAuth:

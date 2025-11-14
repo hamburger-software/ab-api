@@ -1,3 +1,30 @@
+AB 3.80 01/00
+---------------------------------------------------------------------------------------------------
+Neue Endpunkte für USt-IdNr. Prüfung
+- POST /v1/customers/{customerId}/vatid-check
+- POST /v1/suppliers/{supplierId}/vatid-check
+- GET /v1/customers/{customerId}/vatid-check
+- GET /v1/suppliers/{supplierId}/vatid-check
+- GET /v1/vatid-check/queue/{queueItemId}
+
+Neue Endpunkte für E-Rechnungen
+- POST /v1/sales-documents/{salesDocumentId}/common-schema
+- POST /v1/sales-documents/{salesDocumentId}/validate
+- POST /v1/sales-documents/{salesDocumentId}/visualize
+- POST /v1/purchase-documents/{purchaseDocumentId}/common-schema
+- POST /v1/purchase-documents/{purchaseDocumentId}/validate
+- POST /v1/purchase-documents/{purchaseDocumentId}/visualize
+- POST /v1/e-invoicing/common-schema
+- POST /v1/e-invoicing/validate
+- POST /v1/e-invoicing/visualize
+- GET /v1/e-invoicing/common-schema/queue/{queueItemId}
+- GET /v1/e-invoicing/common-schema.xsd
+- GET /v1/e-invoicing/validate/queue/{queueItemId}
+- GET /v1/e-invoicing/visualize/queue/{queueItemId}
+
+Änderungen an bestehenden Models
+- SerialOrLotLineItem/Notes -> Neue Property für Notizen zur Serien-/Chargennummer.
+
 AB 3.80 00/00
 ---------------------------------------------------------------------------------------------------
 Neue Endpunkte für Beleg-Kontakte
