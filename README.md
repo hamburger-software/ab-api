@@ -18,7 +18,7 @@ verwendet.
 ## Sicherheit
 Die API wird als Backend-API bereitgestellt. Für eine Absicherung steht grundsätzlich HTTPS mit generierten und eigenen Zertifikaten zur Verfügung. 
 
-Der Aufrufer muss sich authentifizieren. Dazu werden die Credentials eines Benutzers der HS Auftragsbearbeitung im Authentifizierungsverfahren Basic oder OAuth2 verwendet. In diesem Zuge werden auch die fachlichen Berech+gungen des Benutzers überprüft.
+Der Aufrufer muss sich authentifizieren. Dazu werden die Credentials eines Benutzers der HS Auftragsbearbeitung im Authentifizierungsverfahren Basic oder OAuth2 verwendet. In diesem Zuge werden auch die fachlichen Berechtigungen des Benutzers überprüft.
 
 Für die Absicherung der API gegen unberechtigte Zugriffe (Firewall, API-Gateway etc.) ist darüber hinaus der Ersteller einer Zusatzlösung sowie der Betreiber der API (z.B. HS Kunde, Hoster) verantwortlich.
 
