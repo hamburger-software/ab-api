@@ -19,7 +19,8 @@ Sinnvoll ist die Verwendung eines eigenen Namespaces. Dieser kann über eine Con
 ```json
 {
   "packageName": "Hs.Ab.RestApi.Generated",
-  "targetFramework": "net48"
+  "targetFramework": "net48",
+  "library": "restsharp"
 }
 ```
 
