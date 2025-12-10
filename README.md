@@ -5,14 +5,11 @@ In diesem Repository werden die Beschreibung der API zur HS Auftragsbearbeitung 
 Voraussetzung für die Verwendung der API in einer Zusatzlösung ist der Abschluss eines Vertrags zur Nutzung der API mit HS – Hamburger Software GmbH & Co. KG. 
 
 Die Nutzung ist kostenpflichtig und orientert sich u.a. am Umfang der gewünschten Nutzung (Anzahl und Typ der benötigten Endpunktgruppen, Umfang der Zugriffsrechte, Intensität / Volumen der Nutzung) sowie dem Einsatzszenario.
-Für weitere Informationen wenden Sie sich an vertrieb@hamburger-software.de.# Elements UI API
-
-Die Schnittstellenbeschreibung kann auch in der Elements UI API direkt als GitHub-Page angezeigt werden unter folgender URL:
-https://hamburger-software.github.io/ab-api/
+Für weitere Informationen wenden Sie sich an vertrieb@hamburger-software.de.
 
 # Funktionsumfang
 Die API wird mit der Anwendung zur Verfügung gestellt. Die Implementierung der API entspricht dem OpenApi 3.0-Standard
-Als Technologien werden REST (Representa+onal State Transfer) und JSON (JavaScript Object Nota+on)
+Als Technologien werden **REST** (**Re**presentational **St**ate **T**ransfer) und **JSON** (**J**ava**S**cript **O**bject **N**otation)
 verwendet.
 
 ## Sicherheit
@@ -29,7 +26,7 @@ Die Lizenz der HS Anwendung, bei der die Zusatzlösung eingesetzt wird, muss ent
 
 Der API-Key ist entsprechend in der Zusatzlösung zu implementieren. API-Zugriffe ohne API-Key werden als "Unauthorized" abgewiesen. Ein API-Key ist an die Endpunktgruppen gebunden. Das heißt, mit einem APIKey kann nur auf Endpunkte innerhalb der vertraglich vereinbarten Endpunktgruppen zugriffen werden.
 
-Im Arbeitsgebiet **LizenzCenter - Registrierte Lösungen** sind die registrierten Zusatzlösung gelistet, die per API auf die HS Anwendung zugreifen dürfen. Per Doppelklick auf eine Lösung erhält man zusätzlich die Informa+onen, für welche Endpunktgruppen der Zugriff erlaubt ist und mit welchen Rechten (Lesen/Vollzugriff) diese freigeschaltet sind.
+Im Arbeitsgebiet **LizenzCenter - Registrierte Lösungen** sind die registrierten Zusatzlösung gelistet, die per API auf die HS Anwendung zugreifen dürfen. Per Doppelklick auf eine Lösung erhält man zusätzlich die Informationen, für welche Endpunktgruppen der Zugriff erlaubt ist und mit welchen Rechten (Lesen/Vollzugriff) diese freigeschaltet sind.
 
 ### Beispieldaten / Schulungsversion
 Die Verwendung der API für Erkundungs- sowie Testzwecke ist in den Beispieldaten der HS Anwendung und in der Schulungsversion grundsätzlich möglich. Der für diese Zwecke zu verwendende API-Key ist in der YAML im Bereich **securitySchemes** bei **ApiKeyAuth** aufgeführt.
@@ -83,7 +80,7 @@ Außerdem sollte der HTTP-User-Agent gesetzt werden. Das ist über die Kommandoz
 Es wird der Programmcode und entsprechende UnitTest generiert. Der Programmcode ist in drei Bereiche
 aufgeteilt.
 - API: Enthält die Methoden für den Zugriff auf die konkreten Endpunkte
-- Client: Implemen+erung des hSp-Clients etc.
+- Client: Implementierung des hSp-Clients etc.
 - Model: Enthält die Models
 
 # Besonderheiten zu Endpunktgruppen und Endpunkten
@@ -126,7 +123,7 @@ Informationen hierzu finden Sie in der Hilfe „Anleitungen & Wissen / API (Webs
 ## Test der API im Browser
 Mit Hilfe eines Internet-Browser kann die Erreichbarkeit des Webservice geprüft werden, indem man die URL des Endpunkts „/appinfo/“ (z.B. https://localhost:9001/ab-api-appinfo) in die Adresszeile einträgt.
 
-Wenn Sie kein „vorhandenes Zertifikat“ verwenden, können Sie den Hinweis auf eine unsichere Verbindung bestätigen und den Hinweis auf ein ungültiges Zer+fikat ignorieren. Weitere Informationen dazu finden Sie in der Hilfe der Anwendung.
+Wenn Sie kein „vorhandenes Zertifikat“ verwenden, können Sie den Hinweis auf eine unsichere Verbindung bestätigen und den Hinweis auf ein ungültiges Zertifikat ignorieren. Weitere Informationen dazu finden Sie in der Hilfe der Anwendung.
 
 ## Registrierung der Zusatzlösung
 Im Arbeitsgebiet **LizenzCenter - Registrierte Lösungen** sind die registrierten Zusatzlösungen gelistet, die per API auf die HS Anwendung zugreifen dürfen. Per Doppelklick auf eine Lösung erhält man zusätzlich die Informationen, für welche Endpunktgruppen der Zugriff erlaubt ist und mit welchen Rechten (Lesen/Vollzugriff) diese freigeschaltet sind.
