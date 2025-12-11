@@ -122,7 +122,7 @@ Bei Bedarf kann für jeden Webservice ein weiteres Protokoll aktiviert werden. I
 Informationen hierzu finden Sie in der Hilfe „Anleitungen & Wissen / API (Webservice) / Protokollierung der Vorgänge“
 
 ## Test der API im Browser
-Mit Hilfe eines Internet-Browser kann die Erreichbarkeit des Webservice geprüft werden, indem man die URL des Endpunkts „/appinfo/“ (z.B. https://localhost:9001/ab-api-appinfo) in die Adresszeile einträgt.
+Mit Hilfe eines Internet-Browser kann die Erreichbarkeit des Webservice geprüft werden, indem man die URL des Endpunkts „/appinfo/“ (z.B. https://localhost:9001/ab-api/appinfo) in die Adresszeile einträgt.
 
 Wenn Sie kein „vorhandenes Zertifikat“ verwenden, können Sie den Hinweis auf eine unsichere Verbindung bestätigen und den Hinweis auf ein ungültiges Zertifikat ignorieren. Weitere Informationen dazu finden Sie in der Hilfe der Anwendung.
 
