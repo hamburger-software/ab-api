@@ -1,4 +1,6 @@
 # AB API
+German: [README.de.md](README.de.md)
+
 In this repository, the description of the API for HS Auftragsbearbeitung (YAML file) and the changelog are published.
 
 ## Terms of Use
