@@ -1,6 +1,6 @@
 # AB API
 English: [README.en.md](README.en.md)  
-Deutsch: [README.de.md](README.de.md)
+
 In diesem Repository werden die Beschreibung der API zur HS Auftragsbearbeitung (YAML-Datei) und der Changelog veröffentlicht.
 
 ## Nutzungsbedingungen
