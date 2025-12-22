@@ -131,7 +131,7 @@ In the work area **LizenzCenter - Registrierte Lösungen**, the registered add-o
 
 If the expected add-on solution is not listed there, or if expected rights are not enabled, the license must be updated or the contractual agreements for API usage with HS – Hamburger Software GmbH & Co. KG must be checked. For further information, contact vertrieb@hamburger-software.de.
 
-#Further Information
+# Further Information
 Further information for solution developers is available
 - in the help of HS Auftragsbearbeitung under the chapter "Anleitung & Wissen / Datenaustausch / API (Webservice) / Anwendungswissen"
 - in the file "ab_api_webservice.pdf" in the "Hilfe_Pdfs" subfolder of the installed order processing program directory (e.g. C:\Program Files (x86)\Hs\Ab)
