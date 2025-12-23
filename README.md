@@ -1,4 +1,4 @@
-# AB API
+# AB API ![🇩🇪 Deutsch](https://img.shields.io/badge/Deutsch-DE-blue?logo=de&logoColor=white)
 English version: [README.en.md](README.en.md)  [![🇬🇧 English](https://img.shields.io/badge/English-EN-brightgreen?logo=gb)](README.en.md) 
 
 In diesem Repository werden die Beschreibung der API zur HS Auftragsbearbeitung (YAML-Datei) und der Changelog veröffentlicht.
