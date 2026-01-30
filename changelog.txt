@@ -1,3 +1,15 @@
+AB 3.80 01/04
+---------------------------------------------------------------------------------------------------
+Sonstiges
+- Die Beschreibung für Customer/ElectronicInvoiceFormat wurde angepasst.
+- Die Beschreibung für PurchaseDocument/ElectronicInvoiceFormat wurde angepasst.
+- Die Beschreibung für SalesDocument/ElectronicInvoiceFormat wurde angepasst.
+- Die Beschreibung für Supplier/ElectronicInvoiceFormat wurde angepasst.
+
+Fehlerkorrekturen
+- Beim POST von Belegen wird die Zahlungsbedingung aus dem Kunden/Lieferanten nicht mehr ungewollt
+  entfernt.
+
 AB 3.80 01/00
 ---------------------------------------------------------------------------------------------------
 Neue Endpunkte für USt-IdNr. Prüfung
