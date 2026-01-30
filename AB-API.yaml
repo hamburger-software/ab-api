@@ -14,7 +14,7 @@ info:
     url: https://www.hamburger-software.de
   termsOfService: https://www.hamburger-software.de
   title: HS API (Auftragsbearbeitung)
-  version: 3.80.0100
+  version: 3.80.0104
 servers:
 - url: "https://{hostname}:{port}/ab-api"
   variables:
@@ -22273,8 +22273,8 @@ components:
             UsePresetFromSettings -> Einstellung aus Firma verwenden
             None -> Kein Format
             Zugferd10 -> ZUGFeRD 1.0
-            Zugferd21 -> Alle ZUGFeRD 2.x-Versionen (EN16931 (COMFORT)), derzeit 2.3, kompatibel zu 2.0 - 2.2 (aus Rückwärtskompatibilität bleibt die enum-Ausprägung auf Zugferd21)
-            Zugferd2Extended -> ZUGFeRD 2.x EXTENDED, derzeit Version 2.3
+            Zugferd21 -> Alle ZUGFeRD 2.x-Versionen (EN16931 (COMFORT)) (aus Rückwärtskompatibilität bleibt die enum-Ausprägung auf Zugferd21)
+            Zugferd2Extended -> ZUGFeRD 2.x EXTENDED
             XRechnung -> XRechnung (CII-Syntax)
             XRechnungUbl -> XRechnung (UBL-Syntax)
             EbInterface -> ebInterface (für E-Rechnung Bund Österreich)
@@ -23048,8 +23048,8 @@ components:
             UsePresetFromSettings -> Einstellung aus Firma verwenden
             None -> Kein Format
             Zugferd10 -> ZUGFeRD 1.0
-            Zugferd21 -> Alle ZUGFeRD 2.x-Versionen (EN16931 (COMFORT)), derzeit 2.3, kompatibel zu 2.0 - 2.2 (aus Rückwärtskompatibilität bleibt die enum-Ausprägung auf Zugferd21)
-            Zugferd2Extended -> ZUGFeRD 2.x EXTENDED, derzeit Version 2.3
+            Zugferd21 -> Alle ZUGFeRD 2.x-Versionen (EN16931 (COMFORT)) (aus Rückwärtskompatibilität bleibt die enum-Ausprägung auf Zugferd21)
+            Zugferd2Extended -> ZUGFeRD 2.x EXTENDED
             XRechnung -> XRechnung (CII-Syntax)
             XRechnungUbl -> XRechnung (UBL-Syntax)
             EbInterface -> ebInterface (für E-Rechnung Bund Österreich)
@@ -24648,8 +24648,8 @@ components:
             Format der E-Rechnung
             None -> Kein Format
             Zugferd10 -> ZUGFeRD 1.0
-            Zugferd21 -> Alle ZUGFeRD 2.x-Versionen (EN16931 (COMFORT)), derzeit 2.3, kompatibel zu 2.0 - 2.2 (aus Rückwärtskompatibilität bleibt die enum-Ausprägung auf Zugferd21)
-            Zugferd2Extended -> ZUGFeRD 2.x EXTENDED, derzeit Version 2.3
+            Zugferd21 -> Alle ZUGFeRD 2.x-Versionen (EN16931 (COMFORT)) (aus Rückwärtskompatibilität bleibt die enum-Ausprägung auf Zugferd21)
+            Zugferd2Extended -> ZUGFeRD 2.x EXTENDED
             XRechnung -> XRechnung (CII-Syntax)
             XRechnungUbl -> XRechnung (UBL-Syntax)
             EbInterface -> ebInterface (für E-Rechnung Bund Österreich)
@@ -28762,8 +28762,8 @@ components:
             Format der E-Rechnung (für Eigenrechnung)
             None -> Kein Format
             Zugferd10 -> ZUGFeRD 1.0
-            Zugferd21 -> Alle ZUGFeRD 2.x-Versionen (EN16931 (COMFORT)), derzeit 2.3, kompatibel zu 2.0 - 2.2 (aus Rückwärtskompatibilität bleibt die enum-Ausprägung auf Zugferd21)
-            Zugferd2Extended -> ZUGFeRD 2.x EXTENDED, derzeit Version 2.3
+            Zugferd21 -> Alle ZUGFeRD 2.x-Versionen (EN16931 (COMFORT)) (aus Rückwärtskompatibilität bleibt die enum-Ausprägung auf Zugferd21)
+            Zugferd2Extended -> ZUGFeRD 2.x EXTENDED
             XRechnung -> XRechnung (CII-Syntax)
             XRechnungUbl -> XRechnung (UBL-Syntax)
             EbInterface -> ebInterface (für E-Rechnung Bund Österreich)
