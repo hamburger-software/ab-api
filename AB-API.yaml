@@ -5,12 +5,12 @@ info:
     name: HS Entwicklung Auftragsbearbeitung
   description: |
     Anwendungsschnittstelle (Webservice) zur HS Auftragsbearbeitung.<br>
-    Copyright HS - Hamburger Software GmbH &amp; Co. KG, 2025 <br>
+    Copyright HS - Hamburger Software GmbH, 2025 <br>
     <br>
     <a href="/ab-api/changelog.txt">Changelog anzeigen</a><br>
     <a href="https://github.com/hamburger-software/ab-api">Download bei GitHub</a>
   license:
-    name: HS - Hamburger Software GmbH & Co. KG
+    name: HS - Hamburger Software GmbH
     url: https://www.hamburger-software.de
   termsOfService: https://www.hamburger-software.de
   title: HS API (Auftragsbearbeitung)

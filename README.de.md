@@ -4,7 +4,7 @@ English version: [README.en.md](README.en.md)  [![🇬🇧 English](https://img.
 In diesem Repository werden die Beschreibung der API zur HS Auftragsbearbeitung (YAML-Datei) und der Changelog veröffentlicht.
 
 ## Nutzungsbedingungen
-Voraussetzung für die Verwendung der API in einer Zusatzlösung ist der Abschluss eines Vertrags zur Nutzung der API mit HS – Hamburger Software GmbH & Co. KG. 
+Voraussetzung für die Verwendung der API in einer Zusatzlösung ist der Abschluss eines Vertrags zur Nutzung der API mit HS – Hamburger Software GmbH. 
 
 Die Nutzung ist kostenpflichtig und orientert sich u.a. am Umfang der gewünschten Nutzung (Anzahl und Typ der benötigten Endpunktgruppen, Umfang der Zugriffsrechte, Intensität / Volumen der Nutzung) sowie dem Einsatzszenario.
 Für weitere Informationen wenden Sie sich an vertrieb@hamburger-software.de.
@@ -131,7 +131,7 @@ Wenn Sie kein „vorhandenes Zertifikat“ verwenden, können Sie den Hinweis au
 ## Registrierung der Zusatzlösung
 Im Arbeitsgebiet **LizenzCenter - Registrierte Lösungen** sind die registrierten Zusatzlösungen gelistet, die per API auf die HS Anwendung zugreifen dürfen. Per Doppelklick auf eine Lösung erhält man zusätzlich die Informationen, für welche Endpunktgruppen der Zugriff erlaubt ist und mit welchen Rechten (Lesen/Vollzugriff) diese freigeschaltet sind.
 
-Ist die erwartete Zusatzlösung dort nicht aufgeführt, oder sind erwartete Rechte nicht freigeschaltet, ist die Lizenz zu aktualisieren oder ggf. die vertraglichen Vereinbarungen zur Nutzung der API mit HS – Hamburger Software GmbH & Co. KG zu prüfen. Für weitere Informationen wenden Sie sich an vertrieb@hamburger-software.de.
+Ist die erwartete Zusatzlösung dort nicht aufgeführt, oder sind erwartete Rechte nicht freigeschaltet, ist die Lizenz zu aktualisieren oder ggf. die vertraglichen Vereinbarungen zur Nutzung der API mit HS – Hamburger Software GmbH zu prüfen. Für weitere Informationen wenden Sie sich an vertrieb@hamburger-software.de.
 
 # Weitere Informationen
 Weitere Informationen für Lösungsersteller gibt es

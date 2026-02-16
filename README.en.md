@@ -4,7 +4,7 @@ German version: [README.de.md](README.de.md)  [![🇩🇪 Deutsch](https://img.s
 In this repository, the description of the API for HS Auftragsbearbeitung (YAML file) and the changelog are published.
 
 ## Terms of Use
-A prerequisite for using the API in an add-on solution is the conclusion of a contract for API usage with HS – Hamburger Software GmbH & Co. KG.
+A prerequisite for using the API in an add-on solution is the conclusion of a contract for API usage with HS – Hamburger Software GmbH.
 
 Usage is subject to a fee and is based in part on the scope of the desired usage (number and type of required endpoint groups, scope of access rights, intensity/volume of usage) as well as the deployment scenario. 
 For further information, please contact vertrieb@hamburger-software.de.
@@ -129,7 +129,7 @@ If no "existing certificate" is shown, the warning about an insecure connection 
 ## Registration of the Add-on Solution
 In the work area **LizenzCenter - Registrierte Lösungen**, the registered add-on solutions that are permitted to access the HS application via API are listed. By double-clicking on a solution, additional information is provided on which endpoint groups access is allowed and with which rights (Read/Full access) they are enabled.
 
-If the expected add-on solution is not listed there, or if expected rights are not enabled, the license must be updated or the contractual agreements for API usage with HS – Hamburger Software GmbH & Co. KG must be checked. For further information, contact vertrieb@hamburger-software.de.
+If the expected add-on solution is not listed there, or if expected rights are not enabled, the license must be updated or the contractual agreements for API usage with HS – Hamburger Software GmbH must be checked. For further information, contact vertrieb@hamburger-software.de.
 
 # Further Information
 Further information for solution developers is available
