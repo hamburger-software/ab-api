@@ -14,7 +14,7 @@ info:
     url: https://www.hamburger-software.de
   termsOfService: https://www.hamburger-software.de
   title: HS API (Auftragsbearbeitung)
-  version: 3.80.0104
+  version: 3.80.0105
 servers:
 - url: "https://{hostname}:{port}/ab-api"
   variables:
@@ -22238,9 +22238,22 @@ components:
           nullable: true
           type: array
         Addresses:
-          description: "Beinhaltet eine Liste von Adressen.\nDer Kunde kann eine Rechnungsadresse,\
-            \ eine Standardadresse, \neine bevorzugte Lieferadresse und weitere Lieferadressen\
-            \ besitzen.\n"
+          description: |
+            Liste der Adressen eines Kunden.
+            Ein Kunde kann folgende Adresstypen besitzen:
+            - Rechnungsadresse
+            - Standardadresse
+            - bevorzugte Lieferadresse
+            - weitere Lieferadressen
+
+            Hinweise zur Verwendung beim Ändern (PUT):
+            - Ist "Addresses" null oder nicht übermittelt, bleiben die Adressen unverändert.
+            - Ist "Addresses" gefüllt, werden alle nicht enthaltenen Adressen gelöscht.
+            - Die Reihenfolge der Lieferadressen ("PreferredDeliveryAddress", "DeliveryAddress") im Array
+              muss der Reihenfolge des vorherigen GET-Requests entsprechen.
+
+            Zum Löschen einer einzelnen Lieferadresse ("DeliveryAddress"):
+            - Übermittle alle Properties der Adresse mit leeren Werten (Integer = 0, String = "").
           items:
             $ref: '#/components/schemas/Address'
           nullable: true
@@ -31583,6 +31596,7 @@ components:
           - None
           - CreditTransfer
           - DirectDebit
+          nullable: true
           type: string
         SepaMandateReference:
           description: SEPA Mandatsreferenz
