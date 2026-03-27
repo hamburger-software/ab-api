@@ -1,3 +1,19 @@
+AB 3.80 01/06
+---------------------------------------------------------------------------------------------------
+Neue Endpunkte
+- PUT /v1/dms-documents-metadata/{dmsDocumentKey} -> Neuer Endpunkt zum Ändern der Metadaten eines
+  DMS-Dokuments anhand seines Schlüssels
+
+Änderungen an bestehenden Models
+- DmsMetadata/ChangedBy -> Neue Property hinzugefügt
+- DmsMetadata/ChangingDate -> Neue Property hinzugefügt
+- DmsMetadata/CreatedBy -> Neue Property hinzugefügt
+- DmsMetadata/CreationDate -> Neue Property hinzugefügt
+- DmsMetadata/DocumentKey -> Property ist nun readOnly
+- DmsMetadata/DocumentClass -> Property ist nun readOnly
+- DmsMetadata/Keywords -> Beschreibung ergänzt für PUT
+- DmsMetadata/Version -> Neue Property hinzugefügt
+
 AB 3.80 01/05
 ---------------------------------------------------------------------------------------------------
 Fehlerkorrekturen
