@@ -5,16 +5,16 @@ info:
     name: HS Entwicklung Auftragsbearbeitung
   description: |
     Anwendungsschnittstelle (Webservice) zur HS Auftragsbearbeitung.<br>
-    Copyright HS - Hamburger Software GmbH, 2025 <br>
+    Copyright HS - Hamburger Software GmbH &amp; Co. KG, 2025 <br>
     <br>
     <a href="/ab-api/changelog.txt">Changelog anzeigen</a><br>
     <a href="https://github.com/hamburger-software/ab-api">Download bei GitHub</a>
   license:
-    name: HS - Hamburger Software GmbH
+    name: HS - Hamburger Software GmbH & Co. KG
     url: https://www.hamburger-software.de
   termsOfService: https://www.hamburger-software.de
   title: HS API (Auftragsbearbeitung)
-  version: 3.80.0105
+  version: 3.80.0106
 servers:
 - url: "https://{hostname}:{port}/ab-api"
   variables:
@@ -8915,6 +8915,55 @@ paths:
       - OAuth2: []
         ApiKeyAuth: []
       summary: Metadaten eines Dokuments aus dem DMS abrufen.
+      tags:
+      - DMS
+    put:
+      description: |
+        Ändern der Metadaten eines Dokument im DMS.
+        Änderbar sind Schlagworte und Dateiname.
+      operationId: putDmsDocumentMetadata
+      parameters:
+      - description: Schlüssel eines Dokuments im DMS (technischer Schlüssel)
+        in: path
+        name: dmsDocumentKey
+        required: true
+        schema:
+          type: string
+      requestBody:
+        $ref: '#/components/requestBodies/DmsMetadata'
+      responses:
+        "205":
+          description: |
+            Metadaten des Dokuments erfolgreich gespeichert.
+            Der Datensatz sollte neu gelesen werden.
+        "400":
+          description: |
+            Es liegt ein fehlerhafter Clientaufruf vor. Eine mögliche Ursache kann
+            sein, dass ein fehlerhafter Wert übergeben wurde. Weitere Informationen
+            sind in der Response-Nachricht als HttpError enthalten.
+        "401":
+          description: |
+            Die Authentifizierungs-Information fehlt oder ist ungültig. Weitere
+            Informationen sind in der Response-Nachricht als HttpError enthalten.
+          headers:
+            WWW_Authenticate:
+              schema:
+                type: string
+        "403":
+          description: Es fehlt die Berechtigung zum Zugriff auf die Ressource.
+        "404":
+          description: |
+            Die angeforderte Ressource ist dauerhaft oder temporär nicht verfügbar.
+            Eine mögliche Ursache kann sein, dass die URI fehlerhaft ist.
+        "423":
+          description: Die Ressource ist aufgrund einer exklusiven Verarbeitung temporär
+            gesperrt.
+      security:
+      - BasicAuth: []
+        ApiKeyAuth: []
+      - OAuth2: []
+        ApiKeyAuth: []
+      summary: Metadaten eines Dokuments im DMS ändern.
       tags:
       - DMS
   /v1/suppliers:
@@ -18089,6 +18138,11 @@ components:
             $ref: '#/components/schemas/VatIdCheckRequest'
       description: USt-IdNr. Prüfanfrage
       required: true
+    DmsMetadata:
+      content:
+        application/json;charset=utf-8:
+          schema:
+            $ref: '#/components/schemas/DmsMetadata'
     Supplier:
       content:
         application/json;charset-utf8:
@@ -20015,11 +20069,16 @@ components:
     DmsMetadata:
       description: Metadaten eines DMS-Dokuments
       example:
+        CreationDate: 2000-01-23T04:56:07.000+00:00
+        ChangingDate: 2000-01-23T04:56:07.000+00:00
+        CreatedBy: CreatedBy
         Keywords:
         - Value: 2021-02-02
           Name: Belegdatum
         - Value: 2021-02-02
           Name: Belegdatum
+        ChangedBy: ChangedBy
+        Version: 0
         DocumentKey: Beispieldaten_12345
         Filename: Angebot_4711.pdf
         DocumentClass: DK_Belegart_Angebote
@@ -20028,18 +20087,58 @@ components:
           description: Schlüssel des Dokuments im DMS
           example: Beispieldaten_12345
           nullable: true
+          readOnly: true
           type: string
         DocumentClass:
           description: Dokumentenklasse
           example: DK_Belegart_Angebote
           nullable: true
+          readOnly: true
           type: string
         Filename:
           description: Dateiname inkl. Dateiendung
           example: Angebot_4711.pdf
           nullable: true
           type: string
+        CreatedBy:
+          description: |
+            Ordnungsbegriff des Benutzers, der die Dokumentversion erstellt hat
+          nullable: true
+          readOnly: true
+          type: string
+        CreationDate:
+          description: |
+            Erstellungsdatum der Dokumentversion
+          format: date-time
+          nullable: true
+          readOnly: true
+          type: string
+        ChangedBy:
+          description: |
+            Ordnungsbegriff des Benutzer, der die Dokumentversion zuletzt geändert hat
+          nullable: true
+          readOnly: true
+          type: string
+        ChangingDate:
+          description: |
+            Datum der letzten Änderung der Dokumentversion
+          format: date-time
+          nullable: true
+          readOnly: true
+          type: string
+        Version:
+          description: Versionsnummer des Dokuments im DMS (Dokumentversion)
+          format: int32
+          nullable: true
+          readOnly: true
+          type: integer
         Keywords:
+          description: |
+            Liste der Schlagworte (Name + Wert) des DMS-Dokuments.
+            Besonderheit beim PUT: Es werden nur die übergebenen Schlagworte geändert. Schlagworte,
+            die nicht übergeben werden, bleiben unverändert. Um den Wert eines Schlagworts zu löschen,
+            muss dieses mit einem Leerstring übergeben werden. Wird "null" übergeben, wird das
+            Schlagwort nicht geändert.
           items:
             $ref: '#/components/schemas/DmsKeyword'
           nullable: true
