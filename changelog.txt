@@ -1,3 +1,141 @@
+AB 3.90 00/00
+---------------------------------------------------------------------------------------------------
+
+***************************************************************************************************
+*** Wichtiger Hinweis für Verwender der HS API                                                  ***
+***************************************************************************************************
+Alle Datums-/Zeitstempel werden ab diesem Programmstand mit explizitem Zeitzonen-Offset im
+RFC-3339 Format ausgeliefert (z.B. "2025-09-29T11:38:34.945253+02:00" statt bisher
+"2025-09-29T09:38:34.945253"). Zeitangaben ohne Offset werden weiterhin als Zeitangabe in der
+Server-Zeitzone interpretiert.
+
+Verhaltensänderung bei GET-, POST- und PUT-Endpunkten
+- Alle DateTime-Properties in Response-Models enthalten jetzt den lokalen Zeitzonenoffset.
+- Bei PUT-Endpunkten ist dies relevant für das Optimistic Locking über die Property
+  "LastModified": Der Zeitpunkt aus der Response muss beim PUT zurückgegeben werden.
+  Der Server vergleicht den absoluten Zeitpunkt mit dem Wert in der Datenbank, d.h.
+  "12:00:00+00:00" und "14:00:00+02:00" gelten als gleicher Zeitpunkt.
+  Wird kein Offset mitgegeben, wird die Server-Zeitzone angenommen.
+
+Prüfen Sie ggf., ob Ihre Zusatzlösungen bei der Verarbeitung von DateTime-Werten aus der API
+weiterhin das gewünschte Verhalten zeigen.
+***************************************************************************************************
+
+Neue Endpunkte
+- GET /v1/closing/freeze-purchase-documents/queue/{queueItemId} -> Abfragen des Status der Festschreibung der Einkaufsbelege
+- GET /v1/closing/freeze-sales-documents/queue/{queueItemId} -> Abfragen des Status der Festschreibung der Verkaufsbelege
+- GET /v1/closing/update-purchase-statistics/queue/{queueItemId} -> Abfragen des Status der Fortschreibung der Statistikdaten für Einkaufsbelege
+- GET /v1/closing/update-sales-statistics/queue/{queueItemId} -> Abfragen des Status der Fortschreibung der Statistikdaten für Verkaufsbelege
+- GET /v1/currencies/refresh-exchange-rates/queue/{queueItemId} -> Abfragen des Status der Aktualisierung der Wechselkurse der Währungen
+- GET /v1/customers/{customerId}/bank-accounts -> Auslesen der Bankverbindungen eines Kunden
+- GET /v1/customers/{customerId}/bank-accounts/{bankAccountId} -> Auslesen einer Bankverbindung eines Kunden
+- GET /v1/customers/{customerId}/bank-accounts/{bankAccountId}/sepa-mandates -> Auslesen der SEPA-Mandate zu einer Bankverbindung
+- GET /v1/customers/{customerId}/bank-accounts/{bankAccountId}/sepa-mandates/{sepaMandateId} -> Auslesen eines SEPA-Mandats
+- GET /v1/dms-documents-metadata/{dmsDocumentKey}/notes -> Auslesen der Notizen eines DMS-Dokuments anhand seines Schlüssels
+- GET /v1/inventory-relocation-types -> Auslesen der Belegarten Lagerumbuchung
+- GET /v1/inventory-relocation-types/{documentTypeId} -> Auslesen einer Belegart Lagerumbuchung anhand ihrer Id
+- GET /v1/inventory-transaction-types -> Auslesen der Belegarten Lagerbuchung
+- GET /v1/inventory-transaction-types/{documentTypeId} -> Auslesen einer Belegart Lagerbuchung anhand ihrer Id
+- GET /v1/manufacture-document-types -> Auslesen der Belegarten Fertigung
+- GET /v1/manufacture-document-types/{documentTypeId} -> Auslesen einer Belegart Fertigung anhand ihrer Id
+- GET /v1/open-items -> Auslesen der Offenen Posten
+- GET /v1/periodical-purchase-document-template-types -> Auslesen der Belegarten für wiederkehrende Einkaufsbelege
+- GET /v1/periodical-purchase-document-template-types/{documentTypeId} -> Auslesen einer Belegart für wiederkehrende Einkaufsbelege anhand ihrer Id
+- GET /v1/periodical-sales-document-template-types -> Auslesen der Belegarten für wiederkehrende Verkaufsbelege
+- GET /v1/periodical-sales-document-template-types/{documentTypeId} -> Auslesen einer Belegart für wiederkehrende Verkaufsbelege anhand ihrer Id
+- GET /v1/purchase-document-types -> Auslesen der Belegarten Einkauf
+- GET /v1/purchase-document-types/{documentTypeId} -> Auslesen einer Belegart Einkauf anhand ihrer Id
+- GET /v1/sales-document-types -> Auslesen der Belegarten Verkauf
+- GET /v1/sales-document-types/{documentTypeId} -> Auslesen einer Belegart Verkauf anhand ihrer Id
+- GET /v1/suppliers/{supplierId}/bank-accounts -> Auslesen der Bankverbindungen eines Lieferanten
+- GET /v1/suppliers/{supplierId}/bank-accounts/{bankAccountId} -> Auslesen einer Bankverbindung eines Lieferanten
+- GET /v1/tax-keys -> Auslesen der Steuerschlüssel
+- GET /v1/tax-keys/{taxKeyId} -> Auslesen eines Steuerschlüssels anhand der Id
+- GET /v1/text-block-customer-relations -> Auslesen von Textbaustein-Kunde-Beziehungen
+- GET /v1/text-block-customer-relations/{textBlockCustomerRelationId} -> Auslesen einer Textbaustein-Kunde-Beziehung anhand ihrer Id
+- POST /v1/closing/freeze-purchase-documents -> Starten der Festschreibung von Einkaufsbelegen gemäß GoBD
+- POST /v1/closing/freeze-sales-documents -> Starten der Festschreibung von Verkaufsbelegen gemäß GoBD
+- POST /v1/closing/update-purchase-statistics -> Starten der Fortschreibung der Statistikdaten für Einkaufsbelege
+- POST /v1/closing/update-sales-statistics -> Starten der Fortschreibung der Statistikdaten für Verkaufsbelege
+- POST /v1/currencies/refresh-exchange-rates -> Anlegen der Aufgabe zur Aktualisierung der Wechselkurse der Währungen
+- POST /v1/customers/{customerId}/bank-accounts -> Anlegen einer Bankverbindung für einen Kunden
+- POST /v1/customers/{customerId}/bank-accounts/{bankAccountId}/deactivate-fallback -> Deaktivieren einer Bankverbindung (Fallback)
+- POST /v1/customers/{customerId}/bank-accounts/{bankAccountId}/sepa-mandates -> Anlegen eines SEPA-Mandats zu einer Bankverbindung
+- POST /v1/dms-documents-metadata/{dmsDocumentKey}/notes -> Hinzufügen einer Notiz zu einem DMS-Dokument anhand seines Schlüssels
+- POST /v1/suppliers/{supplierId}/bank-accounts -> Anlegen einer Bankverbindung für einen Lieferanten
+- PUT /v1/customers/{customerId}/bank-accounts/{bankAccountId} -> Ändern einer Bankverbindung eines Kunden
+- PUT /v1/customers/{customerId}/bank-accounts/{bankAccountId}/sepa-mandates/{sepaMandateId} -> Ändern eines SEPA-Mandats
+- PUT /v1/suppliers/{supplierId}/bank-accounts/{bankAccountId} -> Ändern einer Bankverbindung eines Lieferanten
+- DELETE /v1/customers/{customerId}/bank-accounts/{bankAccountId} -> Löschen einer Bankverbindung eines Kunden (Fallback bei nicht möglichem Löschen: deactivate)
+- DELETE /v1/customers/{customerId}/bank-accounts/{bankAccountId}/sepa-mandates/{sepaMandateId} -> Löschen eines SEPA-Mandats (Fallback bei nicht möglichem Löschen: deactivate)
+- DELETE /v1/suppliers/{supplierId}/bank-accounts/{bankAccountId} -> Löschen einer Bankverbindung eines Lieferanten
+
+Änderungen an bestehenden Endpunkten
+- GET /v1/manufacture-documents/{manufactureDocumentId}/process-history -> Parameter "X-HS-Do-Include-Complete-ProcessHistory" hinzugefügt zur Steuerung, ob die Historie komplett oder nur bis zum direkten Vorgänger/Nachfolger geliefert wird
+- GET /v1/purchase-documents/{purchaseDocumentId}/process-history -> Parameter "X-HS-Do-Include-Complete-ProcessHistory" hinzugefügt zur Steuerung, ob die Historie komplett oder nur bis zum direkten Vorgänger/Nachfolger geliefert wird
+- GET /v1/sales-documents/{salesDocumentId}/process-history -> Parameter "X-HS-Do-Include-Complete-ProcessHistory" hinzugefügt zur Steuerung, ob die Historie komplett oder nur bis zum direkten Vorgänger/Nachfolger geliefert wird
+
+Änderung an bestehenden Models
+- Customer/BankAccountHolder -> Property als deprecated markiert, stattdessen steht BankAccounts zur Verfügung
+- Customer/BankCountry -> Property als deprecated markiert, stattdessen steht BankAccounts zur Verfügung
+- Customer/BankId -> Property als deprecated markiert, stattdessen steht BankAccounts zur Verfügung
+- Customer/BankInstitutionName -> Property als deprecated markiert, stattdessen steht BankAccounts zur Verfügung
+- Customer/BankKey -> Property als deprecated markiert, stattdessen steht BankAccounts zur Verfügung
+- Customer/BankSwiftCode -> Property als deprecated markiert, stattdessen steht BankAccounts zur Verfügung
+- Customer/BonusAgreementClassification -> Property hinzugefügt für die Klassifizierung der Bonusvereinbarung
+- Customer/BonusAgreementIndividualText -> Property hinzugefügt für den Text der Bonusvereinbarung
+- Customer/BonusAgreementTextBlockId -> Property hinzugefügt für die Id (technischen Schlüssel) des Textbausteins für die Bonusvereinbarung
+- Customer/BonusAgreementTextBlockKey -> Property hinzugefügt für den Ordnungsbegriff des Textbausteins für die Bonusvereinbarung
+- Customer/ContactPersonData -> Property hinzugefügt für den Zusatz der Ansprechpartner
+- Customer/Iban -> Property als deprecated markiert, stattdessen steht BankAccounts zur Verfügung
+- Customer/RegisterCourt -> Property hinzugefügt für das Registergericht des Kunden
+- Customer/RegistrationNumber -> Property hinzugefügt für die Registernummer des Kunden (z.B. Handelsregisternummer, Vereinsregisternummer oder Firmenbuchnummer)
+- Customer/SepaMandateDate -> Property als deprecated markiert, stattdessen stehen SepaMandates zur Verfügung
+- Customer/SepaMandateReference -> Property als deprecated markiert, stattdessen stehen SepaMandates zur Verfügung
+- InventoryTransactionBase -> Property hinzugefügt für benutzerdefinierte Felder der Lagerbuchung
+- InventoryTransactionLineItemBase -> Property hinzugefügt für benutzerdefinierte Felder der Lagerbuchungsposition
+- PeriodicalSalesDocumentTemplate/BonusAgreementClassification -> Property hinzugefügt für die Klassifizierung der Bonusvereinbarung
+- PeriodicalSalesDocumentTemplate/BonusAgreementText -> Property hinzugefügt für den Text der Bonusvereinbarung
+- PeriodicalSalesDocumentTemplate/RegisterCourt -> Property hinzugefügt für das Registergericht
+- PeriodicalSalesDocumentTemplate/RegistrationNumber -> Property hinzugefügt für die Registernummer (z.B. Handelsregisternummer, Vereinsregisternummer oder Firmenbuchnummer)
+- ProcessHistoryDocumentInfo/SourceDocuments -> Property hinzugefügt für die Quellbelege
+- ProcessHistoryDocumentInfo/TargetDocuments -> Property hinzugefügt für die Zielbelege
+- ProcessHistoryInfo/DocumentKind -> Property hinzugefügt für den Belegbereich
+- ProcessHistoryInfo/DocumentNumber -> Property hinzugefügt für die Belegnummer
+- ProcessHistoryInfo/DocumentType -> Property hinzugefügt für die Belegart
+- ProcessHistoryLineItemInfo/CompleteSourceLineItems -> Property hinzugefügt für die Quellbelegpositionen
+- ProcessHistoryLineItemInfo/CompleteTargetLineItems -> Property hinzugefügt für die Zielbelegpositionen
+- ProcessHistoryLineItemInfo/DocumentKind -> Property hinzugefügt für den Belegbereich
+- ProcessHistoryLineItemInfo/DocumentNumber -> Property hinzugefügt für die Belegnummer
+- ProcessHistoryLineItemInfo/DocumentType -> Property hinzugefügt für die Belegart
+- ProcessHistoryLineItemInfo/SourceLineItems -> Property als deprecated markiert, stattdessen steht die neue Property "CompleteSourceLineItems" zur Verfügung
+- ProcessHistoryLineItemInfo/TargetLineItems -> Property als deprecated markiert, stattdessen steht die neue Property "CompleteTargetLineItems" zur Verfügung
+- Product/IsDocumentLevelSurcharge -> Property hinzugefügt für das Flag, ob es sich um einen Zuschlag auf Rechnungsebene in einer E-Rechnung handelt
+- Product/LastPurchasePriceDate -> Format von "dateTime" zu "date" geändert, da es sich um ein Tagesdatum handelt. Property readOnly, da die Änderung nur implizit erfolgt.
+- Product/ReasonCode -> Property hinzugefügt für den Begründungscode, sofern es sich um einen Zuschlag auf Rechnungsebene in einer E-Rechnung handelt
+- ProductLineItem/IsDocumentLevelSurcharge -> Property hinzugefügt für das Flag, ob es sich um einen Zuschlag auf Rechnungsebene in einer E-Rechnung handelt
+- ProductLineItem/PriceQuantity -> Neue readOnly Property hinzugefügt für den Preis per Angabe
+- ProductLineItem/ReasonCode -> Property hinzugefügt für den Begründungscode, sofern es sich um einen Zuschlag auf Rechnungsebene in einer E-Rechnung handelt
+- PurchaseDocument/RegisterCourt -> Property hinzugefügt für das Registergericht
+- PurchaseDocument/RegistrationNumber -> Property hinzugefügt für die Registernummer (z.B. Handelsregisternummer, Vereinsregisternummer oder Firmenbuchnummer)
+- SalesDocument/BankId -> Property ist nun readOnly
+- SalesDocument/BankKey -> Property ist nun readOnly
+- SalesDocument/BonusAgreementClassification -> Property hinzugefügt für die Klassifizierung der Bonusvereinbarung
+- SalesDocument/BonusAgreementText -> Property hinzugefügt für den Text der Bonusvereinbarung
+- SalesDocument/RegisterCourt -> Property hinzugefügt für das Registergericht
+- SalesDocument/RegistrationNumber -> Property hinzugefügt für die Registernummer (z.B. Handelsregisternummer, Vereinsregisternummer oder Firmenbuchnummer)
+- Supplier/BankAccountHolder -> Property als deprecated markiert, stattdessen steht BankAccounts zur Verfügung
+- Supplier/BankCountry -> Property als deprecated markiert, stattdessen steht BankAccounts zur Verfügung
+- Supplier/BankId -> Property als deprecated markiert, stattdessen steht BankAccounts zur Verfügung
+- Supplier/BankInstitutionName -> Property als deprecated markiert, stattdessen steht BankAccounts zur Verfügung
+- Supplier/BankKey -> Property als deprecated markiert, stattdessen steht BankAccounts zur Verfügung
+- Supplier/BankSwiftCode -> Property als deprecated markiert, stattdessen steht BankAccounts zur Verfügung
+- Supplier/Iban -> Property als deprecated markiert, stattdessen steht BankAccounts zur Verfügung
+- Supplier/RegisterCourt -> Property hinzugefügt für das Registergericht des Lieferanten
+- Supplier/RegistrationNumber -> Property hinzugefügt für die Registernummer des Lieferanten (z.B. Handelsregisternummer, Vereinsregisternummer oder Firmenbuchnummer)
+- UserDefinedFieldAttribute/Area -> Neue Ausprägungen hinzugefügt für benutzerdefinierte Felder von Lagerbuchung und Lagerbuchungsposition
+- UserDefinedFieldDefinition/Area -> Neue Ausprägungen hinzugefügt für benutzerdefinierte Felder von Lagerbuchung und Lagerbuchungsposition
+
 AB 3.80 01/06
 ---------------------------------------------------------------------------------------------------
 Neue Endpunkte
