@@ -1,3 +1,36 @@
+AB 3.90 01/00
+---------------------------------------------------------------------------------------------------
+
+Neue Endpunkte
+- GET /v1/customers/{customerId}/addresses -> Auslesen der Adressen eines Kunden
+- POST /v1/customers/{customerId}/addresses -> Anlegen einer Adresse für einen Kunden
+- GET /v1/customers/{customerId}/addresses/{addressId} -> Auslesen einer Adresse eines Kunden
+- PUT /v1/customers/{customerId}/addresses/{addressId} -> Aktualisieren einer Adresse eines Kunden
+- DELETE /v1/customers/{customerId}/addresses/{addressId} -> Löschen einer Adresse eines Kunden
+- GET /v1/open-items/{openItemId}/payments -> Auslesen der Zahlungen zu einem Offenen Posten
+- POST /v1/open-items/{openItemId}/payments -> Zahlungen zu einem Offenen Posten anlegen
+- POST /v1/open-items/{openItemId}/clear -> Offenen Posten auf ausgeglichen setzen
+
+Änderung an bestehenden Models
+- Address/AddressId -> Property hinzugefügt für die Id der Adresse
+- Customer/BusinessIdentificationNumber -> Property hinzugefügt für die Wirtschafts-Identifikationsnummer
+- DocumentTypeBase -> Properties "DocumentNumberPreset", "IsDocumentNumberEditable" und
+  "LastModified" sowie der Enum "DocumentNumberPresetEnum" wurden in das neue Model
+  "DocumentTypeExtendedProperties" ausgelagert. "DocumentTypeBase" referenziert dieses
+  neue Model über "allOf". Hintergrund: Der OpenAPI-Generator 7.23.0 erzeugt für
+  inline-Properties in allOf-Schemas ohne eigenen Schematyp anonyme Typen.
+  Betroffen sind alle Belegart-Endpunkte, die "DocumentTypeBase" als Basisschema
+  verwenden.
+- PurchaseDocument/PostingText -> Property hinzugefügt für den Buchungstext
+- SalesDocument/PostingText -> Property hinzugefügt für den Buchungstext
+- Supplier/BusinessIdentificationNumber -> Property hinzugefügt für die Wirtschafts-Identifikationsnummer
+
+Sonstiges
+- Die Ablage von Dokumenten im DMS per API (z.B. per POST /v1/products/{productId}/dms-documents)
+  erfolgt nun mit dem Benutzer des POST-Requests. Dadurch werden z.B. die Metadaten (z.B.
+  "CreatedBy") korrekt gesetzt und die Berechtigungen des Benutzers berücksichtigt.
+  Bisher wurde das Dokument mit dem Benutzer abgelegt, der den Webservice gestartet hat.
+
 AB 3.90 00/00
 ---------------------------------------------------------------------------------------------------
 
