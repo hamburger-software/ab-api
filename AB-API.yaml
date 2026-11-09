@@ -1,27 +1,25 @@
 openapi: 3.0.2
 info:
   contact:
-    email: abp@hamburger-software.de
-    name: HS Support Auftragsbearbeitung
+    email: info@suiteify.com
+    name: Support Suiteify Commercial classic
   description: |
-    Anwendungsschnittstelle (Webservice) zur HS Auftragsbearbeitung.<br>
-    Copyright HS - Hamburger Software GmbH, 2026 <br>
+    Anwendungsschnittstelle (Webservice) zu Suiteify Commercial classic.<br>
+    Copyright Suiteify ERP GmbH, 2026 <br>
     <br>
     <a href="/ab-api/changelog.txt">Changelog anzeigen</a><br>
-    <a href="https://github.com/hamburger-software/ab-api">Download bei GitHub</a>
 
     **English version:**
-    Application Programming Interface (Webservice) for HS Auftragsbearbeitung.<br>
-    Copyright HS - Hamburger Software GmbH, 2026 <br>
+    Application Programming Interface (Webservice) for Suiteify Commercial classic.<br>
+    Copyright Suiteify ERP GmbH, 2026 <br>
     <br>
     <a href="/ab-api/changelog.txt">View Changelog</a><br>
-    <a href="https://github.com/hamburger-software/ab-api">Download from GitHub</a>
   license:
-    name: HS - Hamburger Software GmbH
-    url: https://www.hamburger-software.de
-  termsOfService: https://www.hamburger-software.de
-  title: HS API (Auftragsbearbeitung)
-  version: 3.90.0100
+    name: Suiteify ERP GmbH
+    url: https://www.suiteify.com
+  termsOfService: https://www.suiteify.com
+  title: Suiteify Commercial classic API
+  version: 3.90.0200
 servers:
 - url: "https://{hostname}:{port}/ab-api"
   variables:
@@ -545,7 +543,7 @@ paths:
           Datum-/Zeitangaben müssen im Format ISO 8601 angegeben werden, d.h. sie müssen den Trenner "T" <br>
           zwischen Datum und Zeit und einen Offset (+00:00) oder ein "Z" (für UTC) an Ende haben. <br>
           Die Fraction ist optional.<br>
-          Die Auftragsbearbeitung wertet nur den Datum-/Zeit-String aus, nicht den Offset oder die UTC-Angabe.<br>
+          Die Anwendung wertet nur den Datum-/Zeit-String aus, nicht den Offset oder die UTC-Angabe.<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56.335476+00:00...<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56.335476Z...<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56+00:00...<br>
@@ -571,7 +569,7 @@ paths:
           Date/time specifications must be specified in ISO 8601 format, i.e. they must have the separator "T" <br>
           between date and time and an offset (+00:00) or a "Z" (for UTC) at the end. <br>
           The fraction is optional.<br>
-          Order processing only evaluates the date/time string, not the offset or UTC specification.<br>
+          The application only evaluates the date/time string, not the offset or UTC specification.<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56.335476+00:00...<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56.335476Z...<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56+00:00...<br>
@@ -825,7 +823,7 @@ paths:
           Datum-/Zeitangaben müssen im Format ISO 8601 angegeben werden, d.h. sie müssen den Trenner "T" <br>
           zwischen Datum und Zeit und einen Offset (+00:00) oder ein "Z" (für UTC) an Ende haben. <br>
           Die Fraction ist optional.<br>
-          Die Auftragsbearbeitung wertet nur den Datum-/Zeit-String aus, nicht den Offset oder die UTC-Angabe.<br>
+          Die Anwendung wertet nur den Datum-/Zeit-String aus, nicht den Offset oder die UTC-Angabe.<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56.335476+00:00...<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56.335476Z...<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56+00:00...<br>
@@ -851,7 +849,7 @@ paths:
           Date/time specifications must be specified in ISO 8601 format, i.e. they must have the separator "T" <br>
           between date and time and an offset (+00:00) or a "Z" (for UTC) at the end. <br>
           The fraction is optional.<br>
-          Order processing only evaluates the date/time string, not the offset or UTC specification.<br>
+          The application only evaluates the date/time string, not the offset or UTC specification.<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56.335476+00:00...<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56.335476Z...<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56+00:00...<br>
@@ -1507,7 +1505,7 @@ paths:
           Datum-/Zeitangaben müssen im Format ISO 8601 angegeben werden, d.h. sie müssen den Trenner "T" <br>
           zwischen Datum und Zeit und einen Offset (+00:00) oder ein "Z" (für UTC) an Ende haben. <br>
           Die Fraction ist optional.<br>
-          Die Auftragsbearbeitung wertet nur den Datum-/Zeit-String aus, nicht den Offset oder die UTC-Angabe.<br>
+          Die Anwendung wertet nur den Datum-/Zeit-String aus, nicht den Offset oder die UTC-Angabe.<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56.335476+00:00...<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56.335476Z...<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56+00:00...<br>
@@ -1533,7 +1531,7 @@ paths:
           Date/time specifications must be specified in ISO 8601 format, i.e. they must have the separator "T" <br>
           between date and time and an offset (+00:00) or a "Z" (for UTC) at the end. <br>
           The fraction is optional.<br>
-          Order processing only evaluates the date/time string, not the offset or UTC specification.<br>
+          The application only evaluates the date/time string, not the offset or UTC specification.<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56.335476+00:00...<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56.335476Z...<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56+00:00...<br>
@@ -1981,7 +1979,7 @@ paths:
           Datum-/Zeitangaben müssen im Format ISO 8601 angegeben werden, d.h. sie müssen den Trenner "T" <br>
           zwischen Datum und Zeit und einen Offset (+00:00) oder ein "Z" (für UTC) an Ende haben. <br>
           Die Fraction ist optional.<br>
-          Die Auftragsbearbeitung wertet nur den Datum-/Zeit-String aus, nicht den Offset oder die UTC-Angabe.<br>
+          Die Anwendung wertet nur den Datum-/Zeit-String aus, nicht den Offset oder die UTC-Angabe.<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56.335476+00:00...<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56.335476Z...<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56+00:00...<br>
@@ -2007,7 +2005,7 @@ paths:
           Date/time specifications must be specified in ISO 8601 format, i.e. they must have the separator "T" <br>
           between date and time and an offset (+00:00) or a "Z" (for UTC) at the end. <br>
           The fraction is optional.<br>
-          Order processing only evaluates the date/time string, not the offset or UTC specification.<br>
+          The application only evaluates the date/time string, not the offset or UTC specification.<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56.335476+00:00...<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56.335476Z...<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56+00:00...<br>
@@ -2584,7 +2582,7 @@ paths:
           Datum-/Zeitangaben müssen im Format ISO 8601 angegeben werden, d.h. sie müssen den Trenner "T" <br>
           zwischen Datum und Zeit und einen Offset (+00:00) oder ein "Z" (für UTC) an Ende haben. <br>
           Die Fraction ist optional.<br>
-          Die Auftragsbearbeitung wertet nur den Datum-/Zeit-String aus, nicht den Offset oder die UTC-Angabe.<br>
+          Die Anwendung wertet nur den Datum-/Zeit-String aus, nicht den Offset oder die UTC-Angabe.<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56.335476+00:00...<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56.335476Z...<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56+00:00...<br>
@@ -2610,7 +2608,7 @@ paths:
           Date/time specifications must be specified in ISO 8601 format, i.e. they must have the separator "T" <br>
           between date and time and an offset (+00:00) or a "Z" (for UTC) at the end. <br>
           The fraction is optional.<br>
-          Order processing only evaluates the date/time string, not the offset or UTC specification.<br>
+          The application only evaluates the date/time string, not the offset or UTC specification.<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56.335476+00:00...<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56.335476Z...<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56+00:00...<br>
@@ -2988,7 +2986,7 @@ paths:
           Datum-/Zeitangaben müssen im Format ISO 8601 angegeben werden, d.h. sie müssen den Trenner "T" <br>
           zwischen Datum und Zeit und einen Offset (+00:00) oder ein "Z" (für UTC) an Ende haben. <br>
           Die Fraction ist optional.<br>
-          Die Auftragsbearbeitung wertet nur den Datum-/Zeit-String aus, nicht den Offset oder die UTC-Angabe.<br>
+          Die Anwendung wertet nur den Datum-/Zeit-String aus, nicht den Offset oder die UTC-Angabe.<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56.335476+00:00...<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56.335476Z...<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56+00:00...<br>
@@ -3014,7 +3012,7 @@ paths:
           Date/time specifications must be specified in ISO 8601 format, i.e. they must have the separator "T" <br>
           between date and time and an offset (+00:00) or a "Z" (for UTC) at the end. <br>
           The fraction is optional.<br>
-          Order processing only evaluates the date/time string, not the offset or UTC specification.<br>
+          The application only evaluates the date/time string, not the offset or UTC specification.<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56.335476+00:00...<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56.335476Z...<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56+00:00...<br>
@@ -3415,7 +3413,7 @@ paths:
           Datum-/Zeitangaben müssen im Format ISO 8601 angegeben werden, d.h. sie müssen den Trenner "T" <br>
           zwischen Datum und Zeit und einen Offset (+00:00) oder ein "Z" (für UTC) an Ende haben. <br>
           Die Fraction ist optional.<br>
-          Die Auftragsbearbeitung wertet nur den Datum-/Zeit-String aus, nicht den Offset oder die UTC-Angabe.<br>
+          Die Anwendung wertet nur den Datum-/Zeit-String aus, nicht den Offset oder die UTC-Angabe.<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56.335476+00:00...<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56.335476Z...<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56+00:00...<br>
@@ -3441,7 +3439,7 @@ paths:
           Date/time specifications must be specified in ISO 8601 format, i.e. they must have the separator "T" <br>
           between date and time and an offset (+00:00) or a "Z" (for UTC) at the end. <br>
           The fraction is optional.<br>
-          Order processing only evaluates the date/time string, not the offset or UTC specification.<br>
+          The application only evaluates the date/time string, not the offset or UTC specification.<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56.335476+00:00...<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56.335476Z...<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56+00:00...<br>
@@ -3916,7 +3914,7 @@ paths:
           Datum-/Zeitangaben müssen im Format ISO 8601 angegeben werden, d.h. sie müssen den Trenner "T" <br>
           zwischen Datum und Zeit und einen Offset (+00:00) oder ein "Z" (für UTC) an Ende haben. <br>
           Die Fraction ist optional.<br>
-          Die Auftragsbearbeitung wertet nur den Datum-/Zeit-String aus, nicht den Offset oder die UTC-Angabe.<br>
+          Die Anwendung wertet nur den Datum-/Zeit-String aus, nicht den Offset oder die UTC-Angabe.<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56.335476+00:00...<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56.335476Z...<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56+00:00...<br>
@@ -3942,7 +3940,7 @@ paths:
           Date/time specifications must be specified in ISO 8601 format, i.e. they must have the separator "T" <br>
           between date and time and an offset (+00:00) or a "Z" (for UTC) at the end. <br>
           The fraction is optional.<br>
-          Order processing only evaluates the date/time string, not the offset or UTC specification.<br>
+          The application only evaluates the date/time string, not the offset or UTC specification.<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56.335476+00:00...<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56.335476Z...<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56+00:00...<br>
@@ -4679,7 +4677,7 @@ paths:
           Datum-/Zeitangaben müssen im Format ISO 8601 angegeben werden, d.h. sie müssen den Trenner "T" <br>
           zwischen Datum und Zeit und einen Offset (+00:00) oder ein "Z" (für UTC) an Ende haben. <br>
           Die Fraction ist optional.<br>
-          Die Auftragsbearbeitung wertet nur den Datum-/Zeit-String aus, nicht den Offset oder die UTC-Angabe.<br>
+          Die Anwendung wertet nur den Datum-/Zeit-String aus, nicht den Offset oder die UTC-Angabe.<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56.335476+00:00...<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56.335476Z...<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56+00:00...<br>
@@ -4705,7 +4703,7 @@ paths:
           Date/time specifications must be specified in ISO 8601 format, i.e. they must have the separator "T" <br>
           between date and time and an offset (+00:00) or a "Z" (for UTC) at the end. <br>
           The fraction is optional.<br>
-          Order processing only evaluates the date/time string, not the offset or UTC specification.<br>
+          The application only evaluates the date/time string, not the offset or UTC specification.<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56.335476+00:00...<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56.335476Z...<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56+00:00...<br>
@@ -5040,7 +5038,7 @@ paths:
         einer Preisliste werden durch die übergebenen Daten ersetzt.
         Sämtliche Verkaufspreise einer Preisliste und Währung können gelöscht werden, in dem ein "leerer"
         Verkaufspreis übergeben wird (für Menge, Preis, Rabatt und Kalkulationszuschlag den Wert 0 einsetzen).
-        Wird keine Währung angegeben, so wird die in der AB hinterlegte Hauswährung verwendet.
+        Wird keine Währung angegeben, so wird die in der Anwendung hinterlegte Hauswährung verwendet.
 
         **English version:**
         Create or update sales prices for a product.
@@ -5048,7 +5046,7 @@ paths:
         of a price list are replaced by the provided data.
         All sales prices of a price list and currency can be deleted by passing an "empty"
         sales price (use the value 0 for quantity, price, discount and surcharge).
-        If no currency is specified, the home currency stored in AB is used.
+        If no currency is specified, the home currency stored in the application is used.
       parameters:
       - description: |
           Id eines Artikels (technischer Schlüssel)
@@ -5507,7 +5505,7 @@ paths:
           Datum-/Zeitangaben müssen im Format ISO 8601 angegeben werden, d.h. sie müssen den Trenner "T" <br>
           zwischen Datum und Zeit und einen Offset (+00:00) oder ein "Z" (für UTC) an Ende haben. <br>
           Die Fraction ist optional.<br>
-          Die Auftragsbearbeitung wertet nur den Datum-/Zeit-String aus, nicht den Offset oder die UTC-Angabe.<br>
+          Die Anwendung wertet nur den Datum-/Zeit-String aus, nicht den Offset oder die UTC-Angabe.<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56.335476+00:00...<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56.335476Z...<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56+00:00...<br>
@@ -5533,7 +5531,7 @@ paths:
           Date/time specifications must be specified in ISO 8601 format, i.e. they must have the separator "T" <br>
           between date and time and an offset (+00:00) or a "Z" (for UTC) at the end. <br>
           The fraction is optional.<br>
-          Order processing only evaluates the date/time string, not the offset or UTC specification.<br>
+          The application only evaluates the date/time string, not the offset or UTC specification.<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56.335476+00:00...<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56.335476Z...<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56+00:00...<br>
@@ -6130,7 +6128,7 @@ paths:
           Datum-/Zeitangaben müssen im Format ISO 8601 angegeben werden, d.h. sie müssen den Trenner "T" <br>
           zwischen Datum und Zeit und einen Offset (+00:00) oder ein "Z" (für UTC) an Ende haben. <br>
           Die Fraction ist optional.<br>
-          Die Auftragsbearbeitung wertet nur den Datum-/Zeit-String aus, nicht den Offset oder die UTC-Angabe.<br>
+          Die Anwendung wertet nur den Datum-/Zeit-String aus, nicht den Offset oder die UTC-Angabe.<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56.335476+00:00...<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56.335476Z...<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56+00:00...<br>
@@ -6156,7 +6154,7 @@ paths:
           Date/time specifications must be specified in ISO 8601 format, i.e. they must have the separator "T" <br>
           between date and time and an offset (+00:00) or a "Z" (for UTC) at the end. <br>
           The fraction is optional.<br>
-          Order processing only evaluates the date/time string, not the offset or UTC specification.<br>
+          The application only evaluates the date/time string, not the offset or UTC specification.<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56.335476+00:00...<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56.335476Z...<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56+00:00...<br>
@@ -6621,7 +6619,7 @@ paths:
           Datum-/Zeitangaben müssen im Format ISO 8601 angegeben werden, d.h. sie müssen den Trenner "T" <br>
           zwischen Datum und Zeit und einen Offset (+00:00) oder ein "Z" (für UTC) an Ende haben. <br>
           Die Fraction ist optional.<br>
-          Die Auftragsbearbeitung wertet nur den Datum-/Zeit-String aus, nicht den Offset oder die UTC-Angabe.<br>
+          Die Anwendung wertet nur den Datum-/Zeit-String aus, nicht den Offset oder die UTC-Angabe.<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56.335476+00:00...<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56.335476Z...<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56+00:00...<br>
@@ -6647,7 +6645,7 @@ paths:
           Date/time specifications must be specified in ISO 8601 format, i.e. they must have the separator "T" <br>
           between date and time and an offset (+00:00) or a "Z" (for UTC) at the end. <br>
           The fraction is optional.<br>
-          Order processing only evaluates the date/time string, not the offset or UTC specification.<br>
+          The application only evaluates the date/time string, not the offset or UTC specification.<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56.335476+00:00...<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56.335476Z...<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56+00:00...<br>
@@ -7242,7 +7240,7 @@ paths:
           Datum-/Zeitangaben müssen im Format ISO 8601 angegeben werden, d.h. sie müssen den Trenner "T" <br>
           zwischen Datum und Zeit und einen Offset (+00:00) oder ein "Z" (für UTC) an Ende haben. <br>
           Die Fraction ist optional.<br>
-          Die Auftragsbearbeitung wertet nur den Datum-/Zeit-String aus, nicht den Offset oder die UTC-Angabe.<br>
+          Die Anwendung wertet nur den Datum-/Zeit-String aus, nicht den Offset oder die UTC-Angabe.<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56.335476+00:00...<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56.335476Z...<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56+00:00...<br>
@@ -7268,7 +7266,7 @@ paths:
           Date/time specifications must be specified in ISO 8601 format, i.e. they must have the separator "T" <br>
           between date and time and an offset (+00:00) or a "Z" (for UTC) at the end. <br>
           The fraction is optional.<br>
-          Order processing only evaluates the date/time string, not the offset or UTC specification.<br>
+          The application only evaluates the date/time string, not the offset or UTC specification.<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56.335476+00:00...<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56.335476Z...<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56+00:00...<br>
@@ -7959,7 +7957,7 @@ paths:
           Datum-/Zeitangaben müssen im Format ISO 8601 angegeben werden, d.h. sie müssen den Trenner "T" <br>
           zwischen Datum und Zeit und einen Offset (+00:00) oder ein "Z" (für UTC) an Ende haben. <br>
           Die Fraction ist optional.<br>
-          Die Auftragsbearbeitung wertet nur den Datum-/Zeit-String aus, nicht den Offset oder die UTC-Angabe.<br>
+          Die Anwendung wertet nur den Datum-/Zeit-String aus, nicht den Offset oder die UTC-Angabe.<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56.335476+00:00...<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56.335476Z...<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56+00:00...<br>
@@ -7985,7 +7983,7 @@ paths:
           Date/time specifications must be specified in ISO 8601 format, i.e. they must have the separator "T" <br>
           between date and time and an offset (+00:00) or a "Z" (for UTC) at the end. <br>
           The fraction is optional.<br>
-          Order processing only evaluates the date/time string, not the offset or UTC specification.<br>
+          The application only evaluates the date/time string, not the offset or UTC specification.<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56.335476+00:00...<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56.335476Z...<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56+00:00...<br>
@@ -8568,7 +8566,7 @@ paths:
           Datum-/Zeitangaben müssen im Format ISO 8601 angegeben werden, d.h. sie müssen den Trenner "T" <br>
           zwischen Datum und Zeit und einen Offset (+00:00) oder ein "Z" (für UTC) an Ende haben. <br>
           Die Fraction ist optional.<br>
-          Die Auftragsbearbeitung wertet nur den Datum-/Zeit-String aus, nicht den Offset oder die UTC-Angabe.<br>
+          Die Anwendung wertet nur den Datum-/Zeit-String aus, nicht den Offset oder die UTC-Angabe.<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56.335476+00:00...<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56.335476Z...<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56+00:00...<br>
@@ -8594,7 +8592,7 @@ paths:
           Date/time specifications must be specified in ISO 8601 format, i.e. they must have the separator "T" <br>
           between date and time and an offset (+00:00) or a "Z" (for UTC) at the end. <br>
           The fraction is optional.<br>
-          Order processing only evaluates the date/time string, not the offset or UTC specification.<br>
+          The application only evaluates the date/time string, not the offset or UTC specification.<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56.335476+00:00...<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56.335476Z...<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56+00:00...<br>
@@ -8947,7 +8945,7 @@ paths:
           Datum-/Zeitangaben müssen im Format ISO 8601 angegeben werden, d.h. sie müssen den Trenner "T" <br>
           zwischen Datum und Zeit und einen Offset (+00:00) oder ein "Z" (für UTC) an Ende haben. <br>
           Die Fraction ist optional.<br>
-          Die Auftragsbearbeitung wertet nur den Datum-/Zeit-String aus, nicht den Offset oder die UTC-Angabe.<br>
+          Die Anwendung wertet nur den Datum-/Zeit-String aus, nicht den Offset oder die UTC-Angabe.<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56.335476+00:00...<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56.335476Z...<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56+00:00...<br>
@@ -8973,7 +8971,7 @@ paths:
           Date/time specifications must be specified in ISO 8601 format, i.e. they must have the separator "T" <br>
           between date and time and an offset (+00:00) or a "Z" (for UTC) at the end. <br>
           The fraction is optional.<br>
-          Order processing only evaluates the date/time string, not the offset or UTC specification.<br>
+          The application only evaluates the date/time string, not the offset or UTC specification.<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56.335476+00:00...<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56.335476Z...<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56+00:00...<br>
@@ -9532,7 +9530,7 @@ paths:
           Datum-/Zeitangaben müssen im Format ISO 8601 angegeben werden, d.h. sie müssen den Trenner "T" <br>
           zwischen Datum und Zeit und einen Offset (+00:00) oder ein "Z" (für UTC) an Ende haben. <br>
           Die Fraction ist optional.<br>
-          Die Auftragsbearbeitung wertet nur den Datum-/Zeit-String aus, nicht den Offset oder die UTC-Angabe.<br>
+          Die Anwendung wertet nur den Datum-/Zeit-String aus, nicht den Offset oder die UTC-Angabe.<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56.335476+00:00...<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56.335476Z...<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56+00:00...<br>
@@ -9558,7 +9556,7 @@ paths:
           Date/time specifications must be specified in ISO 8601 format, i.e. they must have the separator "T" <br>
           between date and time and an offset (+00:00) or a "Z" (for UTC) at the end. <br>
           The fraction is optional.<br>
-          Order processing only evaluates the date/time string, not the offset or UTC specification.<br>
+          The application only evaluates the date/time string, not the offset or UTC specification.<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56.335476+00:00...<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56.335476Z...<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56+00:00...<br>
@@ -10117,7 +10115,7 @@ paths:
           Datum-/Zeitangaben müssen im Format ISO 8601 angegeben werden, d.h. sie müssen den Trenner "T" <br>
           zwischen Datum und Zeit und einen Offset (+00:00) oder ein "Z" (für UTC) an Ende haben. <br>
           Die Fraction ist optional.<br>
-          Die Auftragsbearbeitung wertet nur den Datum-/Zeit-String aus, nicht den Offset oder die UTC-Angabe.<br>
+          Die Anwendung wertet nur den Datum-/Zeit-String aus, nicht den Offset oder die UTC-Angabe.<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56.335476+00:00...<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56.335476Z...<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56+00:00...<br>
@@ -10143,7 +10141,7 @@ paths:
           Date/time specifications must be specified in ISO 8601 format, i.e. they must have the separator "T" <br>
           between date and time and an offset (+00:00) or a "Z" (for UTC) at the end. <br>
           The fraction is optional.<br>
-          Order processing only evaluates the date/time string, not the offset or UTC specification.<br>
+          The application only evaluates the date/time string, not the offset or UTC specification.<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56.335476+00:00...<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56.335476Z...<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56+00:00...<br>
@@ -10693,7 +10691,7 @@ paths:
           Datum-/Zeitangaben müssen im Format ISO 8601 angegeben werden, d.h. sie müssen den Trenner "T" <br>
           zwischen Datum und Zeit und einen Offset (+00:00) oder ein "Z" (für UTC) an Ende haben. <br>
           Die Fraction ist optional.<br>
-          Die Auftragsbearbeitung wertet nur den Datum-/Zeit-String aus, nicht den Offset oder die UTC-Angabe.<br>
+          Die Anwendung wertet nur den Datum-/Zeit-String aus, nicht den Offset oder die UTC-Angabe.<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56.335476+00:00...<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56.335476Z...<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56+00:00...<br>
@@ -10719,7 +10717,7 @@ paths:
           Date/time specifications must be specified in ISO 8601 format, i.e. they must have the separator "T" <br>
           between date and time and an offset (+00:00) or a "Z" (for UTC) at the end. <br>
           The fraction is optional.<br>
-          Order processing only evaluates the date/time string, not the offset or UTC specification.<br>
+          The application only evaluates the date/time string, not the offset or UTC specification.<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56.335476+00:00...<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56.335476Z...<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56+00:00...<br>
@@ -11267,7 +11265,7 @@ paths:
           Datum-/Zeitangaben müssen im Format ISO 8601 angegeben werden, d.h. sie müssen den Trenner "T" <br>
           zwischen Datum und Zeit und einen Offset (+00:00) oder ein "Z" (für UTC) an Ende haben. <br>
           Die Fraction ist optional.<br>
-          Die Auftragsbearbeitung wertet nur den Datum-/Zeit-String aus, nicht den Offset oder die UTC-Angabe.<br>
+          Die Anwendung wertet nur den Datum-/Zeit-String aus, nicht den Offset oder die UTC-Angabe.<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56.335476+00:00...<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56.335476Z...<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56+00:00...<br>
@@ -11293,7 +11291,7 @@ paths:
           Date/time specifications must be specified in ISO 8601 format, i.e. they must have the separator "T" <br>
           between date and time and an offset (+00:00) or a "Z" (for UTC) at the end. <br>
           The fraction is optional.<br>
-          Order processing only evaluates the date/time string, not the offset or UTC specification.<br>
+          The application only evaluates the date/time string, not the offset or UTC specification.<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56.335476+00:00...<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56.335476Z...<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56+00:00...<br>
@@ -11698,7 +11696,7 @@ paths:
           Datum-/Zeitangaben müssen im Format ISO 8601 angegeben werden, d.h. sie müssen den Trenner "T" <br>
           zwischen Datum und Zeit und einen Offset (+00:00) oder ein "Z" (für UTC) an Ende haben. <br>
           Die Fraction ist optional.<br>
-          Die Auftragsbearbeitung wertet nur den Datum-/Zeit-String aus, nicht den Offset oder die UTC-Angabe.<br>
+          Die Anwendung wertet nur den Datum-/Zeit-String aus, nicht den Offset oder die UTC-Angabe.<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56.335476+00:00...<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56.335476Z...<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56+00:00...<br>
@@ -11724,7 +11722,7 @@ paths:
           Date/time specifications must be specified in ISO 8601 format, i.e. they must have the separator "T" <br>
           between date and time and an offset (+00:00) or a "Z" (for UTC) at the end. <br>
           The fraction is optional.<br>
-          Order processing only evaluates the date/time string, not the offset or UTC specification.<br>
+          The application only evaluates the date/time string, not the offset or UTC specification.<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56.335476+00:00...<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56.335476Z...<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56+00:00...<br>
@@ -12306,7 +12304,7 @@ paths:
           Datum-/Zeitangaben müssen im Format ISO 8601 angegeben werden, d.h. sie müssen den Trenner "T" <br>
           zwischen Datum und Zeit und einen Offset (+00:00) oder ein "Z" (für UTC) an Ende haben. <br>
           Die Fraction ist optional.<br>
-          Die Auftragsbearbeitung wertet nur den Datum-/Zeit-String aus, nicht den Offset oder die UTC-Angabe.<br>
+          Die Anwendung wertet nur den Datum-/Zeit-String aus, nicht den Offset oder die UTC-Angabe.<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56.335476+00:00...<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56.335476Z...<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56+00:00...<br>
@@ -12332,7 +12330,7 @@ paths:
           Date/time specifications must be specified in ISO 8601 format, i.e. they must have the separator "T" <br>
           between date and time and an offset (+00:00) or a "Z" (for UTC) at the end. <br>
           The fraction is optional.<br>
-          Order processing only evaluates the date/time string, not the offset or UTC specification.<br>
+          The application only evaluates the date/time string, not the offset or UTC specification.<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56.335476+00:00...<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56.335476Z...<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56+00:00...<br>
@@ -12881,7 +12879,7 @@ paths:
           Datum-/Zeitangaben müssen im Format ISO 8601 angegeben werden, d.h. sie müssen den Trenner "T" <br>
           zwischen Datum und Zeit und einen Offset (+00:00) oder ein "Z" (für UTC) an Ende haben. <br>
           Die Fraction ist optional.<br>
-          Die Auftragsbearbeitung wertet nur den Datum-/Zeit-String aus, nicht den Offset oder die UTC-Angabe.<br>
+          Die Anwendung wertet nur den Datum-/Zeit-String aus, nicht den Offset oder die UTC-Angabe.<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56.335476+00:00...<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56.335476Z...<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56+00:00...<br>
@@ -12907,7 +12905,7 @@ paths:
           Date/time specifications must be specified in ISO 8601 format, i.e. they must have the separator "T" <br>
           between date and time and an offset (+00:00) or a "Z" (for UTC) at the end. <br>
           The fraction is optional.<br>
-          Order processing only evaluates the date/time string, not the offset or UTC specification.<br>
+          The application only evaluates the date/time string, not the offset or UTC specification.<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56.335476+00:00...<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56.335476Z...<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56+00:00...<br>
@@ -13641,7 +13639,7 @@ paths:
           Datum-/Zeitangaben müssen im Format ISO 8601 angegeben werden, d.h. sie müssen den Trenner "T" <br>
           zwischen Datum und Zeit und einen Offset (+00:00) oder ein "Z" (für UTC) an Ende haben. <br>
           Die Fraction ist optional.<br>
-          Die Auftragsbearbeitung wertet nur den Datum-/Zeit-String aus, nicht den Offset oder die UTC-Angabe.<br>
+          Die Anwendung wertet nur den Datum-/Zeit-String aus, nicht den Offset oder die UTC-Angabe.<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56.335476+00:00...<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56.335476Z...<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56+00:00...<br>
@@ -13667,7 +13665,7 @@ paths:
           Date/time specifications must be specified in ISO 8601 format, i.e. they must have the separator "T" <br>
           between date and time and an offset (+00:00) or a "Z" (for UTC) at the end. <br>
           The fraction is optional.<br>
-          Order processing only evaluates the date/time string, not the offset or UTC specification.<br>
+          The application only evaluates the date/time string, not the offset or UTC specification.<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56.335476+00:00...<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56.335476Z...<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56+00:00...<br>
@@ -14253,7 +14251,7 @@ paths:
           Datum-/Zeitangaben müssen im Format ISO 8601 angegeben werden, d.h. sie müssen den Trenner "T" <br>
           zwischen Datum und Zeit und einen Offset (+00:00) oder ein "Z" (für UTC) an Ende haben. <br>
           Die Fraction ist optional.<br>
-          Die Auftragsbearbeitung wertet nur den Datum-/Zeit-String aus, nicht den Offset oder die UTC-Angabe.<br>
+          Die Anwendung wertet nur den Datum-/Zeit-String aus, nicht den Offset oder die UTC-Angabe.<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56.335476+00:00...<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56.335476Z...<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56+00:00...<br>
@@ -14279,7 +14277,7 @@ paths:
           Date/time specifications must be specified in ISO 8601 format, i.e. they must have the separator "T" <br>
           between date and time and an offset (+00:00) or a "Z" (for UTC) at the end. <br>
           The fraction is optional.<br>
-          Order processing only evaluates the date/time string, not the offset or UTC specification.<br>
+          The application only evaluates the date/time string, not the offset or UTC specification.<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56.335476+00:00...<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56.335476Z...<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56+00:00...<br>
@@ -14928,7 +14926,7 @@ paths:
           Datum-/Zeitangaben müssen im Format ISO 8601 angegeben werden, d.h. sie müssen den Trenner "T" <br>
           zwischen Datum und Zeit und einen Offset (+00:00) oder ein "Z" (für UTC) an Ende haben. <br>
           Die Fraction ist optional.<br>
-          Die Auftragsbearbeitung wertet nur den Datum-/Zeit-String aus, nicht den Offset oder die UTC-Angabe.<br>
+          Die Anwendung wertet nur den Datum-/Zeit-String aus, nicht den Offset oder die UTC-Angabe.<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56.335476+00:00...<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56.335476Z...<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56+00:00...<br>
@@ -14954,7 +14952,7 @@ paths:
           Date/time specifications must be specified in ISO 8601 format, i.e. they must have the separator "T" <br>
           between date and time and an offset (+00:00) or a "Z" (for UTC) at the end. <br>
           The fraction is optional.<br>
-          Order processing only evaluates the date/time string, not the offset or UTC specification.<br>
+          The application only evaluates the date/time string, not the offset or UTC specification.<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56.335476+00:00...<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56.335476Z...<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56+00:00...<br>
@@ -15949,7 +15947,7 @@ paths:
           Datum-/Zeitangaben müssen im Format ISO 8601 angegeben werden, d.h. sie müssen den Trenner "T" <br>
           zwischen Datum und Zeit und einen Offset (+00:00) oder ein "Z" (für UTC) an Ende haben. <br>
           Die Fraction ist optional.<br>
-          Die Auftragsbearbeitung wertet nur den Datum-/Zeit-String aus, nicht den Offset oder die UTC-Angabe.<br>
+          Die Anwendung wertet nur den Datum-/Zeit-String aus, nicht den Offset oder die UTC-Angabe.<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56.335476+00:00...<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56.335476Z...<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56+00:00...<br>
@@ -15975,7 +15973,7 @@ paths:
           Date/time specifications must be specified in ISO 8601 format, i.e. they must have the separator "T" <br>
           between date and time and an offset (+00:00) or a "Z" (for UTC) at the end. <br>
           The fraction is optional.<br>
-          Order processing only evaluates the date/time string, not the offset or UTC specification.<br>
+          The application only evaluates the date/time string, not the offset or UTC specification.<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56.335476+00:00...<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56.335476Z...<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56+00:00...<br>
@@ -16859,7 +16857,7 @@ paths:
           Datum-/Zeitangaben müssen im Format ISO 8601 angegeben werden, d.h. sie müssen den Trenner "T" <br>
           zwischen Datum und Zeit und einen Offset (+00:00) oder ein "Z" (für UTC) an Ende haben. <br>
           Die Fraction ist optional.<br>
-          Die Auftragsbearbeitung wertet nur den Datum-/Zeit-String aus, nicht den Offset oder die UTC-Angabe.<br>
+          Die Anwendung wertet nur den Datum-/Zeit-String aus, nicht den Offset oder die UTC-Angabe.<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56.335476+00:00...<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56.335476Z...<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56+00:00...<br>
@@ -16885,7 +16883,7 @@ paths:
           Date/time specifications must be specified in ISO 8601 format, i.e. they must have the separator "T" <br>
           between date and time and an offset (+00:00) or a "Z" (for UTC) at the end. <br>
           The fraction is optional.<br>
-          Order processing only evaluates the date/time string, not the offset or UTC specification.<br>
+          The application only evaluates the date/time string, not the offset or UTC specification.<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56.335476+00:00...<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56.335476Z...<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56+00:00...<br>
@@ -17618,7 +17616,7 @@ paths:
           Datum-/Zeitangaben müssen im Format ISO 8601 angegeben werden, d.h. sie müssen den Trenner "T" <br>
           zwischen Datum und Zeit und einen Offset (+00:00) oder ein "Z" (für UTC) an Ende haben. <br>
           Die Fraction ist optional.<br>
-          Die Auftragsbearbeitung wertet nur den Datum-/Zeit-String aus, nicht den Offset oder die UTC-Angabe.<br>
+          Die Anwendung wertet nur den Datum-/Zeit-String aus, nicht den Offset oder die UTC-Angabe.<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56.335476+00:00...<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56.335476Z...<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56+00:00...<br>
@@ -17644,7 +17642,7 @@ paths:
           Date/time specifications must be specified in ISO 8601 format, i.e. they must have the separator "T" <br>
           between date and time and an offset (+00:00) or a "Z" (for UTC) at the end. <br>
           The fraction is optional.<br>
-          Order processing only evaluates the date/time string, not the offset or UTC specification.<br>
+          The application only evaluates the date/time string, not the offset or UTC specification.<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56.335476+00:00...<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56.335476Z...<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56+00:00...<br>
@@ -18934,7 +18932,7 @@ paths:
           Datum-/Zeitangaben müssen im Format ISO 8601 angegeben werden, d.h. sie müssen den Trenner "T" <br>
           zwischen Datum und Zeit und einen Offset (+00:00) oder ein "Z" (für UTC) an Ende haben. <br>
           Die Fraction ist optional.<br>
-          Die Auftragsbearbeitung wertet nur den Datum-/Zeit-String aus, nicht den Offset oder die UTC-Angabe.<br>
+          Die Anwendung wertet nur den Datum-/Zeit-String aus, nicht den Offset oder die UTC-Angabe.<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56.335476+00:00...<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56.335476Z...<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56+00:00...<br>
@@ -18960,7 +18958,7 @@ paths:
           Date/time specifications must be specified in ISO 8601 format, i.e. they must have the separator "T" <br>
           between date and time and an offset (+00:00) or a "Z" (for UTC) at the end. <br>
           The fraction is optional.<br>
-          Order processing only evaluates the date/time string, not the offset or UTC specification.<br>
+          The application only evaluates the date/time string, not the offset or UTC specification.<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56.335476+00:00...<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56.335476Z...<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56+00:00...<br>
@@ -19955,7 +19953,7 @@ paths:
           Datum-/Zeitangaben müssen im Format ISO 8601 angegeben werden, d.h. sie müssen den Trenner "T" <br>
           zwischen Datum und Zeit und einen Offset (+00:00) oder ein "Z" (für UTC) an Ende haben. <br>
           Die Fraction ist optional.<br>
-          Die Auftragsbearbeitung wertet nur den Datum-/Zeit-String aus, nicht den Offset oder die UTC-Angabe.<br>
+          Die Anwendung wertet nur den Datum-/Zeit-String aus, nicht den Offset oder die UTC-Angabe.<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56.335476+00:00...<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56.335476Z...<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56+00:00...<br>
@@ -19981,7 +19979,7 @@ paths:
           Date/time specifications must be specified in ISO 8601 format, i.e. they must have the separator "T" <br>
           between date and time and an offset (+00:00) or a "Z" (for UTC) at the end. <br>
           The fraction is optional.<br>
-          Order processing only evaluates the date/time string, not the offset or UTC specification.<br>
+          The application only evaluates the date/time string, not the offset or UTC specification.<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56.335476+00:00...<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56.335476Z...<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56+00:00...<br>
@@ -21027,7 +21025,7 @@ paths:
           Datum-/Zeitangaben müssen im Format ISO 8601 angegeben werden, d.h. sie müssen den Trenner "T" <br>
           zwischen Datum und Zeit und einen Offset (+00:00) oder ein "Z" (für UTC) an Ende haben. <br>
           Die Fraction ist optional.<br>
-          Die Auftragsbearbeitung wertet nur den Datum-/Zeit-String aus, nicht den Offset oder die UTC-Angabe.<br>
+          Die Anwendung wertet nur den Datum-/Zeit-String aus, nicht den Offset oder die UTC-Angabe.<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56.335476+00:00...<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56.335476Z...<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56+00:00...<br>
@@ -21053,7 +21051,7 @@ paths:
           Date/time specifications must be specified in ISO 8601 format, i.e. they must have the separator "T" <br>
           between date and time and an offset (+00:00) or a "Z" (for UTC) at the end. <br>
           The fraction is optional.<br>
-          Order processing only evaluates the date/time string, not the offset or UTC specification.<br>
+          The application only evaluates the date/time string, not the offset or UTC specification.<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56.335476+00:00...<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56.335476Z...<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56+00:00...<br>
@@ -21723,7 +21721,7 @@ paths:
           Datum-/Zeitangaben müssen im Format ISO 8601 angegeben werden, d.h. sie müssen den Trenner "T" <br>
           zwischen Datum und Zeit und einen Offset (+00:00) oder ein "Z" (für UTC) an Ende haben. <br>
           Die Fraction ist optional.<br>
-          Die Auftragsbearbeitung wertet nur den Datum-/Zeit-String aus, nicht den Offset oder die UTC-Angabe.<br>
+          Die Anwendung wertet nur den Datum-/Zeit-String aus, nicht den Offset oder die UTC-Angabe.<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56.335476+00:00...<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56.335476Z...<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56+00:00...<br>
@@ -21749,7 +21747,7 @@ paths:
           Date/time specifications must be specified in ISO 8601 format, i.e. they must have the separator "T" <br>
           between date and time and an offset (+00:00) or a "Z" (for UTC) at the end. <br>
           The fraction is optional.<br>
-          Order processing only evaluates the date/time string, not the offset or UTC specification.<br>
+          The application only evaluates the date/time string, not the offset or UTC specification.<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56.335476+00:00...<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56.335476Z...<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56+00:00...<br>
@@ -22710,12 +22708,12 @@ paths:
   /v1/sales-documents/{salesDocumentId}/set-lock-for-third-party-application:
     post:
       description: |
-        Setzt eine Sperre auf dem Beleg, so dass über die Auftragsbearbeitung
+        Setzt eine Sperre auf dem Beleg, so dass über die Oberfläche (GUI)
         nur noch eingeschränkte Änderungen möglich sind.
 
         **English version:**
         Sets a lock on the document so that only limited changes
-        are possible via Auftragsbearbeitung.
+        are possible via user interface.
       parameters:
       - description: |
           Id eines Verkaufsbelegs (technischer Schlüssel)
@@ -22803,11 +22801,11 @@ paths:
     post:
       description: |
         Hebt die Sperre auf dem Beleg wieder auf, so dass über die
-        Auftragsbearbeitung wieder Änderungen möglich sind.
+        Oberfläche (GUI) wieder Änderungen möglich sind.
 
         **English version:**
         Removes the lock on the document so that
-        changes are possible again via Auftragsbearbeitung.
+        changes are possible again via user interface.
       parameters:
       - description: |
           Id eines Verkaufsbelegs (technischer Schlüssel)
@@ -23896,7 +23894,7 @@ paths:
           Datum-/Zeitangaben müssen im Format ISO 8601 angegeben werden, d.h. sie müssen den Trenner "T" <br>
           zwischen Datum und Zeit und einen Offset (+00:00) oder ein "Z" (für UTC) an Ende haben. <br>
           Die Fraction ist optional.<br>
-          Die Auftragsbearbeitung wertet nur den Datum-/Zeit-String aus, nicht den Offset oder die UTC-Angabe.<br>
+          Die Anwendung wertet nur den Datum-/Zeit-String aus, nicht den Offset oder die UTC-Angabe.<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56.335476+00:00...<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56.335476Z...<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56+00:00...<br>
@@ -23922,7 +23920,7 @@ paths:
           Date/time specifications must be specified in ISO 8601 format, i.e. they must have the separator "T" <br>
           between date and time and an offset (+00:00) or a "Z" (for UTC) at the end. <br>
           The fraction is optional.<br>
-          Order processing only evaluates the date/time string, not the offset or UTC specification.<br>
+          The application only evaluates the date/time string, not the offset or UTC specification.<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56.335476+00:00...<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56.335476Z...<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56+00:00...<br>
@@ -24600,7 +24598,7 @@ paths:
           Datum-/Zeitangaben müssen im Format ISO 8601 angegeben werden, d.h. sie müssen den Trenner "T" <br>
           zwischen Datum und Zeit und einen Offset (+00:00) oder ein "Z" (für UTC) an Ende haben. <br>
           Die Fraction ist optional.<br>
-          Die Auftragsbearbeitung wertet nur den Datum-/Zeit-String aus, nicht den Offset oder die UTC-Angabe.<br>
+          Die Anwendung wertet nur den Datum-/Zeit-String aus, nicht den Offset oder die UTC-Angabe.<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56.335476+00:00...<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56.335476Z...<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56+00:00...<br>
@@ -24626,7 +24624,7 @@ paths:
           Date/time specifications must be specified in ISO 8601 format, i.e. they must have the separator "T" <br>
           between date and time and an offset (+00:00) or a "Z" (for UTC) at the end. <br>
           The fraction is optional.<br>
-          Order processing only evaluates the date/time string, not the offset or UTC specification.<br>
+          The application only evaluates the date/time string, not the offset or UTC specification.<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56.335476+00:00...<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56.335476Z...<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56+00:00...<br>
@@ -25589,12 +25587,12 @@ paths:
   /v1/purchase-documents/{purchaseDocumentId}/set-lock-for-third-party-application:
     post:
       description: |
-        Setzt eine Sperre auf dem Beleg, so dass über die Auftragsbearbeitung
+        Setzt eine Sperre auf dem Beleg, so dass über die Oberfläche (GUI)
         nur noch eingeschränkte Änderungen möglich sind.
 
         **English version:**
         Sets a lock on the document so that only limited changes
-        are possible via Auftragsbearbeitung.
+        are possible via user interface.
       parameters:
       - description: |
           Id eines Einkaufsbelegs (technischer Schlüssel)
@@ -25682,11 +25680,11 @@ paths:
     post:
       description: |
         Hebt die Sperre auf dem Beleg wieder auf, so dass über die
-        Auftragsbearbeitung wieder Änderungen möglich sind.
+        Oberfläche (GUI) wieder Änderungen möglich sind.
 
         **English version:**
         Releases the lock on the document so that
-        changes are again possible via Auftragsbearbeitung.
+        changes are again possible via user interface.
       parameters:
       - description: |
           Id eines Einkaufsbelegs (technischer Schlüssel)
@@ -26688,7 +26686,7 @@ paths:
           Datum-/Zeitangaben müssen im Format ISO 8601 angegeben werden, d.h. sie müssen den Trenner "T" <br>
           zwischen Datum und Zeit und einen Offset (+00:00) oder ein "Z" (für UTC) an Ende haben. <br>
           Die Fraction ist optional.<br>
-          Die Auftragsbearbeitung wertet nur den Datum-/Zeit-String aus, nicht den Offset oder die UTC-Angabe.<br>
+          Die Anwendung wertet nur den Datum-/Zeit-String aus, nicht den Offset oder die UTC-Angabe.<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56.335476+00:00...<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56.335476Z...<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56+00:00...<br>
@@ -26714,7 +26712,7 @@ paths:
           Date/time specifications must be specified in ISO 8601 format, i.e. they must have the separator "T" <br>
           between date and time and an offset (+00:00) or a "Z" (for UTC) at the end. <br>
           The fraction is optional.<br>
-          Order processing only evaluates the date/time string, not the offset or UTC specification.<br>
+          The application only evaluates the date/time string, not the offset or UTC specification.<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56.335476+00:00...<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56.335476Z...<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56+00:00...<br>
@@ -27129,7 +27127,7 @@ paths:
           Datum-/Zeitangaben müssen im Format ISO 8601 angegeben werden, d.h. sie müssen den Trenner "T" <br>
           zwischen Datum und Zeit und einen Offset (+00:00) oder ein "Z" (für UTC) an Ende haben. <br>
           Die Fraction ist optional.<br>
-          Die Auftragsbearbeitung wertet nur den Datum-/Zeit-String aus, nicht den Offset oder die UTC-Angabe.<br>
+          Die Anwendung wertet nur den Datum-/Zeit-String aus, nicht den Offset oder die UTC-Angabe.<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56.335476+00:00...<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56.335476Z...<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56+00:00...<br>
@@ -27155,7 +27153,7 @@ paths:
           Date/time specifications must be specified in ISO 8601 format, i.e. they must have the separator "T" <br>
           between date and time and an offset (+00:00) or a "Z" (for UTC) at the end. <br>
           The fraction is optional.<br>
-          Order processing only evaluates the date/time string, not the offset or UTC specification.<br>
+          The application only evaluates the date/time string, not the offset or UTC specification.<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56.335476+00:00...<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56.335476Z...<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56+00:00...<br>
@@ -28024,11 +28022,11 @@ paths:
   /v1/manufacture-documents/{manufactureDocumentId}/set-lock-for-third-party-application:
     post:
       description: |
-        Setzt eine Sperre auf dem Beleg, so dass über die Auftragsbearbeitung
+        Setzt eine Sperre auf dem Beleg, so dass über die Oberfläche (GUI)
         nur noch eingeschränkte Änderungen möglich sind.
 
         **English version:**
-        Sets a lock on the document so that via order processing
+        Sets a lock on the document so that via user interface
         only limited changes are possible.
       parameters:
       - description: |
@@ -28117,11 +28115,11 @@ paths:
     post:
       description: |
         Hebt die Sperre auf dem Beleg wieder auf, so dass über die
-        Auftragsbearbeitung wieder Änderungen möglich sind.
+        Oberfläche (GUI) wieder Änderungen möglich sind.
 
         **English version:**
         Removes the lock on the document so that via
-        order processing changes are possible again.
+        user interface changes are possible again.
       parameters:
       - description: |
           Id eines Fertigungsbelegs (technischer Schlüssel)
@@ -28649,7 +28647,7 @@ paths:
           Datum-/Zeitangaben müssen im Format ISO 8601 angegeben werden, d.h. sie müssen den Trenner "T" <br>
           zwischen Datum und Zeit und einen Offset (+00:00) oder ein "Z" (für UTC) an Ende haben. <br>
           Die Fraction ist optional.<br>
-          Die Auftragsbearbeitung wertet nur den Datum-/Zeit-String aus, nicht den Offset oder die UTC-Angabe.<br>
+          Die Anwendung wertet nur den Datum-/Zeit-String aus, nicht den Offset oder die UTC-Angabe.<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56.335476+00:00...<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56.335476Z...<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56+00:00...<br>
@@ -28675,7 +28673,7 @@ paths:
           Date/time specifications must be specified in ISO 8601 format, i.e. they must have the separator "T" <br>
           between date and time and an offset (+00:00) or a "Z" (for UTC) at the end. <br>
           The fraction is optional.<br>
-          Order processing only evaluates the date/time string, not the offset or UTC specification.<br>
+          The application only evaluates the date/time string, not the offset or UTC specification.<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56.335476+00:00...<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56.335476Z...<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56+00:00...<br>
@@ -29080,7 +29078,7 @@ paths:
           Datum-/Zeitangaben müssen im Format ISO 8601 angegeben werden, d.h. sie müssen den Trenner "T" <br>
           zwischen Datum und Zeit und einen Offset (+00:00) oder ein "Z" (für UTC) an Ende haben. <br>
           Die Fraction ist optional.<br>
-          Die Auftragsbearbeitung wertet nur den Datum-/Zeit-String aus, nicht den Offset oder die UTC-Angabe.<br>
+          Die Anwendung wertet nur den Datum-/Zeit-String aus, nicht den Offset oder die UTC-Angabe.<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56.335476+00:00...<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56.335476Z...<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56+00:00...<br>
@@ -29106,7 +29104,7 @@ paths:
           Date/time specifications must be specified in ISO 8601 format, i.e. they must have the separator "T" <br>
           between date and time and an offset (+00:00) or a "Z" (for UTC) at the end. <br>
           The fraction is optional.<br>
-          Order processing only evaluates the date/time string, not the offset or UTC specification.<br>
+          The application only evaluates the date/time string, not the offset or UTC specification.<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56.335476+00:00...<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56.335476Z...<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56+00:00...<br>
@@ -29820,11 +29818,11 @@ paths:
   /v1/periodical-sales-document-templates/{documentTemplateId}/set-lock-for-third-party-application:
     post:
       description: |
-        Setzt eine Sperre auf dem wiederkehrenden Beleg, so dass über die Auftragsbearbeitung
+        Setzt eine Sperre auf dem wiederkehrenden Beleg, so dass über die Oberfläche (GUI)
         nur noch eingeschränkte Änderungen möglich sind.
 
         **English version:**
-        Sets a lock on the periodical document so that via order processing
+        Sets a lock on the periodical document so that via user interface
         only limited changes are possible.
       parameters:
       - description: |
@@ -29915,11 +29913,11 @@ paths:
     post:
       description: |
         Hebt die Sperre auf dem wiederkehrenden Beleg wieder auf, sodass über die
-        Auftragsbearbeitung wieder Änderungen möglich sind.
+        Oberfläche (GUI) wieder Änderungen möglich sind.
 
         **English version:**
         Removes the lock on the periodical document so that via
-        order processing changes are possible again.
+        user interface changes are possible again.
       parameters:
       - description: |
           Id einer Belegvorlage, z.B. eines wiederkehrenden Belegs (technischer
@@ -30106,7 +30104,7 @@ paths:
           Datum-/Zeitangaben müssen im Format ISO 8601 angegeben werden, d.h. sie müssen den Trenner "T" <br>
           zwischen Datum und Zeit und einen Offset (+00:00) oder ein "Z" (für UTC) an Ende haben. <br>
           Die Fraction ist optional.<br>
-          Die Auftragsbearbeitung wertet nur den Datum-/Zeit-String aus, nicht den Offset oder die UTC-Angabe.<br>
+          Die Anwendung wertet nur den Datum-/Zeit-String aus, nicht den Offset oder die UTC-Angabe.<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56.335476+00:00...<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56.335476Z...<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56+00:00...<br>
@@ -30132,7 +30130,7 @@ paths:
           Date/time specifications must be specified in ISO 8601 format, i.e. they must have the separator "T" <br>
           between date and time and an offset (+00:00) or a "Z" (for UTC) at the end. <br>
           The fraction is optional.<br>
-          Order processing only evaluates the date/time string, not the offset or UTC specification.<br>
+          The application only evaluates the date/time string, not the offset or UTC specification.<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56.335476+00:00...<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56.335476Z...<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56+00:00...<br>
@@ -30537,7 +30535,7 @@ paths:
           Datum-/Zeitangaben müssen im Format ISO 8601 angegeben werden, d.h. sie müssen den Trenner "T" <br>
           zwischen Datum und Zeit und einen Offset (+00:00) oder ein "Z" (für UTC) an Ende haben. <br>
           Die Fraction ist optional.<br>
-          Die Auftragsbearbeitung wertet nur den Datum-/Zeit-String aus, nicht den Offset oder die UTC-Angabe.<br>
+          Die Anwendung wertet nur den Datum-/Zeit-String aus, nicht den Offset oder die UTC-Angabe.<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56.335476+00:00...<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56.335476Z...<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56+00:00...<br>
@@ -30563,7 +30561,7 @@ paths:
           Date/time specifications must be specified in ISO 8601 format, i.e. they must have the separator "T" <br>
           between date and time and an offset (+00:00) or a "Z" (for UTC) at the end. <br>
           The fraction is optional.<br>
-          Order processing only evaluates the date/time string, not the offset or UTC specification.<br>
+          The application only evaluates the date/time string, not the offset or UTC specification.<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56.335476+00:00...<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56.335476Z...<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56+00:00...<br>
@@ -31277,11 +31275,11 @@ paths:
   /v1/periodical-purchase-document-templates/{documentTemplateId}/set-lock-for-third-party-application:
     post:
       description: |
-        Setzt eine Sperre auf dem wiederkehrenden Beleg, so dass über die Auftragsbearbeitung
+        Setzt eine Sperre auf dem wiederkehrenden Beleg, so dass über die Oberfläche (GUI)
         nur noch eingeschränkte Änderungen möglich sind.
 
         **English version:**
-        Sets a lock on the periodical document so that via order processing
+        Sets a lock on the periodical document so that via user interface
         only limited changes are possible.
       parameters:
       - description: |
@@ -31372,11 +31370,11 @@ paths:
     post:
       description: |
         Hebt die Sperre auf dem wiederkehrenden Beleg wieder auf, sodass über die
-        Auftragsbearbeitung wieder Änderungen möglich sind.
+        Oberfläche (GUI) wieder Änderungen möglich sind.
 
         **English version:**
         Removes the lock on the periodical document so that via
-        order processing changes are possible again.
+        user interface changes are possible again.
       parameters:
       - description: |
           Id einer Belegvorlage, z.B. eines wiederkehrenden Belegs (technischer
@@ -31563,7 +31561,7 @@ paths:
           Datum-/Zeitangaben müssen im Format ISO 8601 angegeben werden, d.h. sie müssen den Trenner "T" <br>
           zwischen Datum und Zeit und einen Offset (+00:00) oder ein "Z" (für UTC) an Ende haben. <br>
           Die Fraction ist optional.<br>
-          Die Auftragsbearbeitung wertet nur den Datum-/Zeit-String aus, nicht den Offset oder die UTC-Angabe.<br>
+          Die Anwendung wertet nur den Datum-/Zeit-String aus, nicht den Offset oder die UTC-Angabe.<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56.335476+00:00...<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56.335476Z...<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56+00:00...<br>
@@ -31589,7 +31587,7 @@ paths:
           Date/time specifications must be specified in ISO 8601 format, i.e. they must have the separator "T" <br>
           between date and time and an offset (+00:00) or a "Z" (for UTC) at the end. <br>
           The fraction is optional.<br>
-          Order processing only evaluates the date/time string, not the offset or UTC specification.<br>
+          The application only evaluates the date/time string, not the offset or UTC specification.<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56.335476+00:00...<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56.335476Z...<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56+00:00...<br>
@@ -31996,7 +31994,7 @@ paths:
           Datum-/Zeitangaben müssen im Format ISO 8601 angegeben werden, d.h. sie müssen den Trenner "T" <br>
           zwischen Datum und Zeit und einen Offset (+00:00) oder ein "Z" (für UTC) an Ende haben. <br>
           Die Fraction ist optional.<br>
-          Die Auftragsbearbeitung wertet nur den Datum-/Zeit-String aus, nicht den Offset oder die UTC-Angabe.<br>
+          Die Anwendung wertet nur den Datum-/Zeit-String aus, nicht den Offset oder die UTC-Angabe.<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56.335476+00:00...<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56.335476Z...<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56+00:00...<br>
@@ -32022,7 +32020,7 @@ paths:
           Date/time specifications must be specified in ISO 8601 format, i.e. they must have the separator "T" <br>
           between date and time and an offset (+00:00) or a "Z" (for UTC) at the end. <br>
           The fraction is optional.<br>
-          Order processing only evaluates the date/time string, not the offset or UTC specification.<br>
+          The application only evaluates the date/time string, not the offset or UTC specification.<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56.335476+00:00...<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56.335476Z...<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56+00:00...<br>
@@ -32429,7 +32427,7 @@ paths:
           Datum-/Zeitangaben müssen im Format ISO 8601 angegeben werden, d.h. sie müssen den Trenner "T" <br>
           zwischen Datum und Zeit und einen Offset (+00:00) oder ein "Z" (für UTC) an Ende haben. <br>
           Die Fraction ist optional.<br>
-          Die Auftragsbearbeitung wertet nur den Datum-/Zeit-String aus, nicht den Offset oder die UTC-Angabe.<br>
+          Die Anwendung wertet nur den Datum-/Zeit-String aus, nicht den Offset oder die UTC-Angabe.<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56.335476+00:00...<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56.335476Z...<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56+00:00...<br>
@@ -32455,7 +32453,7 @@ paths:
           Date/time specifications must be specified in ISO 8601 format, i.e. they must have the separator "T" <br>
           between date and time and an offset (+00:00) or a "Z" (for UTC) at the end. <br>
           The fraction is optional.<br>
-          Order processing only evaluates the date/time string, not the offset or UTC specification.<br>
+          The application only evaluates the date/time string, not the offset or UTC specification.<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56.335476+00:00...<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56.335476Z...<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56+00:00...<br>
@@ -33078,7 +33076,7 @@ paths:
           Datum-/Zeitangaben müssen im Format ISO 8601 angegeben werden, d.h. sie müssen den Trenner "T" <br>
           zwischen Datum und Zeit und einen Offset (+00:00) oder ein "Z" (für UTC) an Ende haben. <br>
           Die Fraction ist optional.<br>
-          Die Auftragsbearbeitung wertet nur den Datum-/Zeit-String aus, nicht den Offset oder die UTC-Angabe.<br>
+          Die Anwendung wertet nur den Datum-/Zeit-String aus, nicht den Offset oder die UTC-Angabe.<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56.335476+00:00...<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56.335476Z...<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56+00:00...<br>
@@ -33104,7 +33102,7 @@ paths:
           Date/time specifications must be specified in ISO 8601 format, i.e. they must have the separator "T" <br>
           between date and time and an offset (+00:00) or a "Z" (for UTC) at the end. <br>
           The fraction is optional.<br>
-          Order processing only evaluates the date/time string, not the offset or UTC specification.<br>
+          The application only evaluates the date/time string, not the offset or UTC specification.<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56.335476+00:00...<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56.335476Z...<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56+00:00...<br>
@@ -34159,7 +34157,7 @@ paths:
           Datum-/Zeitangaben müssen im Format ISO 8601 angegeben werden, d.h. sie müssen den Trenner "T" <br>
           zwischen Datum und Zeit und einen Offset (+00:00) oder ein "Z" (für UTC) an Ende haben. <br>
           Die Fraction ist optional.<br>
-          Die Auftragsbearbeitung wertet nur den Datum-/Zeit-String aus, nicht den Offset oder die UTC-Angabe.<br>
+          Die Anwendung wertet nur den Datum-/Zeit-String aus, nicht den Offset oder die UTC-Angabe.<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56.335476+00:00...<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56.335476Z...<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56+00:00...<br>
@@ -34185,7 +34183,7 @@ paths:
           Date/time specifications must be specified in ISO 8601 format, i.e. they must have the separator "T" <br>
           between date and time and an offset (+00:00) or a "Z" (for UTC) at the end. <br>
           The fraction is optional.<br>
-          Order processing only evaluates the date/time string, not the offset or UTC specification.<br>
+          The application only evaluates the date/time string, not the offset or UTC specification.<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56.335476+00:00...<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56.335476Z...<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56+00:00...<br>
@@ -34791,7 +34789,7 @@ paths:
           Datum-/Zeitangaben müssen im Format ISO 8601 angegeben werden, d.h. sie müssen den Trenner "T" <br>
           zwischen Datum und Zeit und einen Offset (+00:00) oder ein "Z" (für UTC) an Ende haben. <br>
           Die Fraction ist optional.<br>
-          Die Auftragsbearbeitung wertet nur den Datum-/Zeit-String aus, nicht den Offset oder die UTC-Angabe.<br>
+          Die Anwendung wertet nur den Datum-/Zeit-String aus, nicht den Offset oder die UTC-Angabe.<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56.335476+00:00...<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56.335476Z...<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56+00:00...<br>
@@ -34817,7 +34815,7 @@ paths:
           Date/time specifications must be specified in ISO 8601 format, i.e. they must have the separator "T" <br>
           between date and time and an offset (+00:00) or a "Z" (for UTC) at the end. <br>
           The fraction is optional.<br>
-          Order processing only evaluates the date/time string, not the offset or UTC specification.<br>
+          The application only evaluates the date/time string, not the offset or UTC specification.<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56.335476+00:00...<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56.335476Z...<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56+00:00...<br>
@@ -35393,7 +35391,7 @@ paths:
           Datum-/Zeitangaben müssen im Format ISO 8601 angegeben werden, d.h. sie müssen den Trenner "T" <br>
           zwischen Datum und Zeit und einen Offset (+00:00) oder ein "Z" (für UTC) an Ende haben. <br>
           Die Fraction ist optional.<br>
-          Die Auftragsbearbeitung wertet nur den Datum-/Zeit-String aus, nicht den Offset oder die UTC-Angabe.<br>
+          Die Anwendung wertet nur den Datum-/Zeit-String aus, nicht den Offset oder die UTC-Angabe.<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56.335476+00:00...<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56.335476Z...<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56+00:00...<br>
@@ -35419,7 +35417,7 @@ paths:
           Date/time specifications must be specified in ISO 8601 format, i.e. they must have the separator "T" <br>
           between date and time and an offset (+00:00) or a "Z" (for UTC) at the end. <br>
           The fraction is optional.<br>
-          Order processing only evaluates the date/time string, not the offset or UTC specification.<br>
+          The application only evaluates the date/time string, not the offset or UTC specification.<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56.335476+00:00...<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56.335476Z...<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56+00:00...<br>
@@ -36086,7 +36084,7 @@ paths:
           Datum-/Zeitangaben müssen im Format ISO 8601 angegeben werden, d.h. sie müssen den Trenner "T" <br>
           zwischen Datum und Zeit und einen Offset (+00:00) oder ein "Z" (für UTC) an Ende haben. <br>
           Die Fraction ist optional.<br>
-          Die Auftragsbearbeitung wertet nur den Datum-/Zeit-String aus, nicht den Offset oder die UTC-Angabe.<br>
+          Die Anwendung wertet nur den Datum-/Zeit-String aus, nicht den Offset oder die UTC-Angabe.<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56.335476+00:00...<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56.335476Z...<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56+00:00...<br>
@@ -36112,7 +36110,7 @@ paths:
           Date/time specifications must be specified in ISO 8601 format, i.e. they must have the separator "T" <br>
           between date and time and an offset (+00:00) or a "Z" (for UTC) at the end. <br>
           The fraction is optional.<br>
-          Order processing only evaluates the date/time string, not the offset or UTC specification.<br>
+          The application only evaluates the date/time string, not the offset or UTC specification.<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56.335476+00:00...<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56.335476Z...<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56+00:00...<br>
@@ -36670,7 +36668,7 @@ paths:
           Datum-/Zeitangaben müssen im Format ISO 8601 angegeben werden, d.h. sie müssen den Trenner "T" <br>
           zwischen Datum und Zeit und einen Offset (+00:00) oder ein "Z" (für UTC) an Ende haben. <br>
           Die Fraction ist optional.<br>
-          Die Auftragsbearbeitung wertet nur den Datum-/Zeit-String aus, nicht den Offset oder die UTC-Angabe.<br>
+          Die Anwendung wertet nur den Datum-/Zeit-String aus, nicht den Offset oder die UTC-Angabe.<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56.335476+00:00...<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56.335476Z...<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56+00:00...<br>
@@ -36696,7 +36694,7 @@ paths:
           Date/time specifications must be specified in ISO 8601 format, i.e. they must have the separator "T" <br>
           between date and time and an offset (+00:00) or a "Z" (for UTC) at the end. <br>
           The fraction is optional.<br>
-          Order processing only evaluates the date/time string, not the offset or UTC specification.<br>
+          The application only evaluates the date/time string, not the offset or UTC specification.<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56.335476+00:00...<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56.335476Z...<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56+00:00...<br>
@@ -38644,7 +38642,7 @@ paths:
           Datum-/Zeitangaben müssen im Format ISO 8601 angegeben werden, d.h. sie müssen den Trenner "T" <br>
           zwischen Datum und Zeit und einen Offset (+00:00) oder ein "Z" (für UTC) an Ende haben. <br>
           Die Fraction ist optional.<br>
-          Die Auftragsbearbeitung wertet nur den Datum-/Zeit-String aus, nicht den Offset oder die UTC-Angabe.<br>
+          Die Anwendung wertet nur den Datum-/Zeit-String aus, nicht den Offset oder die UTC-Angabe.<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56.335476+00:00...<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56.335476Z...<br>
           Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56+00:00...<br>
@@ -38670,7 +38668,7 @@ paths:
           Date/time specifications must be specified in ISO 8601 format, i.e. they must have the separator "T" <br>
           between date and time and an offset (+00:00) or a "Z" (for UTC) at the end. <br>
           The fraction is optional.<br>
-          Order processing only evaluates the date/time string, not the offset or UTC specification.<br>
+          The application only evaluates the date/time string, not the offset or UTC specification.<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56.335476+00:00...<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56.335476Z...<br>
           Example: ...filter=LastModified ge 2023-02-23T09:01:56+00:00...<br>
@@ -39243,7 +39241,7 @@ components:
         Datum-/Zeitangaben müssen im Format ISO 8601 angegeben werden, d.h. sie müssen den Trenner "T" <br>
         zwischen Datum und Zeit und einen Offset (+00:00) oder ein "Z" (für UTC) an Ende haben. <br>
         Die Fraction ist optional.<br>
-        Die Auftragsbearbeitung wertet nur den Datum-/Zeit-String aus, nicht den Offset oder die UTC-Angabe.<br>
+        Die Anwendung wertet nur den Datum-/Zeit-String aus, nicht den Offset oder die UTC-Angabe.<br>
         Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56.335476+00:00...<br>
         Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56.335476Z...<br>
         Beispiel: ...filter=LastModified ge 2023-02-23T09:01:56+00:00...<br>
@@ -39269,7 +39267,7 @@ components:
         Date/time specifications must be specified in ISO 8601 format, i.e. they must have the separator "T" <br>
         between date and time and an offset (+00:00) or a "Z" (for UTC) at the end. <br>
         The fraction is optional.<br>
-        Order processing only evaluates the date/time string, not the offset or UTC specification.<br>
+        The application only evaluates the date/time string, not the offset or UTC specification.<br>
         Example: ...filter=LastModified ge 2023-02-23T09:01:56.335476+00:00...<br>
         Example: ...filter=LastModified ge 2023-02-23T09:01:56.335476Z...<br>
         Example: ...filter=LastModified ge 2023-02-23T09:01:56+00:00...<br>
@@ -40916,14 +40914,14 @@ components:
             Veraltete Property.
             E-Mail-Herkunft
             - None -> keine Angabe
-            - Intern -> stammt aus der Verwendung mit dem AB-internen E-Mail-Client
+            - Intern -> stammt aus der Verwendung mit dem Anwendungs-internen E-Mail-Client
             - Outlook -> stammt aus der Verwendung mit Microsoft Outlook
 
             **English version:**
             Deprecated property.
             Email origin
             - None -> no specification
-            - Intern -> originates from use with the AB-internal email client
+            - Intern -> originates from use with the application-internal email client
             - Outlook -> originates from use with Microsoft Outlook
           enum:
           - None
@@ -46432,11 +46430,14 @@ components:
         BookingCodeId: 5
         VatIdentificationNumber: DE123456789
         IsCompanyWithoutVatIdentificationNumber: false
+        OwnVatIdentificationNumber: OwnVatIdentificationNumber
         TaxIdentificationNumber: 12/123/1234
         BusinessIdentificationNumber: DE123456789-00001
         RegistrationNumber: HRB 12345
         RegisterCourt: Amtsgericht Hamburg
         EoriNumber: EoriNumber
+        ContractNumber: "856782"
+        ObjectNumber: VT-123456
         CreationDate: 2000-01-23T04:56:07.000+00:00
         CreatedBy: ab
         LastModified: 2000-01-23T04:56:07.000+00:00
@@ -46914,6 +46915,14 @@ components:
           example: false
           nullable: true
           type: boolean
+        OwnVatIdentificationNumber:
+          description: |
+            Eigene USt-IdNr.
+
+            **English version:**
+            Own VAT identification number
+          nullable: true
+          type: string
         TaxIdentificationNumber:
           description: |
             Steuernummer
@@ -46959,6 +46968,24 @@ components:
           nullable: true
           type: string
           example: null
+        ContractNumber:
+          description: |
+            Vertragsnummer
+
+            **English version:**
+            Contract number
+          example: "856782"
+          nullable: true
+          type: string
+        ObjectNumber:
+          description: |
+            Objektnummer (z.B. Zählernummer, Kfz-Kennzeichen, versicherte Person, Abonnement-Nummer).
+
+            **English version:**
+            Object number (e.g. meter number, license plate, insured person, subscription number).
+          example: VT-123456
+          nullable: true
+          type: string
         CreationDate:
           description: |
             Erfassungsdatum des Kunden
@@ -48280,11 +48307,14 @@ components:
         BookingCodeId: 5
         VatIdentificationNumber: DE987654321
         IsCompanyWithoutVatIdentificationNumber: false
+        OwnVatIdentificationNumber: OwnVatIdentificationNumber
         TaxIdentificationNumber: 99/1234/12345
         BusinessIdentificationNumber: DE123456789-00001
         RegistrationNumber: HRB 12345
         RegisterCourt: Amtsgericht Hamburg
         EoriNumber: EoriNumber
+        ContractNumber: "856782"
+        ObjectNumber: VT-123456
         CreationDate: 2000-01-23T04:56:07.000+00:00
         CreatedBy: ab
         LastModified: 2000-01-23T04:56:07.000+00:00
@@ -48709,6 +48739,14 @@ components:
           example: false
           nullable: true
           type: boolean
+        OwnVatIdentificationNumber:
+          description: |
+            Eigene USt-IdNr.
+
+            **English version:**
+            Own VAT identification number
+          nullable: true
+          type: string
         TaxIdentificationNumber:
           description: |
             Steuernummer
@@ -48754,6 +48792,24 @@ components:
           nullable: true
           type: string
           example: null
+        ContractNumber:
+          description: |
+            Vertragsnummer
+
+            **English version:**
+            Contract number
+          example: "856782"
+          nullable: true
+          type: string
+        ObjectNumber:
+          description: |
+            Objektnummer (z.B. Zählernummer, Kfz-Kennzeichen, versicherte Person, Abonnement-Nummer).
+
+            **English version:**
+            Object number (e.g. meter number, license plate, insured person, subscription number).
+          example: VT-123456
+          nullable: true
+          type: string
         CreationDate:
           description: |
             Erfassungsdatum des Lieferanten
@@ -49916,6 +49972,9 @@ components:
         IncotermCode: IncotermCode
         IncotermVersion: IncotermVersion
         IncotermLocation: IncotermLocation
+        DeliveryNotes:
+        - DeliveryNoteNumber: DeliveryNoteNumber
+          DeliveryNoteDate: DeliveryNoteDate
         CurrencyId: 4
         CurrencyIso: EUR
         ExchangeRate: 9.301444243932576
@@ -49951,6 +50010,7 @@ components:
         BusinessOpportunity: 1
         Preamble: Preamble
         VatIdentificationNumber: VatIdentificationNumber
+        IsCompanyWithoutVatIdentificationNumber: false
         OwnVatIdentificationNumber: OwnVatIdentificationNumber
         TaxIdentificationNumber: TaxIdentificationNumber
         RegistrationNumber: HRB 12345
@@ -50062,6 +50122,8 @@ components:
             OrderReferenceLineNumber: "5566-01, 5566-02"
             ObjectNumber: ObjectNumber
             OrderDate: OrderDate
+            DeliveryNoteNumber: DeliveryNoteNumber
+            DeliveryNoteDate: DeliveryNoteDate
             Accounting:
               Account: 6.778324963048013
               DiscountAccount: 6.878052220127876
@@ -50507,6 +50569,8 @@ components:
             OrderReferenceLineNumber: "5566-01, 5566-02"
             ObjectNumber: ObjectNumber
             OrderDate: OrderDate
+            DeliveryNoteNumber: DeliveryNoteNumber
+            DeliveryNoteDate: DeliveryNoteDate
             Accounting:
               Account: 6.778324963048013
               DiscountAccount: 6.878052220127876
@@ -50960,6 +51024,7 @@ components:
         UsePeppol: true
         DeliverOnlyIfAllProductsInStock: true
         ConsiderForPackagingLaw: true
+        ProjectReference: ProjectReference
         BusinessTransaction: DomesticSalesWithVat
         IsLockedForDunningOrDirectDebit: true
         CalculationFieldTotals:
@@ -51256,6 +51321,23 @@ components:
             Incoterm location
           nullable: true
           type: string
+        DeliveryNotes:
+          description: |
+            Liste der Lieferscheindaten.
+            Aktuell wird maximal ein Lieferschein unterstützt.
+            Wenn bei POST oder PUT mehr als ein Element übermittelt wird, ist die Anfrage ungültig
+            und wird mit BadRequest abgelehnt.
+
+            **English version:**
+            List of delivery note data.
+            Currently, a maximum of one delivery note is supported.
+            If more than one element is submitted in a POST or PUT request, the request is invalid
+            and is rejected with BadRequest.
+          items:
+            $ref: "#/components/schemas/DeliveryNote"
+          maxItems: 1
+          nullable: true
+          type: array
         CurrencyId:
           description: |
             Id der Währung (technischer Schlüssel)
@@ -51550,6 +51632,15 @@ components:
             VAT identification number of the invoice recipient
           nullable: true
           type: string
+        IsCompanyWithoutVatIdentificationNumber:
+          description: |
+            Rechnungsempfänger ist Unternehmen, das keine USt-IdNr. hat
+
+            **English version:**
+            Invoice recipient is a company that does not have a VAT ID
+          example: false
+          nullable: true
+          type: boolean
         OwnVatIdentificationNumber:
           description: |
             Eigene USt-IdNr.
@@ -51874,6 +51965,14 @@ components:
             Delivery is included in the evaluation for the Packaging Act.
           nullable: true
           type: boolean
+        ProjectReference:
+          description: |
+            Projektreferenz des Belegs.
+
+            **English version:**
+            Project Reference of the Document.
+          nullable: true
+          type: string
         BusinessTransaction:
           description: |
             Geschäftsvorfall
@@ -51962,6 +52061,44 @@ components:
           readOnly: true
           type: array
       title: SalesDocument
+      type: object
+    DeliveryNote:
+      description: |
+        Enthält die Lieferscheindaten zu einem Verkaufsbeleg.
+
+        **English version:**
+        Contains delivery note data for a sales document.
+      example:
+        DeliveryNoteNumber: DeliveryNoteNumber
+        DeliveryNoteDate: DeliveryNoteDate
+      properties:
+        DeliveryNoteNumber:
+          description: |
+            Belegnummer des Lieferscheins.
+            Werden bei POST oder PUT DeliveryNoteNumber und DeliveryNoteDate gemeinsam als Leerstring
+            übermittelt, erfolgt die Lieferschein-Ermittlung automatisch.
+
+            **English version:**
+            Document number of the delivery note.
+            If DeliveryNoteNumber and DeliveryNoteDate are both submitted as empty strings in a POST
+            or PUT request, delivery note determination is performed automatically.
+          nullable: true
+          type: string
+        DeliveryNoteDate:
+          description: |
+            Belegdatum des Lieferscheins im Format YYYY-MM-DD.
+            Zum Löschen des Datums muss ein Leerstring übermittelt werden.
+            Werden bei POST oder PUT DeliveryNoteNumber und DeliveryNoteDate gemeinsam als Leerstring
+            übermittelt, erfolgt die Lieferschein-Ermittlung automatisch.
+
+            **English version:**
+            Document date of the delivery note in format YYYY-MM-DD.
+            To delete the date, an empty string must be submitted.
+            If DeliveryNoteNumber and DeliveryNoteDate are both submitted as empty strings in a POST
+            or PUT request, delivery note determination is performed automatically.
+          nullable: true
+          type: string
+      title: DeliveryNote
       type: object
     Prepayment:
       description: |
@@ -54062,12 +54199,12 @@ components:
       type: object
     SendMailSettings:
       description: "Enthält die Daten zum E-Mail-Versand.\nAlle Angaben sind optional.\
-        \ Die Auftragsbearbeitung ermittelt aus Belegadressen und \nBenutzereinstellungen\
-        \ alle Daten selbstständig. Werden hier Daten besetzt, dann ersetzen sie\n\
-        die von der Auftragsbearbeitung ermittelten Daten.\n\n**English version:**\n\
-        Contains the data for email sending.\nAll entries are optional. Auftragsbearbeitung\
-        \ determines all data independently from document addresses and\nuser settings.\
-        \ If data is provided here, it replaces the data determined by Auftragsbearbeitung.\n"
+        \ Die Anwendung ermittelt aus Belegadressen und \nBenutzereinstellungen alle\
+        \ Daten selbstständig. Werden hier Daten besetzt, dann ersetzen sie\ndie von\
+        \ der Anwendung ermittelten Daten.\n\n**English version:**\nContains the data\
+        \ for email sending.\nAll entries are optional. The application determines\
+        \ all data independently from document addresses and\nuser settings. If data\
+        \ is provided here, it replaces the data determined by the application.\n"
       example:
         To: receiver@example.com
         Cc: null
@@ -54083,12 +54220,11 @@ components:
           description: "E-Mail-Adresse des Empfängers. Nur erforderlich, wenn im Beleg\
             \ selbst keine E-Mail-Adresse \nhinterlegt ist oder der Beleg an eine\
             \ abweichende E-Mail-Adresse gesendet werden soll.\nWird diese Property\
-            \ gefüllt, ersetzt sie die durch die Auftragsbearbeitung ermittelte \n\
-            Empfänger-E-Mail-Adresse.\n\n**English version:**\nEmail address of the\
-            \ recipient. Only required if no email address is stored in the document\
-            \ itself\nor if the document should be sent to a different email address.\n\
-            If this property is filled, it replaces the recipient email address determined\
-            \ by Auftragsbearbeitung.\n"
+            \ gefüllt, ersetzt sie die durch die Anwendung ermittelte \nEmpfänger-E-Mail-Adresse.\n\
+            \n**English version:**\nEmail address of the recipient. Only required\
+            \ if no email address is stored in the document itself\nor if the document\
+            \ should be sent to a different email address.\nIf this property is filled,\
+            \ it replaces the recipient email address determined by the application.\n"
           nullable: true
           type: string
         Cc:
@@ -54101,30 +54237,30 @@ components:
           type: string
         Bcc:
           description: "E-Mail-Adresse des Blindkopie-Empfängers.\nWird diese Property\
-            \ gefüllt, ersetzt sie die durch die Auftragsbearbeitung ermittelte \n\
-            Blindkopie-E-Mail-Adresse.\n\n**English version:**\nEmail address of the\
-            \ blind copy recipient.\nIf this property is filled, it replaces the blind\
-            \ copy email address determined by Auftragsbearbeitung.\n"
+            \ gefüllt, ersetzt sie die durch die Anwendung ermittelte \nBlindkopie-E-Mail-Adresse.\n\
+            \n**English version:**\nEmail address of the blind copy recipient.\nIf\
+            \ this property is filled, it replaces the blind copy email address determined\
+            \ by the application.\n"
           nullable: true
           type: string
         Subject:
           description: |
             Betreff der E-Mail.
-            Wird diese Property gefüllt, ersetzt sie den durch die Auftragsbearbeitung ermittelten Betreff.
+            Wird diese Property gefüllt, ersetzt sie den durch die Anwendung ermittelten Betreff.
 
             **English version:**
             Subject of the email.
-            If this property is filled, it replaces the subject determined by Auftragsbearbeitung.
+            If this property is filled, it replaces the subject determined by the application.
           nullable: true
           type: string
         Message:
           description: |
             Nachricht der E-Mail.
-            Wird diese Property gefüllt, ersetzt sie den durch die Auftragsbearbeitung ermittelten Nachrichtentext.
+            Wird diese Property gefüllt, ersetzt sie den durch die Anwendung ermittelten Nachrichtentext.
 
             **English version:**
             Message of the email.
-            If this property is filled, it replaces the message text determined by Auftragsbearbeitung.
+            If this property is filled, it replaces the message text determined by the application.
           nullable: true
           type: string
         FormatSettings:
@@ -55749,6 +55885,7 @@ components:
         Language: Language
         Preamble: Preamble
         VatIdentificationNumber: VatIdentificationNumber
+        IsCompanyWithoutVatIdentificationNumber: false
         OwnVatIdentificationNumber: OwnVatIdentificationNumber
         TaxIdentificationNumber: TaxIdentificationNumber
         RegistrationNumber: HRB 12345
@@ -55858,6 +55995,8 @@ components:
             OrderReferenceLineNumber: "5566-01, 5566-02"
             ObjectNumber: ObjectNumber
             OrderDate: OrderDate
+            DeliveryNoteNumber: DeliveryNoteNumber
+            DeliveryNoteDate: DeliveryNoteDate
             Accounting:
               Account: 6.778324963048013
               DiscountAccount: 6.878052220127876
@@ -56303,6 +56442,8 @@ components:
             OrderReferenceLineNumber: "5566-01, 5566-02"
             ObjectNumber: ObjectNumber
             OrderDate: OrderDate
+            DeliveryNoteNumber: DeliveryNoteNumber
+            DeliveryNoteDate: DeliveryNoteDate
             Accounting:
               Account: 6.778324963048013
               DiscountAccount: 6.878052220127876
@@ -56740,6 +56881,7 @@ components:
           RemainingTotalValue: 5.299143560275359
         CostCenter: CostCenter
         CostUnit: CostUnit
+        ProjectReference: ProjectReference
         Contact:
           LastName: LastName
           FirstName: FirstName
@@ -57229,6 +57371,15 @@ components:
             VAT identification number of the payee
           nullable: true
           type: string
+        IsCompanyWithoutVatIdentificationNumber:
+          description: |
+            Zahlungsempfänger ist Unternehmen, das keine USt-IdNr. hat
+
+            **English version:**
+            Payee is a company that does not have a VAT ID
+          example: false
+          nullable: true
+          type: boolean
         OwnVatIdentificationNumber:
           description: |
             Eigene USt-IdNr.
@@ -57428,6 +57579,14 @@ components:
 
             **English version:**
             Cost unit (classification term)
+          nullable: true
+          type: string
+        ProjectReference:
+          description: |
+            Projektreferenz des Belegs.
+
+            **English version:**
+            Project Reference of the Document.
           nullable: true
           type: string
         Contact:
@@ -59347,11 +59506,11 @@ components:
         DocumentNumber:
           description: |
             Belegnummer.
-            Optional: Nur angeben, wenn die Belegnummer nicht durch die Auftragsbearbeitung vergeben werden soll.
+            Optional: Nur angeben, wenn die Belegnummer nicht durch die Anwendung vergeben werden soll.
 
             **English version:**
             Document number.
-            Optional: Only specify if the document number should not be assigned by order processing.
+            Optional: Only specify if the document number should not be assigned by the application.
           nullable: true
           type: number
         SalesDocumentId:
@@ -60040,6 +60199,7 @@ components:
         BusinessOpportunity: 4
         Preamble: Preamble
         VatIdentificationNumber: VatIdentificationNumber
+        IsCompanyWithoutVatIdentificationNumber: false
         OwnVatIdentificationNumber: OwnVatIdentificationNumber
         TaxIdentificationNumber: TaxIdentificationNumber
         RegistrationNumber: HRB 12345
@@ -60151,6 +60311,8 @@ components:
             OrderReferenceLineNumber: "5566-01, 5566-02"
             ObjectNumber: ObjectNumber
             OrderDate: OrderDate
+            DeliveryNoteNumber: DeliveryNoteNumber
+            DeliveryNoteDate: DeliveryNoteDate
             Accounting:
               Account: 6.778324963048013
               DiscountAccount: 6.878052220127876
@@ -60596,6 +60758,8 @@ components:
             OrderReferenceLineNumber: "5566-01, 5566-02"
             ObjectNumber: ObjectNumber
             OrderDate: OrderDate
+            DeliveryNoteNumber: DeliveryNoteNumber
+            DeliveryNoteDate: DeliveryNoteDate
             Accounting:
               Account: 6.778324963048013
               DiscountAccount: 6.878052220127876
@@ -61013,6 +61177,7 @@ components:
         IdInThirdPartyApplication: IdInThirdPartyApplication
         DeliverOnlyIfAllProductsInStock: true
         ConsiderForPackagingLaw: true
+        ProjectReference: ProjectReference
         AgentCommissions:
         - Agent: Agent
           DoDetermineRate: true
@@ -61538,6 +61703,15 @@ components:
             VAT identification number of the invoice recipient
           nullable: true
           type: string
+        IsCompanyWithoutVatIdentificationNumber:
+          description: |
+            Rechnungsempfänger ist Unternehmen, das keine USt-IdNr. hat
+
+            **English version:**
+            Invoice recipient is a company that does not have a VAT ID
+          example: false
+          nullable: true
+          type: boolean
         OwnVatIdentificationNumber:
           description: |
             Eigene USt-IdNr.
@@ -61709,6 +61883,14 @@ components:
             Delivery is included in the evaluation for the packaging law.
           nullable: true
           type: boolean
+        ProjectReference:
+          description: |
+            Projektreferenz des Belegs.
+
+            **English version:**
+            Project Reference of the Document.
+          nullable: true
+          type: string
         AgentCommissions:
           description: |
             Liste der Provisionsdaten der Vertreter
@@ -61970,6 +62152,7 @@ components:
         Language: Language
         Preamble: Preamble
         VatIdentificationNumber: VatIdentificationNumber
+        IsCompanyWithoutVatIdentificationNumber: false
         OwnVatIdentificationNumber: OwnVatIdentificationNumber
         TaxIdentificationNumber: TaxIdentificationNumber
         EoriNumber: EoriNumber
@@ -62077,6 +62260,8 @@ components:
             OrderReferenceLineNumber: "5566-01, 5566-02"
             ObjectNumber: ObjectNumber
             OrderDate: OrderDate
+            DeliveryNoteNumber: DeliveryNoteNumber
+            DeliveryNoteDate: DeliveryNoteDate
             Accounting:
               Account: 6.778324963048013
               DiscountAccount: 6.878052220127876
@@ -62522,6 +62707,8 @@ components:
             OrderReferenceLineNumber: "5566-01, 5566-02"
             ObjectNumber: ObjectNumber
             OrderDate: OrderDate
+            DeliveryNoteNumber: DeliveryNoteNumber
+            DeliveryNoteDate: DeliveryNoteDate
             Accounting:
               Account: 6.778324963048013
               DiscountAccount: 6.878052220127876
@@ -62952,6 +63139,7 @@ components:
           RemainingTotalValue: 5.299143560275359
         CostCenter: CostCenter
         CostUnit: CostUnit
+        ProjectReference: ProjectReference
         Contact:
           LastName: LastName
           FirstName: FirstName
@@ -63352,6 +63540,15 @@ components:
             VAT identification number of the payee
           nullable: true
           type: string
+        IsCompanyWithoutVatIdentificationNumber:
+          description: |
+            Zahlungsempfänger ist Unternehmen, das keine USt-IdNr. hat
+
+            **English version:**
+            Payee is a company that does not have a VAT ID
+          example: false
+          nullable: true
+          type: boolean
         OwnVatIdentificationNumber:
           description: |
             Eigene USt-IdNr.
@@ -63513,6 +63710,14 @@ components:
 
             **English version:**
             Cost unit (classification term)
+          nullable: true
+          type: string
+        ProjectReference:
+          description: |
+            Projektreferenz des Belegs.
+
+            **English version:**
+            Project Reference of the Document.
           nullable: true
           type: string
         Contact:
@@ -67704,6 +67909,8 @@ components:
           OrderReferenceLineNumber: "5566-01, 5566-02"
           ObjectNumber: ObjectNumber
           OrderDate: OrderDate
+          DeliveryNoteNumber: DeliveryNoteNumber
+          DeliveryNoteDate: DeliveryNoteDate
           Accounting:
             Account: 6.778324963048013
             DiscountAccount: 6.878052220127876
@@ -68212,6 +68419,8 @@ components:
         OrderReferenceLineNumber: "5566-01, 5566-02"
         ObjectNumber: ObjectNumber
         OrderDate: OrderDate
+        DeliveryNoteNumber: DeliveryNoteNumber
+        DeliveryNoteDate: DeliveryNoteDate
         Accounting:
           Account: 6.778324963048013
           DiscountAccount: 6.878052220127876
@@ -68988,6 +69197,24 @@ components:
             **English version:**
             Order date in format YYYY-MM-DD.
             Only filled if different from the specification in the document header.
+            To delete the date, an empty string must be provided.
+          nullable: true
+          type: string
+        DeliveryNoteNumber:
+          description: |
+            Belegnummer des Lieferscheins.
+
+            **English version:**
+            Document number of the delivery note.
+          nullable: true
+          type: string
+        DeliveryNoteDate:
+          description: |
+            Belegdatum des Lieferscheins im Format YYYY-MM-DD.
+            Zum Löschen des Datums muss ein Leerstring übermittelt werden.
+
+            **English version:**
+            Document date of the delivery note in format YYYY-MM-DD.
             To delete the date, an empty string must be provided.
           nullable: true
           type: string
@@ -70912,21 +71139,21 @@ components:
           type: string
         username:
           description: |
-            Name des AB-Benutzers, für den das Token erzeugt werden soll.
+            Name des Anwendungs-Benutzers, für den das Token erzeugt werden soll.
             Der Wert muss bei grant_type "password" besetzt sein.
 
             **English version:**
-            Name of the AB user for whom the token should be generated.
+            Name of the application user for whom the token should be generated.
             The value must be set when grant_type is "password".
           nullable: false
           type: string
         password:
           description: |
-            Kennwort des AB-Benutzers, für den das Token erzeugt werden soll.
+            Kennwort des Anwendungs-Benutzers, für den das Token erzeugt werden soll.
             Der Wert muss bei grant_type "password" besetzt sein.
 
             **English version:**
-            Password of the AB user for whom the token should be generated.
+            Password of the application user for whom the token should be generated.
             The value must be set when grant_type is "password".
           nullable: false
           type: string

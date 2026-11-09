@@ -1,3 +1,21 @@
+Suiteify Commercial classic 3.90 02/00
+---------------------------------------------------------------------------------------------------
+
+Änderung an bestehenden Models
+- Customer/OwnVatIdentificationNumber -> Property hinzugefügt für die eigene USt-IdNr.
+- PeriodicalPurchaseDocumentTemplate/IsCompanyWithoutVatIdentificationNumber -> Property hinzugefügt für Zahlungsempfänger ist Unternehmen, das keine USt-IdNr. hat
+- PeriodicalPurchaseDocumentTemplate/ProjectReference -> Property hinzugefügt für eine Projektreferenz
+- PeriodicalSalesDocumentTemplate/IsCompanyWithoutVatIdentificationNumber -> Property hinzugefügt für Rechnungsempfänger ist Unternehmen, das keine USt-IdNr. hat
+- PeriodicalSalesDocumentTemplate/ProjectReference -> Property hinzugefügt für eine Projektreferenz
+- ProductLineItem/DeliveryNoteDate -> Property hinzugefügt für das Belegdatum des Lieferscheins
+- ProductLineItem/DeliveryNoteNumber -> Property hinzugefügt für die Belegnummer des Lieferscheins
+- PurchaseDocument/IsCompanyWithoutVatIdentificationNumber -> Property hinzugefügt für Zahlungsempfänger ist Unternehmen, das keine USt-IdNr. hat
+- PurchaseDocument/ProjectReference -> Property hinzugefügt für eine Projektreferenz
+- SalesDocument/DeliveryNotes -> Liste der Lieferscheindaten hinzugefügt (aktuell maximal ein Element; bei POST/PUT mit mehr als einem Element erfolgt BadRequest).
+- SalesDocument/IsCompanyWithoutVatIdentificationNumber -> Property hinzugefügt für Rechnungsempfänger ist Unternehmen, das keine USt-IdNr. hat
+- SalesDocument/ProjectReference -> Property hinzugefügt für eine Projektreferenz
+- Supplier/OwnVatIdentificationNumber -> Property hinzugefügt für die eigene USt-IdNr.
+
 AB 3.90 01/00
 ---------------------------------------------------------------------------------------------------
 
