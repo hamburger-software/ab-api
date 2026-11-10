@@ -1,10 +1,10 @@
 # AB API ![🇩🇪 Deutsch](https://img.shields.io/badge/Deutsch-DE-blue?logo=de&logoColor=white)
 English version: [README.en.md](README.en.md)  [![🇬🇧 English](https://img.shields.io/badge/English-EN-brightgreen?logo=gb)](README.en.md) 
 
-In diesem Repository werden die Beschreibung der API zur HS Auftragsbearbeitung (YAML-Datei) und der Changelog veröffentlicht.
+In diesem Repository werden die Beschreibung der API zu Suiteify Commercial classic (YAML-Datei) und der Changelog veröffentlicht.
 
 ## Nutzungsbedingungen
-Voraussetzung für die Verwendung der API in einer Zusatzlösung ist der Abschluss eines Vertrags zur Nutzung der API mit HS – Hamburger Software GmbH. 
+Voraussetzung für die Verwendung der API in einer Zusatzlösung ist der Abschluss eines Vertrags zur Nutzung der API mit Suiteify ERP GmbH. 
 
 Die Nutzung ist kostenpflichtig und orientert sich u.a. am Umfang der gewünschten Nutzung (Anzahl und Typ der benötigten Endpunktgruppen, Umfang der Zugriffsrechte, Intensität / Volumen der Nutzung) sowie dem Einsatzszenario.
 Für weitere Informationen wenden Sie sich an vertrieb@hamburger-software.de.
@@ -17,21 +17,21 @@ verwendet.
 ## Sicherheit
 Die API wird als Backend-API bereitgestellt. Für eine Absicherung steht grundsätzlich HTTPS mit generierten und eigenen Zertifikaten zur Verfügung. 
 
-Der Aufrufer muss sich authentifizieren. Dazu werden die Credentials eines Benutzers der HS Auftragsbearbeitung im Authentifizierungsverfahren Basic oder OAuth2 verwendet. In diesem Zuge werden auch die fachlichen Berechtigungen des Benutzers überprüft.
+Der Aufrufer muss sich authentifizieren. Dazu werden die Credentials eines Benutzers aus Suiteify Commercial classic im Authentifizierungsverfahren Basic oder OAuth2 verwendet. In diesem Zuge werden auch die fachlichen Berechtigungen des Benutzers überprüft.
 
-Für die Absicherung der API gegen unberechtigte Zugriffe (Firewall, API-Gateway etc.) ist darüber hinaus der Ersteller einer Zusatzlösung sowie der Betreiber der API (z.B. HS Kunde, Hoster) verantwortlich.
+Für die Absicherung der API gegen unberechtigte Zugriffe (Firewall, API-Gateway etc.) ist darüber hinaus der Ersteller einer Zusatzlösung sowie der Betreiber der API (z.B. Suiteify ERP Kunde, Hoster) verantwortlich.
 
 ## Autorisierung
-Um den Zugriff einer Zusatzlösung abzusichern, werden zur Autorisierung der Lösungen API-Keys verwendet. Jede Lösung erhält dazu einen eigenen API-Key, der ausschließlich für diese Lösung verwendet werden darf. Der API-Key wird nach Abschluss des Vertrags zur Nutzung der HS API zugesendet. Die Weitergabe eines API-Keys ist nicht erlaubt.
+Um den Zugriff einer Zusatzlösung abzusichern, werden zur Autorisierung der Lösungen API-Keys verwendet. Jede Lösung erhält dazu einen eigenen API-Key, der ausschließlich für diese Lösung verwendet werden darf. Der API-Key wird nach Abschluss des Vertrags zur Nutzung der Suiteify ERP API zugesendet. Die Weitergabe eines API-Keys ist nicht erlaubt.
 
-Die Lizenz der HS Anwendung, bei der die Zusatzlösung eingesetzt wird, muss entsprechend aktualisiert werden, damit der Lizenzschlüssel den API-Key enthält. (Arbeitsgebiet LizenzCenter - Lizenz aktualisieren).
+Die Lizenz der Suiteify ERP Anwendung, bei der die Zusatzlösung eingesetzt wird, muss entsprechend aktualisiert werden, damit der Lizenzschlüssel den API-Key enthält. (Arbeitsgebiet LizenzCenter - Lizenz aktualisieren).
 
 Der API-Key ist entsprechend in der Zusatzlösung zu implementieren. API-Zugriffe ohne API-Key werden als "Unauthorized" abgewiesen. Ein API-Key ist an die Endpunktgruppen gebunden. Das heißt, mit einem APIKey kann nur auf Endpunkte innerhalb der vertraglich vereinbarten Endpunktgruppen zugriffen werden.
 
-Im Arbeitsgebiet **LizenzCenter - Registrierte Lösungen** sind die registrierten Zusatzlösung gelistet, die per API auf die HS Anwendung zugreifen dürfen. Per Doppelklick auf eine Lösung erhält man zusätzlich die Informationen, für welche Endpunktgruppen der Zugriff erlaubt ist und mit welchen Rechten (Lesen/Vollzugriff) diese freigeschaltet sind.
+Im Arbeitsgebiet **LizenzCenter - Registrierte Lösungen** sind die registrierten Zusatzlösung gelistet, die per API auf die Suiteify ERP Anwendung zugreifen dürfen. Per Doppelklick auf eine Lösung erhält man zusätzlich die Informationen, für welche Endpunktgruppen der Zugriff erlaubt ist und mit welchen Rechten (Lesen/Vollzugriff) diese freigeschaltet sind.
 
 ### Beispieldaten / Schulungsversion
-Die Verwendung der API für Erkundungs- sowie Testzwecke ist in den Beispieldaten der HS Anwendung und in der Schulungsversion grundsätzlich möglich. Der für diese Zwecke zu verwendende API-Key ist in der YAML im Bereich **securitySchemes** bei **ApiKeyAuth** aufgeführt.
+Die Verwendung der API für Erkundungs- sowie Testzwecke ist in den Beispieldaten der Suiteify ERP Anwendung und in der Schulungsversion grundsätzlich möglich. Der für diese Zwecke zu verwendende API-Key ist in der YAML im Bereich **securitySchemes** bei **ApiKeyAuth** aufgeführt.
 
 # API einrichten
 Die Verwendung der API erfordert folgende Schritte.
@@ -39,10 +39,10 @@ Die Verwendung der API erfordert folgende Schritte.
 - Lizenzierung der API
 - Einrichtung und Konfiguration des Webservice
 
-Alle Informationen hierzu finden Sie in der Hilfe zu HS Auftragsbearbeitung unter „Anleitungen & Wissen / Datenaustausch / API (Webservice)“.
+Alle Informationen hierzu finden Sie in der Hilfe zu Suiteify Commercial classic unter „Anleitungen & Wissen / Datenaustausch / API (Webservice)“.
 
 # Nutzung der API
-In der Auftragsbearbeitung wird ein Webservice (Dienst) gestartet, der auf verschiedene Endpunkte (URLs) reagiert.
+In Suiteify Commercial classic wird ein Webservice (Dienst) gestartet, der auf verschiedene Endpunkte (URLs) reagiert.
 
 Der Webservice wird pro Datenbank/Mandant einmal gestartet, d.h. der Webservice ist mandantenbezogen. Wenn mehrere Datenbanken/Mandanten verwendet werden, muss für jeden Datenbestand/Mandant eine Instanz des Webservice gestartet werden. Werden die Instanzen auf einem
 Rechner betrieben, unterscheidet sich der Aufruf nur im Port.
@@ -129,9 +129,9 @@ Mit Hilfe eines Internet-Browser kann die Erreichbarkeit des Webservice geprüft
 Wenn Sie kein „vorhandenes Zertifikat“ verwenden, können Sie den Hinweis auf eine unsichere Verbindung bestätigen und den Hinweis auf ein ungültiges Zertifikat ignorieren. Weitere Informationen dazu finden Sie in der Hilfe der Anwendung.
 
 ## Registrierung der Zusatzlösung
-Im Arbeitsgebiet **LizenzCenter - Registrierte Lösungen** sind die registrierten Zusatzlösungen gelistet, die per API auf die HS Anwendung zugreifen dürfen. Per Doppelklick auf eine Lösung erhält man zusätzlich die Informationen, für welche Endpunktgruppen der Zugriff erlaubt ist und mit welchen Rechten (Lesen/Vollzugriff) diese freigeschaltet sind.
+Im Arbeitsgebiet **LizenzCenter - Registrierte Lösungen** sind die registrierten Zusatzlösungen gelistet, die per API auf die Suiteify ERP Anwendung zugreifen dürfen. Per Doppelklick auf eine Lösung erhält man zusätzlich die Informationen, für welche Endpunktgruppen der Zugriff erlaubt ist und mit welchen Rechten (Lesen/Vollzugriff) diese freigeschaltet sind.
 
-Ist die erwartete Zusatzlösung dort nicht aufgeführt, oder sind erwartete Rechte nicht freigeschaltet, ist die Lizenz zu aktualisieren oder ggf. die vertraglichen Vereinbarungen zur Nutzung der API mit HS – Hamburger Software GmbH zu prüfen. Für weitere Informationen wenden Sie sich an vertrieb@hamburger-software.de.
+Ist die erwartete Zusatzlösung dort nicht aufgeführt, oder sind erwartete Rechte nicht freigeschaltet, ist die Lizenz zu aktualisieren oder ggf. die vertraglichen Vereinbarungen zur Nutzung der API mit Suiteify ERP GmbH zu prüfen. Für weitere Informationen wenden Sie sich an vertrieb@hamburger-software.de.
 
 # Weitere Informationen
 Weitere Informationen für Lösungsersteller gibt es
