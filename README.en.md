@@ -1,13 +1,13 @@
 # AB API ![🇬🇧 English](https://img.shields.io/badge/English-EN-brightgreen?logo=gb)
 German version: [README.de.md](README.de.md)  [![🇩🇪 Deutsch](https://img.shields.io/badge/Deutsch-DE-blue?logo=de&logoColor=white)](README.de.md)
 
-In this repository, the description of the API for HS Auftragsbearbeitung (YAML file) and the changelog are published.
+In this repository, the description of the API for Suiteify Commercial classic (YAML file) and the changelog are published.
 
 ## Terms of Use
-A prerequisite for using the API in an add-on solution is the conclusion of a contract for API usage with HS – Hamburger Software GmbH.
+A prerequisite for using the API in an add-on solution is the conclusion of a contract for API usage with Suiteify ERP GmbH.
 
 Usage is subject to a fee and is based in part on the scope of the desired usage (number and type of required endpoint groups, scope of access rights, intensity/volume of usage) as well as the deployment scenario. 
-For further information, please contact vertrieb@hamburger-software.de.
+For further information, please contact info@suiteify.com.
 
 # Scope of Functions
 The API is provided with the application. The API implementation complies with the OpenAPI 3.0 standard.
@@ -17,21 +17,21 @@ The API is provided with the application. The API implementation complies with t
 ## Security
 The API is provided as a Backend API. For securing it, HTTPS with generated and custom certificates is fundamentally available.
 
-The caller must authenticate using the credentials of an HS Auftragsbearbeitung user via Basic or OAuth2 authentication. During this process, the user's functional permissions are also verified.
+The caller must authenticate using the credentials of an Suiteify Commercial classic user via Basic or OAuth2 authentication. During this process, the user's functional permissions are also verified.
 
-Additionally, the creator of an add-on solution and the API operator (e.g., HS customer, hoster) are responsible for securing the API against unauthorized access (firewall, API gateway, etc.).
+Additionally, the creator of an add-on solution and the API operator (e.g., Suiteify ERP customer, hoster) are responsible for securing the API against unauthorized access (firewall, API gateway, etc.).
 
 ## Authorization
-To secure access for an add-on solution, API keys are used for authorization of the solutions. Each solution receives its own API key, which may only be used exclusively for that solution. The API key is sent after the contract for using the HS API has been concluded. Passing on an API key is not permitted.
+To secure access for an add-on solution, API keys are used for authorization of the solutions. Each solution receives its own API key, which may only be used exclusively for that solution. The API key is sent after the contract for using the Suiteify ERP API has been concluded. Passing on an API key is not permitted.
 
-The license of the HS application in which the add-on solution is deployed must be updated accordingly so that the license key contains the API key (Work area LizenzCenter - Lizenz aktualisieren).
+The license of the Suiteify ERP application in which the add-on solution is deployed must be updated accordingly so that the license key contains the API key (Work area LizenzCenter - Lizenz aktualisieren).
 
 The API key must be implemented accordingly in the add-on solution. API accesses without an API key are rejected as "Unauthorized". An API key is bound to endpoint groups. This means that with an API key, access is only possible to endpoints within the contractually agreed endpoint groups.
 
-In the work area **LizenzCenter - Registrierte Lösungen** , the registered add-on solutions that are allowed to access the HS application via API are listed. By double-clicking on a solution, additional information is provided on which endpoint groups access is permitted and with which rights (Read/Full access) they are enabled.
+In the work area **LizenzCenter - Registrierte Lösungen** , the registered add-on solutions that are allowed to access the Suiteify ERP application via API are listed. By double-clicking on a solution, additional information is provided on which endpoint groups access is permitted and with which rights (Read/Full access) they are enabled.
 
 ### Demo Data / Training Version
-Using the API for exploration and testing purposes is fundamentally possible in the sample data of the HS application and in the training version.
+Using the API for exploration and testing purposes is fundamentally possible in the sample data of the Suiteify ERP application and in the training version.
 The API key to be used for these purposes is listed in the YAML under **securitySchemes** at **ApiKeyAuth**.
 
 # API Setup
@@ -40,10 +40,10 @@ Using the API requires the following steps:
 - Licensing of the API
 - Setup and configuration of the webservice
 
-All information on this can be found in the HS order processing help under  „Anleitungen & Wissen / Datenaustausch / API (Webservice)“.
+All information on this can be found in the Suiteify Commercial classic help under  „Anleitungen & Wissen / Datenaustausch / API (Webservice)“.
 
 # Usage of the API
-In HS Auftragsbearbeitung, a webservice (Windows-service) is started that responds to various endpoints (URLs).
+In Suiteify Commercial classic, a webservice (Windows-service) is started that responds to various endpoints (URLs).
 
 The webservice is started once per database/tenant, meaning it is tenant-specific. If multiple databases/tenants are used, an instance of the webservice must be started for each database/tenant. If the instances are operated on one computer, the call differs only in the port.
 
@@ -127,11 +127,11 @@ The reachability of the webservice can be checked using an internet browser by e
 If no "existing certificate" is shown, the warning about an insecure connection can be confirmed and the notice about an invalid certificate can be ignored. Further information can be found in the application help.
 
 ## Registration of the Add-on Solution
-In the work area **LizenzCenter - Registrierte Lösungen**, the registered add-on solutions that are permitted to access the HS application via API are listed. By double-clicking on a solution, additional information is provided on which endpoint groups access is allowed and with which rights (Read/Full access) they are enabled.
+In the work area **LizenzCenter - Registrierte Lösungen**, the registered add-on solutions that are permitted to access the Suiteify ERP application via API are listed. By double-clicking on a solution, additional information is provided on which endpoint groups access is allowed and with which rights (Read/Full access) they are enabled.
 
-If the expected add-on solution is not listed there, or if expected rights are not enabled, the license must be updated or the contractual agreements for API usage with HS – Hamburger Software GmbH must be checked. For further information, contact vertrieb@hamburger-software.de.
+If the expected add-on solution is not listed there, or if expected rights are not enabled, the license must be updated or the contractual agreements for API usage with Suiteify ERP GmbH must be checked. For further information, contact info@suiteify.com.
 
 # Further Information
 Further information for solution developers is available
-- in the help of HS Auftragsbearbeitung under the chapter "Anleitung & Wissen / Datenaustausch / API (Webservice) / Anwendungswissen"
-- in the file "ab_api_webservice.pdf" in the "Hilfe_Pdfs" subfolder of the installed order processing program directory (e.g. C:\Program Files (x86)\Hs\Ab)
+- in the help of Suiteify Commercial classic under the chapter "Anleitung & Wissen / Datenaustausch / API (Webservice) / Anwendungswissen"
+- in the file "ab_api_webservice.pdf" in the "Hilfe_Pdfs" subfolder of the installed Suiteify Commercial classic program directory (e.g. C:\Program Files (x86)\Hs\Ab)
